@@ -1,0 +1,46 @@
+<?xml version='1.0'?>
+<sdf version='1.9'>
+  <model name="grass-amb-cam">
+
+    <include>
+      <uri>model://grasshopper</uri>
+    </include>
+
+    <link name="camera_link">
+      <sensor name="camera" type="camera">
+        <pose degrees="true"> 0 0 0 0 90 0</pose>
+        
+        <camera>
+          <horizontal_fov>2.0</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>15000</far>
+          </clip>
+        </camera>
+
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>1</visualize>
+
+        <plugin name="GstCameraPlugin" 
+            filename="GstCameraPlugin">
+          <udp_host>127.0.0.1</udp_host>
+          <udp_port>5600</udp_port>
+          <use_basic_pipeline>true</use_basic_pipeline>
+          <use_cuda>false</use_cuda>
+        </plugin>
+
+      </sensor>
+    </link>
+
+    <joint name="camera_mount" type="fixed">
+      <parent>grasshopper::base_link</parent>
+      <child>camera_link</child>
+    </joint>
+
+  </model>
+</sdf>
