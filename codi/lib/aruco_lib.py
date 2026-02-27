@@ -5,24 +5,10 @@ import numpy as np
 VERBOSE = True
 
 
-def average_pos(positions):
-    xs = 0
-    ys = 0
-    zs = 0
-
-    for p in positions:
-        x, y, z = p
-        xs+=x
-        ys+=y
-        zs+=z
-    
-    xs /= len(positions)
-    ys /= len(positions)
-    zs /= len(positions)
-
-    return xs, ys, zs
-
 def get_euler_angles(rvec):
+    """
+    Transforms a rotation vector into the equivalent euler angles.
+    """
     R, _ = cv2.Rodrigues(rvec)
     
     sy = np.sqrt(R[0,0] * R[0,0] +  R[1,0] * R[1,0])
@@ -51,21 +37,29 @@ class ArucoDetector():
         self.dist = np.array(dist, dtype=np.float32)
 
     def detectMarkers(self, frame):
+        """
+        Detection of aruco markers in a frame.
+
+        :param MatLike frame: Frame to process
+        :return corners ([np.array..]): corners of the detected arucos
+        :return ids ([int..]): ids of the detected arucos
+        :return rejected: rejected img points
+        """
+
         corners, ids, rejected = self.detector.detectMarkers(frame)
         return corners, ids, rejected
     
     def estimate_pose(self, current_marker_corners, marker_size):
         """
-        Estimates the pose of a single marker.
+        Estimates the position and rotation of an aruco detection relative to the image of a single marker.
         
-        Args:
-            corners (list): Corner points from detector.detectMarkers()
-            marker_size (float): Physical size of the marker in meters (e.g., 0.2)
-            mtx (np.array): Camera Matrix (Intrinsics)
-            dist (np.array): Distortion Coefficients
+        :param list corners: Corner points from detector.detectMarkers()
+        :param float marker_size: Physical size of the marker in meters (e.g., 0.2)
+        :param np.array mtx: Camera Matrix (Intrinsics)
+        :param np.array dist: Distortion Coefficients
             
-        Returns:
-            rvec, tvec: Rotation and Translation vectors
+        :returns rvec (np.array): Rotation vector
+        :returns tvec (np.array): Translation vector
         """
 
         marker_points = np.array([
@@ -88,11 +82,15 @@ class ArucoDetector():
         )
         return rvec, tvec
     
-    def full_prediction(self, frame):
+    def full_prediction(self, frame, do_draw:bool=True):
         """
-        Fa el processat sencer de deteccions aruco. 
-        Retorna (frame, (offset_x, offset_y, offset_z), (pitch, yaw, roll)) del primer aruco detectat.
-        Si no es fa cap detecció retorna None.
+        Full detection and processing of aruco markers.
+
+        :param MatLike frame: frame to be processed
+        :param bool (optional) do_draw: Activate or deactivate function to draw detections onto the frame
+        :return frame (MatLike): Original frame or frame with detections
+        :return position ((float, float, float)): Position of the detected aruco from the camera
+        :return rotation ((float, float, float)): Rotation of the detected aruco with respect to the camera
         """
         try:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -122,7 +120,7 @@ class ArucoDetector():
                                     "\n--------------------------------------------")
 
 
-                    aruco.drawDetectedMarkers(frame, corners, ids)
+                    if do_draw: aruco.drawDetectedMarkers(frame, corners, ids)
 
                     return (frame, (x_offset, y_offset, z_depth), (pitch, yaw, roll))
         except Exception as e: print("'ArucoDetector:full_detection' error:", e)

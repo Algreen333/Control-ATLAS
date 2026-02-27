@@ -12,17 +12,26 @@ except (ImportError, RuntimeError):
 
 
 class VideoCapture:
-    def __init__(self, resolution=(640, 480), fps=30):
+    def __init__(self, capture_source = None, resolution=(640, 480), format="RGB888", fps=30.0):
+        """
+        :param any capture_source: Source of the capture. Irrelevant when using Picamera2
+        :param (int,int) resolution: Resolution of the capture. By default (640,480)
+        :param str format: Format of the capture. Only relevant when using Picamera2. By default "RGB888"
+        :param float fps: Fps of the capture. By default 30.0
+        """
+        
         self.resolution = resolution
         self.fps = fps
+        self.format = format
+        self.capture_source = capture_source
         
         if HAS_PICAMERA:
             self.capture = Picamera2()
-            config = self.capture.create_preview_configuration(main={"size": self.resolution}, fps=self.fps)
+            config = self.capture.create_preview_configuration(main={"size": self.resolution, "format": self.format})
             self.capture.configure(config)
 
-        else: 
-            self.capture = cv2.VideoCapture(0)
+        else:
+            self.capture = cv2.VideoCapture(self.capture_source)
             self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution[0])
             self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution[1])
             self.capture.set(cv2.CAP_PROP_FPS, self.fps)
@@ -38,6 +47,13 @@ class VideoCapture:
         self.capture_thread = Thread(target=self._update, daemon=True)
 
     def start(self):
+        """
+        Inicializes capture.
+
+        :return self (VideoCapture):
+        """
+
+
         if HAS_PICAMERA: self.capture.start()
         self.capture_thread.start()
 
@@ -59,16 +75,27 @@ class VideoCapture:
                 self.frame = new_frame
 
     def read(self):
+        """
+        Read a frame.
+        
+        :return ret (bool): Whether the frame has been read successfully
+        :return frame (MatLike): The captured frame 
+        """
         try:
             with self.lock:
                 return True, self.frame
         except: 
             return False, None
 
-    def toggle_record(self):
+    def toggle_record(self, filename=None):
+        """
+        Toggles record state. If it is not recording it creates opens a new VideoWriter and starts writing a video.
+        
+        :param str (optional) filename: Filename of the video. If left on None the video will be created with name "rec_time.avi"
+        """
         if not self.is_recording:
             self.is_recording = True
-            filename = f"rec_{int(time.time())}.avi"
+            filename = filename | f"rec_{int(time.time())}.avi"
             self.video_writer = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc(*'XVID'), self.fps, self.resolution)
             Thread(target=self._record_loop, daemon=True).start()
         else:
@@ -84,6 +111,10 @@ class VideoCapture:
         self.video_writer.release()
 
     def stop(self):
+        """
+        Stops video capture
+        """
+
         self.stopped = True
         if self.capture_thread.is_alive():
             self.capture_thread.join()
@@ -97,13 +128,21 @@ class VideoCapture:
 
 class VideoServer:
     def __init__(self, streamer:VideoCapture, host='0.0.0.0', port=5000):
+        """
+        Starts video server for a video capture. It is a Flask server which shows the capture in real time.
+
+        :param VideoCapture streamer: VideoCapture whcih to show
+        :param str host: Host address. By default "0.0.0.0"
+        :param int port: Host port. By default 5000
+        """
+
         self.streamer:VideoCapture = streamer
         self.host = host
         self.port = port
         self.app = Flask(__name__)
 
-        self.do_record = False
         self.video_writer = None
+        self.is_recording = False
 
         self.custom_endpoints = {"/video_feed": "Raw Stream"}
         
@@ -151,7 +190,13 @@ class VideoServer:
         </html>
         """
 
-    def toggle_record(self):
+    def toggle_record(self, filename = None):
+        """
+        Toggles record state. If it is not recording it creates opens a new VideoWriter and starts writing a video.
+        
+        :param str (optional) filename: Filename of the video. If left on None the video will be created with name "rec_time.avi"
+        """
+
         if not self.is_recording:
             self.is_recording = True
             filename = f"recordings/rec_{int(time.time())}.avi"
@@ -172,7 +217,7 @@ class VideoServer:
                 if not ret or frame is None:
                     # Si hi ha un error o el frame no és vàlid.
                     # Si està gravant escriurà un altre cop el frame anterior
-                    if self.do_record and self.video_writer is not None:
+                    if self.is_recording and self.video_writer is not None:
                         time.sleep(max(0, (time.time() - start_time - (1/self.streamer.fps))))
                         if prev_frame is not None: self.video_writer.write(prev_frame)
                         start_time = time.time()
@@ -184,7 +229,7 @@ class VideoServer:
                 # Convert NumPy array to JPEG
                 _, buffer = cv2.imencode('.jpg', frame)
 
-                if self.do_record and self.video_writer is not None:
+                if self.is_recording and self.video_writer is not None:
                     time.sleep(max(0, (time.time() - start_time - (1/self.streamer.fps))))
                     self.video_writer.write(prev_frame)
                     start_time = time.time()
@@ -227,7 +272,7 @@ class VideoServer:
 
 if __name__ == "__main__":
 
-    cap = VideoCapture()
+    cap = VideoCapture(0)
     cap.start()
 
     server = VideoServer(cap)

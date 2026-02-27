@@ -1,6 +1,16 @@
 from pymavlink import mavutil
 
+# Coses a mirar:
+# https://mavlink.io/en/messages/common.html#MAV_CMD_REQUEST_MESSAGE -> request_message
+# https://mavlink.io/en/messages/common.html#COMMAND_INT -> COMMAND_INT
+# https://mavlink.io/en/messages/common.html#ORBIT_YAW_BEHAVIOUR -> Behaviour 
+# https://mavlink.io/en/messages/common.html#MAV_FRAME -> Reference frame
+
+
+
+
 class MavlinkConnection:
+
     def __init__(self, connection_string = '/dev/serial0', baud_rate = 57600):
         self.connection_string = connection_string
         self.baud_rate = baud_rate
@@ -10,25 +20,23 @@ class MavlinkConnection:
         self.master.wait_heartbeat()
 
         # Obtenim els IDs dels modes necessaris
-        self.mode_guided_id = self.master.mode_mapping()['GUIDED']
-        self.mode_land_id = self.master.mode_mapping()['LAND']
+        #self.mode_guided_id = self.master.mode_mapping()['GUIDED']
+        #self.mode_land_id = self.master.mode_mapping()['LAND']
 
     def move_relative(self, vertical:int|float, horizontal:int|float, updown:int|float):
         """
         Moves the drone (vertical, horizontal, updown) meters relative to the position and direction of the drone.
-        
-        Args: 
-            master: Mavlink connection master
-            vertical: Positive is forward
-            horizontal: Positive is right
-            updown: Positive is down
+         
+        :param int|float vertical: Positive is forward
+        :param int|float horizontal: Positive is right
+        :param int|float updown: Positive is down
         """
         self.master.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
             0, 
             self.master.target_system, 
             self.master.target_component, 
 
-            mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, 
+            mavutil.mavlink.MAV_FRAME_BODY_FRD, 
 
             0b010111111000, 
             vertical, 
@@ -37,10 +45,23 @@ class MavlinkConnection:
 
             0, 0, 0, 0, 0, 0, 0, 0))
 
-    def orbit(self, radius:int|float, behaviour=3, rotations=0, lat=None, lon=None, height=None, reference=mavutil.mavlink.MAV_FRAME_LOCAL_NED):
-        # Behaviour: https://mavlink.io/en/messages/common.html#ORBIT_YAW_BEHAVIOUR 
-        # Reference: https://mavlink.io/en/messages/common.html#MAV_FRAME
+    def loiter_unlim(self, F, R, D):
+        self.master.mav.command_long_send(
+            self.master.target_system,
+            self.master.target_component,
+            
+            mavutil.mavlink.MAV_FRAME_BODY_FRD, # Reference frame
 
+            0, 0,   # Unused
+
+            0, 0,   # Empty
+            None,   # Heading, None for NAN
+            F,
+            R,
+            D
+        )
+
+    def orbit(self, radius:int|float, behaviour=3, rotations=0, lat=None, lon=None, height=None, reference=mavutil.mavlink.MAV_FRAME_LOCAL_NED):
         self.master.mav.send(
             self.master.target_system,
             self.master.target_component,
@@ -60,9 +81,6 @@ class MavlinkConnection:
     def land(self):
         """
         Sends land command
-        
-        Args:
-            master: Mavlink connection master 
         """
 
         self.master.mav.command_long_send(
@@ -73,7 +91,12 @@ class MavlinkConnection:
 
             0, 0, 0, 0, 0, 0, 0, 0)
     
-    def takeoff(self, height=2):
+    def takeoff(self, height:float=2):
+        """
+        Sends takeoff command.
+
+        :param float height: Target takeoff altitude (in meters). 
+        """
         self.master.mav.command_long_send(
         self.master.target_system, 
         self.master.target_component,
@@ -84,15 +107,22 @@ class MavlinkConnection:
         height)
 
     def armat_i_guided(self):
+        """
+        NO FUNCIONAL DE MOMENT!!!!!!!!!!!
+        """
         msg = self.master.recv_match(type='HEARTBEAT', blocking=True)
         if msg:
             esta_armat = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED
             es_guided = (msg.custom_mode == self.mode_guided_id)
-            if esta_armat & es_guided: return True    
+            if esta_armat & es_guided: return True
+            print("armat:", esta_armat)
+            print("guided:", es_guided)
         return False
     
     def esperar_trigger_inici(self):
         """
+        NO FUNCIONAL DE MOMENT!!!!!!!!!!!
+
         Bucle espera, comprovar abans de passar autònom:
             - Motors ARMATS
             - Mode GUIDED
@@ -108,6 +138,8 @@ class MavlinkConnection:
 
     def esperar_reset_manual(self):
         """ 
+        NO FUNCIONAL DE MOMENT!!!!!!!!!!!
+
         Espera que es tregui mode GUIDED
         """
         print("Treu mode GUIDED per poder seguir")
