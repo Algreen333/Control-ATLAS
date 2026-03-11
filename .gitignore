@@ -4,6 +4,7 @@
 !.gitignore
 !.gitattributes
 
-eeprom.bin
-mav.tlog
-mav.tlog.raw
+*images
+*eeprom.bin
+*mav.tlog
+*mav.tlog.raw
