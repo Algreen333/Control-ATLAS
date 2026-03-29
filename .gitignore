@@ -3,3 +3,8 @@
 
 !.gitignore
 !.gitattributes
+*.bin
+*.tlog
+*.raw
+*.parm
+*.DAT
