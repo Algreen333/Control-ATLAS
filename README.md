@@ -1,4 +1,7 @@
-EN PRIMER LLOC CAL INSTAL·LAR ARDUPILOT I GAZEBO. VEIEU [GUIA_INSTALL.md](GUIA_INSTALL.md).
+# Instalació
+Per Ubuntu o Mac en l'ordinador: [GUIA_INSTALL.md](GUIA_INSTALL.md).
+
+Per la gent que té Windows i no vol cambiar a Linux:  [GUIA_INSTALL_WSL.md](GUIA_INSTALL_WSL.md)
 
 # Com simular
 Iniciar Gazebo:
