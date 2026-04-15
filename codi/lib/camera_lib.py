@@ -2,6 +2,8 @@ import time
 import cv2
 from flask import Flask, Response, redirect, request
 from threading import Thread, Lock
+import numpy as np
+import json
 
 
 try:
@@ -12,7 +14,7 @@ except (ImportError, RuntimeError):
 
 
 class VideoCapture:
-    def __init__(self, capture_source = None, resolution=(640, 480), format="RGB888", fps=30.0):
+    def __init__(self, capture_source = 0, resolution=(640, 480), format="RGB888", fps=30.0):
         """
         :param any capture_source: Source of the capture. Irrelevant when using Picamera2
         :param (int,int) resolution: Resolution of the capture. By default (640,480)
@@ -26,7 +28,7 @@ class VideoCapture:
         self.capture_source = capture_source
         
         if HAS_PICAMERA:
-            self.capture = Picamera2()
+            self.capture = Picamera2(capture_source)
             config = self.capture.create_preview_configuration(main={"size": self.resolution, "format": self.format})
             self.capture.configure(config)
 
@@ -269,6 +271,44 @@ class VideoServer:
     
     def video_feed_raw(self):
         return Response(self._generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+class CalibrationConfig:
+    """
+    Can be initialized with:
+    - CalibrationConfig(mtx:np.ndarray, dist:np.ndarray) 
+    - CalibrationConfig.from_path(path): path is the config file path
+    - CalibrationConfig.from_lists(mtx:list, dist:list)
+    """
+
+    def __init__(self, mtx: np.ndarray, dist: np.ndarray):
+        # The main constructor only accepts the finalized numpy arrays
+        self.mtx = mtx
+        self.dist = dist
+
+    @classmethod
+    def from_path(self, path: str):
+        # Read the file, extract matrices
+        with open(path, "r") as f:
+            data = json.load(f)
+
+        loaded_mtx = np.array(data["mtx"])
+        loaded_dist = np.array(data["dist"])
+
+        return self(loaded_mtx, loaded_dist)
+
+    @classmethod
+    def from_lists(self, mtx: list, dist: list):
+        return self(np.array(mtx), np.array(dist))
+    
+    def save(self, path:str):
+        config_data = {
+            "mtx": self.mtx.tolist(),
+            "dist": self.dist.tolist()
+        }
+        with open(path, "w") as f:
+            json.dump(config_data, f, indent=4)
+                
 
 if __name__ == "__main__":
 

@@ -119,7 +119,6 @@ class ArucoDetector():
                     if VERBOSE: print(f"Orientation: Pitch={pitch:.1f}, Yaw={yaw:.1f}, Roll={roll:.1f}", 
                                     "\n--------------------------------------------")
 
-
                     if do_draw: aruco.drawDetectedMarkers(frame, corners, ids)
 
                     return (frame, (x_offset, y_offset, z_depth), (pitch, yaw, roll))

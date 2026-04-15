@@ -1,25 +1,22 @@
-### EXECUTAR ESTANT A "main"
 import sys
-sys.path.append("../")
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the absolute path of the parent directory (main)
+parent_dir = os.path.dirname(current_dir)
 
-from lib.aruco_lib import *
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+
 from lib.camera_lib import *
+from lib.aruco_lib import *
 
-cap = VideoCapture()
+cap = VideoCapture(format="RGB888", resolution=(1536, 864))
 cap.start()
 
+conf = CalibrationConfig.from_path("../configs/1536x864.conf")
 
-mtx = [
-    [665.15857148, 0.00000000e+00, 319.15873703],
-    [0.00000000e+00, 662.49958721, 264.6089531],
-    [0.00000000e+00, 0.00000000e+00, 1.00000000e+00]
-]
-
-dist = [
-    [0.19320481, 0.59536031, 0.01756988, -0.01678634, -2.19110878]
-]
-
-aruco_detector = ArucoDetector(mtx, dist)
+aruco_detector = ArucoDetector(conf.mtx, conf.dist)
 
 def processor(frame):
     ret = aruco_detector.full_prediction(frame)
