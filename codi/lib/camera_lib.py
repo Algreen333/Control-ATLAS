@@ -97,11 +97,12 @@ class VideoCapture:
         """
         if not self.is_recording:
             self.is_recording = True
-            filename = filename | f"rec_{int(time.time())}.avi"
+            if filename is None: filename = f"rec_{int(time.time())}.avi"
             self.video_writer = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc(*'XVID'), self.fps, self.resolution)
             Thread(target=self._record_loop, daemon=True).start()
         else:
             self.is_recording = False
+            self.video_writer.release()
 
     def _record_loop(self):
         while self.is_recording:
