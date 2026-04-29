@@ -1,4 +1,7 @@
-EN PRIMER LLOC CAL INSTAL·LAR ARDUPILOT I GAZEBO. VEIEU [GUIA_INSTALL.md](GUIA_INSTALL.md).
+# Instalació
+Per Ubuntu o Mac en l'ordinador: [GUIA_INSTALL.md](GUIA_INSTALL.md).
+
+Per la gent que té Windows i no vol cambiar a Linux:  [GUIA_INSTALL_WSL.md](GUIA_INSTALL_WSL.md)
 
 # Com simular
 Iniciar Gazebo:
@@ -8,6 +11,8 @@ gz sim -v 4 -r <world>.sdf
 En cas que no estigui disponible la interfaç gràfica i servidor alhora, caldrà executar ``gz sim -v 4 -s -r <world>.sdf`` i en una altra terminal ``gz sim -g``.
 
 Executar SITL:
+
+Poseu per exemple 1 en \<frame\>
 ```bash
 sim_vehicle.py -v ArduCopter -f <frame> --model JSON --map --console
 ```
@@ -37,7 +42,7 @@ A continuació s'ha d'inicialitzar la càmera:
 ```bash
 gz topic -t /world/custom_runway/model/iris_with_gimbal/model/gimbal/link/pitch_link/sensor/camera/image/enable_streaming -m gz.msgs.Boolean -p "data:1"
 ```
-moure-la cap avall:
+moure-la cap avall (en la terminal de ardupilot creada per sim_vehicle.py ):
 ```
 rc 6 1500
 rc 7 1300
@@ -49,7 +54,7 @@ I ja es pot utilitzar qualsevol qualsevol script the python amb ardupilot.
 Per exemple: `codi/gotoaruco.py`. Aquest script busca arucos utilitzant la càmera simulada del Gazebo i, en detectar-los, es posiciona a sobre i baixa fins aterrar. Perquè funcioni primer caldrà situar el dron en una posició on es vegi algun aruco amb la càmera. Les instruccions d'ús són les següents: 
 - Executeu `py gotoaruco.py` des d'una terminal.
 - A continuació s'obrirà una finestra amb la càmera simulada del gazebo.
-- Premeu `s` per activar/desactivar el mode de pilot autònom. Cal que el dron estigui en mode `guided`.
+- Premeu `s` (en la terminal de gotoaruco.py) per activar/desactivar el mode de pilot autònom. Cal que el dron estigui en mode `guided` (ho podeu fer fàcilment si utilitzeu el Mission Planner).
 - També té una opció per gravar vídeos del que captura la càmera. Premeu `r` per gravar o deixar de gravar. Els vídeos es guarden a la ruta des d'on s'esta executant el script amb el nom `output_i.mp4` (output_0.mp4, output_1.mp4, ...) per cada vídeo que es grava. Cada cop que es prem `r` es grava un vídeo nou. Si el programa s'interromp hi ha la possibilitat que es perdi el vídeo.
 - Premeu `q` per finalitzar l'execució del programa.
 

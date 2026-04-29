@@ -8,3 +8,8 @@
 *eeprom.bin
 *mav.tlog
 *mav.tlog.raw
+*.bin
+*.tlog
+*.raw
+*.parm
+*.DAT
