@@ -61,9 +61,9 @@ def get_euler_angles(rvec):
     # Convert to degrees
     return np.degrees(x), np.degrees(y), np.degrees(z)
 
-def get_gazebo_camera_matrix(width, height, horizontal_fov_rad):
+def get_gazebo_camera_matrix(width, height, horizontal_fov_rad, vertical_fov_rad):
     fx = (width / 2.0) / np.tan(horizontal_fov_rad / 2.0)
-    fy = fx
+    fy = (height / 2.0) / np.tan(vertical_fov_rad / 2.0)
     cx = width / 2.0
     cy = height / 2.0
     

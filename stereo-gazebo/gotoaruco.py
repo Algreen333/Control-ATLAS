@@ -38,11 +38,15 @@ pipeline_narr = (
 
 
 cap_wide = cv2.VideoCapture(pipeline_wide, cv2.CAP_GSTREAMER)
-cap_narr = cv2.VideoCapture(pipeline_wide, cv2.CAP_GSTREAMER)
+print(cap_wide.isOpened())
 
-mtx_wide = get_gazebo_camera_matrix(1536, 864, 102/180*np.pi, 48.8/180*np.pi)
+cap_narr = cv2.VideoCapture(pipeline_narr, cv2.CAP_GSTREAMER)
+print(cap_wide.isOpened())
+
+
+mtx_wide = get_gazebo_camera_matrix(640, 480, 102/180*np.pi, 48.8/180*np.pi)
 dst_wide = np.zeros(5, dtype=np.float32)
-mtx_narr = get_gazebo_camera_matrix(1640, 1232, 62.2/180*np.pi, 67/180*np.pi)
+mtx_narr = get_gazebo_camera_matrix(640, 480, 62.2/180*np.pi, 67/180*np.pi)
 dst_narr = np.zeros(5, dtype=np.float32)
 
 detWide = ArucoDetector(mtx_wide, dst_wide)
@@ -136,13 +140,17 @@ def average_pos(xs, ys, zs):
 if __name__ == "__main__":
     try:
         inp = cv2.waitKey(30)
+
+        print("start")
         enabled = False
         recording = False
-        while inp != ord('q'):
+        while True:
+            print("tick")
             ret_w, frame_wide = cap_wide.read()
             ret_n, frame_narr = cap_narr.read()
 
-            if ret_w or ret_n is None:
+            if (not ret_w) or (not ret_n):
+                print("err")
                 time.sleep(0.1)
                 continue
 
@@ -163,4 +171,9 @@ if __name__ == "__main__":
 
             if SERVER_ID==0: frame_to_encode = joint_display(frame_wide, frame_narr, 0)
             else: frame_to_encode = joint_display(frame_narr, frame_wide, 0)
+
+            cv2.imshow("frame", frame_to_encode)
+            inp = cv2.waitKey(30)
+    except:
+        pass
 

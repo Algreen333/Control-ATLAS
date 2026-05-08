@@ -1,13 +1,13 @@
 <?xml version='1.0'?>
 <sdf version='1.9'>
-  <model name="grass-amb-cam">
+  <model name="grass-amb-cam-copy">
 
     <include>
       <uri>model://grasshopper</uri>
     </include>
 
     <link name="camera_link">
-      <pose>0 -0.05 0 0 0 0</pose>
+      <pose>0 -0.05 0 0 90 0</pose>
       <visual name="camera_body">
         <geometry>
           <box>
@@ -23,7 +23,8 @@
         <pose degrees="true"> 0 -0.05 0 0 90 0</pose>
         
         <camera>
-          <horizontal_fov>2.0</horizontal_fov>
+          <vertical_fov>1.1693</vertical_fov>
+          <horizontal_fov>1.7802</horizontal_fov>
           <image>
             <width>1536</width>
             <height>864</height>
@@ -41,7 +42,7 @@
         <plugin name="GstCameraPlugin" 
             filename="GstCameraPlugin">
           <udp_host>127.0.0.1</udp_host>
-          <udp_port>5800</udp_port>
+          <udp_port>5600</udp_port>
           <use_basic_pipeline>true</use_basic_pipeline>
           <use_cuda>false</use_cuda>
         </plugin>
@@ -55,7 +56,7 @@
     </joint>
 
     <link name="camera_link2">
-      <pose>0 0.05 0 0 0 0</pose>
+      <pose>0 0.05 0 0 90 0</pose>
       <visual name="camera_body2">
         <geometry>
           <box>
@@ -71,7 +72,8 @@
         <pose degrees="true"> 0 0.05 0 0 90 0</pose>
         
         <camera>
-          <horizontal_fov>2.0</horizontal_fov>
+          <vertical_fov>0.8517</vertical_fov>
+          <horizontal_fov>1.0856</horizontal_fov>
           <image>
             <width>1640</width>
             <height>1232</height>
