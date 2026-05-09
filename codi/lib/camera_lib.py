@@ -345,7 +345,14 @@ class CalibrationConfig:
 
     
 class StereoCapture:
-    def setup_video_sync_node_picamera(cam_index, sync_mode, size=(640, 480), format="RGB888", framerate=30.0):
+    def __init__(self, idx_server, size_server, idx_client, size_client):
+        self.capture_server = self.setup_video_sync_node_picamera(idx_server, "server", size=size_server)
+        self.capture_client = self.setup_video_sync_node_picamera(idx_client, "client", size=size_client)
+
+        self.latest_frame_server = None
+        self.latest_frame_client = None
+        
+    def setup_video_sync_node_picamera(self, cam_index, sync_mode, size=(640, 480), format="RGB888", framerate=30.0):
         from picamera2 import Picamera2
         from libcamera import controls
         """Initializes a camera for continuous video capture with sync controls."""
