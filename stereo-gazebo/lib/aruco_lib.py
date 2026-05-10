@@ -4,7 +4,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation, Slerp
 
 
-VERBOSE = True
+VERBOSE = False
 
 
 def get_euler_angles(rvec):

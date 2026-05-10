@@ -510,6 +510,104 @@ def precision_land_loop(
             time.sleep(sleep_for)
 
 # ---------------------------------------------------------------------------
+# Velocity-based guidance (GUIDED mode, capped speed)
+# ---------------------------------------------------------------------------
+
+# Bitmask for SET_POSITION_TARGET_LOCAL_NED:
+# ignore pos x/y/z, ignore acc x/y/z, ignore yaw & yaw-rate → velocity only
+_VEL_ONLY_MASK = (
+    0b0000_111111000111  # ignore pos(0-2), acc(6-8), yaw(10), yaw-rate(11)
+)
+
+
+def send_velocity_ned(
+    mav: mavutil.mavfile,
+    vx: float,
+    vy: float,
+    vz: float = 0.0,
+) -> None:
+    """
+    Command a body-NED velocity setpoint in GUIDED mode.
+
+    Parameters
+    ----------
+    vx : velocity north  (m/s, positive = north)
+    vy : velocity east   (m/s, positive = east)
+    vz : velocity down   (m/s, positive = down – keep 0 during lateral approach)
+    """
+    mav.mav.set_position_target_local_ned_send(
+        int(time.monotonic() * 1e3),        # time_boot_ms
+        mav.target_system,
+        mav.target_component,
+        mavutil.mavlink.MAV_FRAME_LOCAL_NED,
+        _VEL_ONLY_MASK,
+        0, 0, 0,        # pos x/y/z – ignored
+        vx, vy, vz,     # velocity setpoint
+        0, 0, 0,        # acc x/y/z – ignored
+        0, 0,           # yaw, yaw_rate – ignored
+    )
+
+
+def tvec_body_to_ned_velocity(
+    tvec_body: np.ndarray,
+    heading_rad: float,
+    max_speed_mps: float = 0.10,
+) -> Tuple[float, float]:
+    """
+    Convert the lateral offset to the target (body frame) into a NED velocity
+    command, capped at max_speed_mps.
+
+    The vector is proportional to the horizontal offset so the drone slows
+    down as it gets closer.  A P-gain of 1.0 means 1 m offset → 1 m/s, but
+    the clamp prevents it from ever exceeding max_speed_mps.
+
+    Parameters
+    ----------
+    tvec_body   : (3,) [fwd, right, down] in metres (body frame, FRD)
+    heading_rad : current vehicle yaw in radians (from ATTITUDE or VFR_HUD)
+    max_speed_mps : velocity clamp (default 0.10 m/s = 10 cm/s)
+
+    Returns
+    -------
+    (vx_ned, vy_ned) : velocity north and east in m/s
+    """
+    # Lateral offset in body frame (forward, right) – ignore altitude
+    dx_body = tvec_body[0]   # forward offset to target
+    dy_body = tvec_body[1]   # rightward offset to target
+
+    # P-controller: desired velocity proportional to offset (gain = 1.0)
+    # Increase gain to move faster per metre of error; lower to creep more.
+    P_GAIN = 1.0
+    vx_body = P_GAIN * dx_body
+    vy_body = P_GAIN * dy_body
+
+    # Clamp magnitude to max_speed_mps
+    speed = math.hypot(vx_body, vy_body)
+    if speed > max_speed_mps:
+        scale = max_speed_mps / speed
+        vx_body *= scale
+        vy_body *= scale
+
+    # Rotate from body frame to NED using vehicle heading
+    cos_h = math.cos(heading_rad)
+    sin_h = math.sin(heading_rad)
+    vx_ned =  cos_h * vx_body - sin_h * vy_body   # north
+    vy_ned =  sin_h * vx_body + cos_h * vy_body   # east
+
+    return vx_ned, vy_ned
+
+
+def get_heading_rad(mav: mavutil.mavfile) -> float:
+    """Return the latest vehicle yaw in radians, or 0.0 if unavailable."""
+    msg = mav.recv_match(type="VFR_HUD", blocking=False)
+    if msg:
+        return math.radians(msg.heading)
+    msg = mav.recv_match(type="ATTITUDE", blocking=False)
+    if msg:
+        return msg.yaw
+    return 0.0
+
+# ---------------------------------------------------------------------------
 # Main loop
 # ---------------------------------------------------------------------------
 

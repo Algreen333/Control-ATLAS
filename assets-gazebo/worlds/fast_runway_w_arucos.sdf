@@ -12,6 +12,7 @@
     <plugin
       filename="gz-sim-sensors-system"
       name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
     </plugin>
     <plugin filename="gz-sim-user-commands-system"
       name="gz::sim::systems::UserCommands">
@@ -41,7 +42,7 @@
     </spherical_coordinates>
 
     <light type="directional" name="sun">
-      <cast_shadows>false</cast_shadows>
+      <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.8 0.8 0.8 1</specular>
@@ -70,8 +71,8 @@
     </include>
 
     <include>
-      <uri>model://iris_with_gimbal</uri>
-      <pose degrees="true">0 0 0.195 0 0 90</pose>
+      <uri>iris-stereo-down</uri>
+      <pose degrees="true">0 0 0.3 0 0 90</pose>
     </include>
 
     <include>

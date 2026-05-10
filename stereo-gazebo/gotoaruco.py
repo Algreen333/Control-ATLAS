@@ -10,15 +10,15 @@ from lib.aruco_lib import *
 import time
 import math
 
+import sys
 import os
-
 
 DELAY_TIME = 5
 AVG_COUNT = 10
 
 ### INICIALITZAR CAMERA I DETECTOR ARUCOS
 # Open GSTREAMER pipeline for camera
-VIDSRC_PORT_WIDE = 5600
+VIDSRC_PORT_WIDE = 5800
 VIDSRC_PORT_NARR = 5700
 
 pipeline_wide = (
@@ -44,13 +44,13 @@ cap_narr = cv2.VideoCapture(pipeline_narr, cv2.CAP_GSTREAMER)
 print(cap_wide.isOpened())
 
 
-mtx_wide = get_gazebo_camera_matrix(640, 480, 102/180*np.pi, 48.8/180*np.pi)
+mtx_wide = get_gazebo_camera_matrix(1536, 864, 102/180*np.pi, 48.8/180*np.pi)
 dst_wide = np.zeros(5, dtype=np.float32)
-mtx_narr = get_gazebo_camera_matrix(640, 480, 62.2/180*np.pi, 67/180*np.pi)
+mtx_narr = get_gazebo_camera_matrix(1640, 1232, 62.2/180*np.pi, 67/180*np.pi)
 dst_narr = np.zeros(5, dtype=np.float32)
 
-detWide = ArucoDetector(mtx_wide, dst_wide)
-detNarr = ArucoDetector(mtx_wide, dst_wide)
+detWide = ArucoDetector(mtx_wide, dst_wide, cv2.aruco.DICT_4X4_50)
+detNarr = ArucoDetector(mtx_wide, dst_wide, cv2.aruco.DICT_4X4_50)
 
 T_C_WIDE = np.eye(4)
 T_C_WIDE[0, 3] = 50
@@ -144,8 +144,7 @@ if __name__ == "__main__":
         print("start")
         enabled = False
         recording = False
-        while True:
-            print("tick")
+        while inp != ord('q'):
             ret_w, frame_wide = cap_wide.read()
             ret_n, frame_narr = cap_narr.read()
 
@@ -164,16 +163,25 @@ if __name__ == "__main__":
                 rvec_wide, tvec_wide = detWide.estimate_pose(corners_wide[0], 180)
                 rvec_narr, tvec_narr = detNarr.estimate_pose(corners_narr[0], 180)
                 rvec, tvec = fuse_stereo_aruco_poses(rvec_wide, tvec_wide, T_C_WIDE, rvec_narr, tvec_narr, T_C_NARR)
-                print("----------------RVEC----------------")
-                print(rvec)
-                print("----------------TVEC----------------")
-                print(tvec)
+                
+                
+                output = (
+                    f"----------------RVEC----------------\n"
+                    f"{rvec}\n"
+                    f"----------------TVEC----------------\n"
+                    f"{tvec}\n"
+                )
+                sys.stdout.write(output)
+                sys.stdout.flush()
+
+                sys.stdout.write("\033[F" * 8)
 
             if SERVER_ID==0: frame_to_encode = joint_display(frame_wide, frame_narr, 0)
             else: frame_to_encode = joint_display(frame_narr, frame_wide, 0)
 
             cv2.imshow("frame", frame_to_encode)
             inp = cv2.waitKey(30)
-    except:
+    except Exception as e:
+        print("Exception:", e)
         pass
 

@@ -1,0 +1,103 @@
+<?xml version='1.0'?>
+<sdf version='1.9'>
+  <model name="iris-stereo-down">
+
+    <!-- 1. Include the base Iris model -->
+    <include>
+      <uri>model://iris_with_ardupilot</uri>
+    </include>
+
+    <!-- ============================================== -->
+    <!-- CAMERA 1 (Left, Wider FOV)                     -->
+    <!-- ============================================== -->
+    <link name="cam1_link">
+      <!-- Positioned slightly forward (0.1) and up (0.05) to clear the ground -->
+      <!-- Pitch of 90 degrees points it straight down -->
+      <pose degrees="true">0 -0.05 -0.05 0 90 0</pose>
+      
+      <!-- Negligible mass prevents the drone from becoming too heavy to fly -->
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.0001</iyy> <iyz>0</iyz> <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <!-- Notice: NO <collision> tag is used here. This prevents ground sticking. -->
+
+      <sensor name="camera1" type="camera">
+        <camera>
+          <horizontal_fov>1.78</horizontal_fov>
+          <image>
+            <width>1536</width>
+            <height>864</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>15000</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>1</visualize>
+        <plugin name="GstCameraPlugin" filename="GstCameraPlugin">
+          <udp_host>127.0.0.1</udp_host>
+          <udp_port>5800</udp_port>
+          <use_basic_pipeline>true</use_basic_pipeline>
+          <use_cuda>false</use_cuda>
+        </plugin>
+      </sensor>
+    </link>
+
+    <!-- Attach Camera 1 to the drone body -->
+    <joint name="cam1_joint" type="fixed">
+      <parent>iris_with_ardupilot::iris_with_standoffs::base_link</parent>
+      <child>cam1_link</child>
+    </joint>
+
+    <!-- ============================================== -->
+    <!-- CAMERA 2 (Right, Narrower FOV)                 -->
+    <!-- ============================================== -->
+    <link name="cam2_link">
+      <pose degrees="true">0 0.05 -0.05 0 90 0</pose>
+      
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.0001</iyy> <iyz>0</iyz> <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+
+      <sensor name="camera2" type="camera">
+        <camera>
+          <horizontal_fov>1.086</horizontal_fov>
+          <image>
+            <width>1640</width>
+            <height>1232</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>15000</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>1</visualize>
+        <plugin name="GstCameraPlugin" filename="GstCameraPlugin">
+          <udp_host>127.0.0.1</udp_host>
+          <udp_port>5600</udp_port>
+          <use_basic_pipeline>true</use_basic_pipeline>
+          <use_cuda>false</use_cuda>
+        </plugin>
+      </sensor>
+    </link>
+
+    <!-- Attach Camera 2 to the drone body -->
+    <joint name="cam2_joint" type="fixed">
+      <parent>iris_with_ardupilot::iris_with_standoffs::base_link</parent>
+      <child>cam2_link</child>
+    </joint>
+
+  </model>
+</sdf>

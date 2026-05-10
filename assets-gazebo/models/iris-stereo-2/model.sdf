@@ -1,0 +1,106 @@
+<?xml version='1.0'?>
+<sdf version='1.9'>
+  <model name="iris-stereo-2">
+
+    <include>
+      <uri>model://iris_with_ardupilot</uri>
+    </include>
+
+    <link name="camera_link">
+      <sensor name="camera" type="camera">
+        <pose degrees="true"> 0 -0.05 0 0 90 0</pose>
+
+        <inertial>
+          <mass>0.01</mass>
+          <inertia>
+            <ixx>0.0001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0001</iyy>
+            <iyz>0</iyz>
+            <izz>0.0001</izz>
+          </inertia>
+        </inertial>
+        
+        <camera>
+          <horizontal_fov>1.78</horizontal_fov>
+          <image>
+            <width>1536</width>
+            <height>864</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>15000</far>
+          </clip>
+        </camera>
+
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>1</visualize>
+
+        <plugin name="GstCameraPlugin" 
+            filename="GstCameraPlugin">
+          <udp_host>127.0.0.1</udp_host>
+          <udp_port>5800</udp_port>
+          <use_basic_pipeline>true</use_basic_pipeline>
+          <use_cuda>false</use_cuda>
+        </plugin>
+
+      </sensor>
+    </link>
+
+    <joint name="camera_mount" type="fixed">
+      <parent>iris_with_ardupilot::iris_with_standoffs::base_link</parent>
+      <child>camera_link</child>
+    </joint>
+
+    <link name="camera_link2">
+      <sensor name="camera2" type="camera">
+        <pose degrees="true"> 0 0.05 0 0 90 0</pose>
+
+        <inertial>
+          <mass>0</mass>
+          <inertia>
+            <ixx>0.0001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0001</iyy>
+            <iyz>0</iyz>
+            <izz>0.0001</izz>
+          </inertia>
+        </inertial>
+        
+        <camera>
+          <horizontal_fov>1.086</horizontal_fov>
+          <image>
+            <width>1640</width>
+            <height>1232</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>15000</far>
+          </clip>
+        </camera>
+
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>1</visualize>
+
+        <plugin name="GstCameraPlugin" 
+            filename="GstCameraPlugin">
+          <udp_host>127.0.0.1</udp_host>
+          <udp_port>5600</udp_port>
+          <use_basic_pipeline>true</use_basic_pipeline>
+          <use_cuda>false</use_cuda>
+        </plugin>
+
+      </sensor>
+    </link>
+
+    <joint name="camera_mount2" type="fixed">
+      <parent>iris_with_ardupilot::iris_with_standoffs::base_link</parent>
+      <child>camera_link2</child>
+    </joint>
+
+  </model>
+</sdf>
