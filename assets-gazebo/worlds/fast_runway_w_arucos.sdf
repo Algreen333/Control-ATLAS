@@ -82,7 +82,7 @@
 
     <include>
       <uri>model://aruco_marker_49</uri>
-      <pose degrees="true">0 10 0.01 0 0 90</pose>
+      <pose degrees="true">3 2 0.01 0 0 90</pose>
     </include>
 
   </world>

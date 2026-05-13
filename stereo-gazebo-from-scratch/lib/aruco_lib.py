@@ -6,6 +6,27 @@ from scipy.spatial.transform import Rotation, Slerp
 
 VERBOSE = False
 
+def get_euler_angles_rad(rvec):
+    """
+    Transforms a rotation vector into the equivalent euler angles.
+    Reutrns: ptich, yaw, roll
+    """
+    R, _ = cv2.Rodrigues(rvec)
+    
+    sy = np.sqrt(R[0,0] * R[0,0] +  R[1,0] * R[1,0])
+    singular = sy < 1e-6
+    
+    if not singular:
+        x = np.arctan2(R[2,1] , R[2,2])
+        y = np.arctan2(-R[2,0], sy)
+        z = np.arctan2(R[1,0], R[0,0])
+    else:
+        x = np.arctan2(-R[1,2], R[1,1])
+        y = np.arctan2(-R[2,0], sy)
+        z = 0
+
+    # Convert to degrees
+    return x, y, z
 
 def get_euler_angles(rvec):
     """

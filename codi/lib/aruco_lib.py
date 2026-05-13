@@ -26,6 +26,7 @@ def get_euler_angles(rvec):
     # Convert to degrees
     return np.degrees(x), np.degrees(y), np.degrees(z)
 
+aruco.DICT_
 class ArucoDetector():
     def __init__(self, mtx, dist, dict=aruco.DICT_ARUCO_ORIGINAL):
 

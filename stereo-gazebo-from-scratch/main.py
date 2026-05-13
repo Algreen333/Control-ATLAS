@@ -55,7 +55,7 @@ dst_narr = np.zeros(5, dtype=np.float32)
 # ---------------------------------------------------------------------------
 # Procedures
 # ---------------------------------------------------------------------------
-def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_threshold):
+def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_threshold, do_display):
     try:
         print(f"[APPR] Phase 1 – Initial approach "
             f"(max {max_lateral_speed_mps * 100:.0f} cm/s) ...")
@@ -64,7 +64,14 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
         target_visible_prev = False
         while True:
             t0 = time.monotonic()
-            result = cameras.process_frame()
+            
+            result = cameras.get_latest_pose()
+            
+            if do_display:
+                display_frame = cameras.get_latest_frame()
+                if display_frame is not None:
+                    cv2.imshow("img", display_frame)
+                    cv2.waitKey(1)
 
             if result is not None:
                 tvec, rvec = result
@@ -82,14 +89,14 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
                     print(f"[APPR] Target acquired - Distance ({fwd:.1f}, {right:.1f}, {down:.1f}) m")
                 target_visible_prev = True
 
-                if distance < PHASE_1_THRSH_DIST:
+                if distance < overhead_threshold:
                     print(f"[APPR] Target at {distance}m - Approach complete")
                     break
                 
                 else:
                     print(f"[APPR] Target at {distance}m - Approaching...")
-                    v_fwd = fwd*PHASE_1_DIST_VEL_MULT
-                    v_right = right*PHASE_1_DIST_VEL_MULT
+                    v_fwd = fwd * PHASE_1_DIST_VEL_MULT
+                    v_right = right * PHASE_1_DIST_VEL_MULT
                     
                     current_speed = float(np.linalg.norm((v_fwd, v_right)))
                     
@@ -103,11 +110,24 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
                 
             _pace(t0, 1/loop_hz)
 
-        print(f"[PLND] Phase 2 - Switching to LAND mode, streaming LANDING_TARGET until landed and disarmed")
+        
+        # PHASE 2: Initial descent
+
+
+
+        print(f"[PLND] Phase 3 - Switching to LAND mode, streaming LANDING_TARGET until landed and disarmed")
         mav.switch_to_land()
+
         while True:
             t0 = time.monotonic()
-            result = cameras.process_frame()
+            
+            result = cameras.get_latest_pose()
+            
+            if do_display:
+                display_frame = cameras.get_latest_frame()
+                if display_frame is not None:
+                    cv2.imshow("img", display_frame)
+                    cv2.waitKey(1)
 
             if result is not None:
                 tvec, rvec = result
@@ -123,14 +143,15 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
             if armed is not None:
                 if not armed:
                     print("[PLND] Disarmed – precision landing complete.")
+                    cameras.stop()
                     return
             
             _pace(t0, 1/loop_hz)
 
-
     except KeyboardInterrupt:
         print(f"[SYSTEM] Program aborted. Stopping and landing ...")
         mav.switch_to_land()
+        cameras.stop() 
 
 # ---------------------------------------------------------------------------
 # Additional functions
@@ -164,7 +185,7 @@ def parse_args() -> argparse.Namespace:
                    help="Max seconds to wait for landing disarm")
     p.add_argument("--max-speed", type=float, default=0.10,
                    help="Max lateral approach speed (m/s)")
-    p.add_argument("--overhead-threshold", type=float, default=0.15,
+    p.add_argument("--overhead-threshold", type=float, default=PHASE_1_THRSH_DIST,
                    help="Horizontal offset (m) that triggers LAND handoff")
     p.add_argument("--cam-roll",  type=float, default=0.0,
                    help="Camera mount roll (deg)")
@@ -172,6 +193,7 @@ def parse_args() -> argparse.Namespace:
                    help="Camera mount pitch (deg); -90 = straight down")
     p.add_argument("--cam-yaw",   type=float, default=0.0,
                    help="Camera mount yaw (deg)")
+    p.add_argument("--display", action="store_true", help="If set, will display the view of the cameras")
     return p.parse_args()
 
 
@@ -181,13 +203,13 @@ def main():
 
     print("[SYSTEM] Initializing cameras...")
     cameras = GazeboStereoCapture(pipeline_wide, pipeline_narr, mtx_wide, dst_wide, mtx_narr, dst_narr)
+    cameras.start()
 
     mav = MavlinkConnection(args.connect, args.baud)
 
     mav.arm_and_takeoff(args.alt)
 
-    precision_land(mav, cameras, args.max_speed, args.hz, args.overhead_threshold)
-
+    precision_land(mav, cameras, args.max_speed, args.hz, args.overhead_threshold, args.display)
 
 if __name__ == "__main__":
     main()

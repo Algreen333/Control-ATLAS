@@ -414,6 +414,7 @@ class GazeboStereoCapture:
         dst_wide,
         mtx_narr,
         dst_narr):
+        
         self.cap_wide = cv2.VideoCapture(pipeline_wide, cv2.CAP_GSTREAMER)
         print("[SYSTEM] Capture 'wide' open?", self.cap_wide.isOpened())
 
@@ -436,66 +437,97 @@ class GazeboStereoCapture:
         self.MARKER_SIZE = 1
         self.MARKER_ID = 49
 
-    def process_frame(self) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+        # Threading mechanisms
+        self.lock = Lock()
+        self.running = False
+        self.thread = None
+        self.latest_tvec = None
+        self.latest_rvec = None
+        self.latest_display_frame = None
+
+    def start(self):
+        """Starts the background thread for continuous pose estimation."""
+        self.running = True
+        self.thread = Thread(target=self._update_loop, daemon=True)
+        self.thread.start()
+        print("[SYSTEM] Camera processing thread started.")
+        return self
+
+    def stop(self):
+        """Stops the background thread safely."""
+        self.running = False
+        if self.thread is not None:
+            self.thread.join()
+
+    def _update_loop(self):
+        """Continuously captures frames and calculates the pose."""
+        while self.running:
+            ret_w, frame_wide = self.cap_wide.read()
+            ret_n, frame_narr = self.cap_narr.read()
+
+            rvec_wide = None
+            tvec_wide = None
+            rvec_narr = None
+            tvec_narr = None
+            rvec = None
+            tvec = None
+
+            if ret_w:
+                gray = cv2.cvtColor(frame_wide, cv2.COLOR_BGR2GRAY)
+                corners_wide, ids_wide, rejected_wide = self.detWide.detectMarkers(gray)
+                if ids_wide is not None:                                          
+                    indices = np.where(ids_wide == self.MARKER_ID)[0]
+                    if len(indices) > 0:
+                        rvec_wide, tvec_wide = self.detWide.estimate_pose(corners_wide[indices[0]], self.MARKER_SIZE)
+
+            if ret_n:
+                gray = cv2.cvtColor(frame_narr, cv2.COLOR_BGR2GRAY)
+                corners_narr, ids_narr, rejected_narr = self.detNarr.detectMarkers(gray)
+                if ids_narr is not None:                                          
+                    indices = np.where(ids_narr == self.MARKER_ID)[0]
+                    if len(indices) > 0:
+                        rvec_narr, tvec_narr = self.detNarr.estimate_pose(corners_narr[indices[0]], self.MARKER_SIZE)
+
+            # Estimation from both cameras
+            if rvec_wide is not None and rvec_narr is not None:
+                rvec, tvec = fuse_stereo_aruco_poses(rvec_wide, tvec_wide, self.T_C_WIDE, rvec_narr, tvec_narr, self.T_C_NARR)
+
+            elif rvec_wide is not None:
+                rvec, tvec = rvec_wide, tvec_wide
+
+            elif rvec_narr is not None:
+                rvec, tvec = rvec_narr, tvec_narr
+            
+            # Safely update the latest pose variables
+            with self.lock:
+                if rvec is not None and tvec is not None:
+                    self.latest_tvec = tvec
+                    self.latest_rvec = rvec
+                else:
+                    self.latest_tvec = None
+                    self.latest_rvec = None
+                
+                if ret_w and ret_n:
+                    self.latest_display_frame = joint_display(frame_wide, frame_narr)
+
+    def get_latest_pose(self) -> Optional[Tuple[np.ndarray, np.ndarray]]:
         """
-        Capture one camera frame, detect the landing target, and estimate its pose.
-
-        Returns
-        -------
-        (tvec, rvec) if a target is detected, or None if no target is visible.
-
-        tvec : np.ndarray, shape (3,)
-            Translation from the camera origin to the target centre, expressed in
-            the CAMERA frame (X right, Y down, Z forward), in metres.
-        rvec : np.ndarray, shape (3,)
-            Rodrigues rotation vector describing the target's orientation relative
-            to the camera.  Not consumed by PLND directly but available for your
-            own use (e.g. logging or heading correction).
+        Fetch the most recently estimated pose without blocking.
+        Returns (tvec, rvec) or None.
         """
-
-        ret_w, frame_wide = self.cap_wide.read()
-        ret_n, frame_narr = self.cap_narr.read()
-
-        rvec_wide = None
-        tvec_wide = None
-        rvec_narr = None
-        tvec_narr = None
-        rvec = None
-        tvec = None
-
-        if ret_w:
-            gray = cv2.cvtColor(frame_wide, cv2.COLOR_BGR2GRAY)
-            corners_wide, ids_wide, rejected_wide = self.detWide.detectMarkers(gray)
-            if ids_wide is not None:                                          # ← guard
-                indices = np.where(ids_wide == self.MARKER_ID)[0]
-                if len(indices) > 0:
-                    rvec_wide, tvec_wide = self.detWide.estimate_pose(corners_wide[indices[0]], self.MARKER_SIZE)
-
-        if ret_n:
-            gray = cv2.cvtColor(frame_narr, cv2.COLOR_BGR2GRAY)
-            corners_narr, ids_narr, rejected_narr = self.detNarr.detectMarkers(gray)
-            if ids_narr is not None:                                          # ← guard
-                indices = np.where(ids_narr == self.MARKER_ID)[0]
-                if len(indices) > 0:
-                    rvec_narr, tvec_narr = self.detNarr.estimate_pose(corners_narr[indices[0]], self.MARKER_SIZE)
-
-        if ret_w and ret_n:
-            cv2.imshow("img", joint_display(frame_wide, frame_narr))
-        cv2.waitKey(1)
-
-        # Estimation from both cameras
-        if rvec_wide is not None and rvec_narr is not None:
-            rvec, tvec = fuse_stereo_aruco_poses(rvec_wide, tvec_wide, self.T_C_WIDE, rvec_narr, tvec_narr, self.T_C_NARR)
-
-        elif rvec_wide is not None:
-            rvec, tvec = rvec_wide, tvec_wide
-
-        elif rvec_narr is not None:
-            rvec, tvec = rvec_narr, tvec_narr
-        
-        if rvec is not None and tvec is not None:
-            return tvec, rvec
-        else: return None
+        with self.lock:
+            if self.latest_tvec is not None and self.latest_rvec is not None:
+                return self.latest_tvec, self.latest_rvec
+            return None
+    
+    def get_latest_frame(self) -> Optional[np.ndarray]:
+        """Fetch the most recent display frame for OpenCV imshow."""
+        with self.lock:
+            if self.latest_display_frame is not None:
+                # Return a copy to prevent the main thread from reading 
+                # while the background thread is overwriting it
+                return self.latest_display_frame.copy() 
+            return None
 
 if __name__ == "__main__":
 

@@ -351,6 +351,7 @@ class StereoCapture:
 
         self.latest_frame_server = None
         self.latest_frame_client = None
+        self.latest
         
     def setup_video_sync_node_picamera(self, cam_index, sync_mode, size=(640, 480), format="RGB888", framerate=30.0):
         from picamera2 import Picamera2

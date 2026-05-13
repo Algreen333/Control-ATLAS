@@ -261,13 +261,13 @@ class MavlinkConnection:
         distance_m = math.sqrt(x_m**2 + y_m**2 + z_m**2)
         
         # If these are 0.0, it might ignore the X/Y offsets.
-        angle_x = math.atan2(x_m, z_m)
-        angle_y = math.atan2(y_m, z_m)
+        angle_x = math.atan2(y_m, z_m)
+        angle_y = math.atan2(x_m, z_m)
         
         self.mav.mav.landing_target_send(
             time_usec,                            
             0,                                    
-            mavutil.mavlink.MAV_FRAME_BODY_NED,   
+            mavutil.mavlink.MAV_FRAME_BODY_FRD,   
             angle_x, angle_y,
             distance_m,                           
             1.0, 1.0,                             
@@ -299,8 +299,8 @@ class MavlinkConnection:
         
         # Calculate the angular offsets (in radians)
         # atan2(offset, height) gives us the exact angle from the center of the camera lens
-        angle_x = math.atan2(fwd_m, down_m)
-        angle_y = math.atan2(right_m, down_m)
+        angle_x = float(math.atan2(right_m, fwd_m))
+        angle_y = float(math.atan2(right_m, down_m))
         
         self.mav.mav.landing_target_send(
             time_usec,                            
@@ -318,8 +318,7 @@ class MavlinkConnection:
             0.0, 0.0, 0.0,                        # x, y, z
             (1.0, 0.0, 0.0, 0.0),                 # q_wxyz
             2,                                    # type: 2 = MAV_LANDING_TARGET_TYPE_VISION_FIDUCIAL
-            
-            0                                     
+            1                                   
         )
 
     def send_landing_target(
@@ -353,3 +352,7 @@ class MavlinkConnection:
             mavutil.mavlink.LANDING_TARGET_TYPE_VISION_FIDUCIAL,
             1
         )
+    
+    def send_vision_position_message(self, tvec, rvec):
+        
+        self.mav.mav
