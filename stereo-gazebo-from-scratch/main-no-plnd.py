@@ -22,8 +22,16 @@ DO_TAKEOFF = True
 MARKER_SIZE = 0.48
 MARKER_ID = 49
 
+TAKEOFF_ALT = 7
+
 PHASE_1_THRSH_DIST = 1        # Lateral distance at which PHASE 1 will finish 
 PHASE_1_DIST_VEL_MULT = 0.2     # Multiplier to distance to calculate speed (speed = distance*MULT)
+PHASE_1_DIST_VEL_MAX = 0.5
+
+PHASE_2_DIST_VEL_MAX = 0.1
+PHASE_2_THRSH_ALT = 0.5
+PHASE_2_DESCENT = 0.2
+PHASE_2_DIST_VEL_MULT = 0.2
 
 # ---------------------------------------------------------------------------
 # Camera initialization
@@ -55,7 +63,8 @@ dst_narr = np.zeros(5, dtype=np.float32)
 # ---------------------------------------------------------------------------
 # Procedures
 # ---------------------------------------------------------------------------
-def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_threshold, do_display):
+
+def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display):
     try:
         print(f"[APPR] Phase 1 – Initial approach "
             f"(max {max_lateral_speed_mps * 100:.0f} cm/s) ...")
@@ -90,13 +99,13 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
                 target_visible_prev = True
 
                 if distance < overhead_threshold:
-                    print(f"[APPR] Target at {distance}m - Approach complete")
+                    print(f"[APPR] Target at {distance:.2f}m - Approach complete")
                     break
                 
                 else:
-                    print(f"[APPR] Target at {distance}m - Approaching...")
-                    v_fwd = fwd * PHASE_1_DIST_VEL_MULT
-                    v_right = right * PHASE_1_DIST_VEL_MULT
+                    print(f"[APPR] Target at {distance:.2f}m - Approaching...")
+                    v_fwd = fwd * lateral_speed_mult
+                    v_right = right * lateral_speed_mult
                     
                     current_speed = float(np.linalg.norm((v_fwd, v_right)))
                     
@@ -105,34 +114,43 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
                         v_right = (v_right / current_speed) * max_lateral_speed_mps
                         current_speed = max_lateral_speed_mps
 
-                    print(f"[APPR] Target at {distance:.2f}m - Approaching at ({v_fwd}, {v_right}, 0) m/s -> {current_speed:.2f} m/s...")
+                    print(f"[APPR] Target at {distance:.2f}m - Approaching at ({v_fwd:.2f}, {v_right:.2f}, 0) m/s -> {current_speed:.2f} m/s...")
                     mav.move_velocity_body(v_fwd, v_right, 0)
                 
             _pace(t0, 1/loop_hz)
 
-        
-        # PHASE 2: Initial descent
+        return 0
 
-
-
-        print(f"[PLND] Phase 3 - Switching to LAND mode, streaming LANDING_TARGET until landed and disarmed")
+    except KeyboardInterrupt:
+        print(f"[SYSTEM] Program aborted. Stopping and landing ...")
         mav.switch_to_land()
+        cameras.stop() 
 
-        alt = 10
+        return -1
 
-        avg_r = []
-        avg_f = []
-        avg_d = []
+def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_speed, threshold_alt, loop_hz, do_display):
+    try:
+        print(f"[DSCT] Phase 2 – Initial descent "
+            f"(max {max_lateral_speed_mps * 100:.0f} cm/s) ...")
 
+        alt = -1
+        distance = -1
+
+        # PHASE 2: Initial descent
         while True:
             t0 = time.monotonic()
             
             result = cameras.get_latest_pose()
-            
+
             msg = mav.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=False)
             if msg: 
                 alt = msg.relative_alt / 1000.0
                 print("ALT:", alt)
+
+                if alt != -1 and alt < threshold_alt:
+                    print(f"[DSCT] Height: {alt}, target at {distance:.2f}m - Descent complete")
+                    break
+
             
             if do_display:
                 display_frame = cameras.get_latest_frame()
@@ -147,31 +165,37 @@ def precision_land(mav, cameras, max_lateral_speed_mps, loop_hz, overhead_thresh
                 fwd = -float(tvec[1])
                 down = float(tvec[2])
 
-                avg_r.append(right)
-                avg_f.append(fwd)
-                avg_d.append(down)
+                distance = float(np.linalg.norm((fwd, right)))
+                
+                print(f"{fwd:.2f}, {right:.2f}, {down:.2f}")
+                mav.send_landing_target_pos_quat(fwd, right, down)
+                
+                print(f"[DSCT] Target at {distance:.2f}m - Descending...")
+                
+                v_fwd = fwd * lateral_speed_mult
+                v_right = right * lateral_speed_mult
+                
+                current_speed = float(np.linalg.norm((v_fwd, v_right)))
+                
+                if current_speed > max_lateral_speed_mps:
+                    v_fwd = (v_fwd / current_speed) * max_lateral_speed_mps
+                    v_right = (v_right / current_speed) * max_lateral_speed_mps
+                    current_speed = max_lateral_speed_mps
 
-                if len(avg_r) > 10: 
-                    avg_r.pop(0)
-                    avg_f.pop(0)
-                    avg_d.pop(0)
-                    
-                print(np.average(avg_f), np.average(avg_r), np.average(avg_d))
-                if alt > 2: mav.send_landing_target_pos_quat(fwd, right, down)
-
-            armed = mav.is_armed()
-            if armed is not None:
-                if not armed:
-                    print("[PLND] Disarmed – precision landing complete.")
-                    cameras.stop()
-                    return
-            
+                print(f"[DSCT] Height: {alt} Target at {float(np.linalg.norm((fwd, right))):.2f}m - Approaching at ({v_fwd:.2f}, {v_right:.2f}, 0) m/s -> {current_speed:.2f} m/s...")
+                mav.move_velocity_body(v_fwd, v_right, descent_speed)
+                
             _pace(t0, 1/loop_hz)
+        
+        return 0
 
     except KeyboardInterrupt:
         print(f"[SYSTEM] Program aborted. Stopping and landing ...")
         mav.switch_to_land()
-        cameras.stop() 
+        cameras.stop()
+
+        return -1
+
 
 # ---------------------------------------------------------------------------
 # Additional functions
@@ -197,16 +221,26 @@ def parse_args() -> argparse.Namespace:
                    help="MAVLink connection string")
     p.add_argument("--baud", type=int, default=57600,
                    help="Serial baud rate (ignored for UDP/TCP)")
-    p.add_argument("--alt", type=float, default=5.0,
+    p.add_argument("--alt", type=float, default=TAKEOFF_ALT,
                    help="Takeoff altitude (m)")
     p.add_argument("--hz", type=float, default=10.0,
                    help="Control loop / message rate (Hz)")
     p.add_argument("--timeout", type=float, default=120.0,
                    help="Max seconds to wait for landing disarm")
-    p.add_argument("--max-speed", type=float, default=0.10,
-                   help="Max lateral approach speed (m/s)")
-    p.add_argument("--overhead-threshold", type=float, default=PHASE_1_THRSH_DIST,
-                   help="Horizontal offset (m) that triggers LAND handoff")
+    p.add_argument("--p1_max_speed", type=float, default=PHASE_1_DIST_VEL_MAX,
+                   help="Max lateral approach speed (m/s) in approach")
+    p.add_argument("--p1_mult_speed", type=float, default=PHASE_1_DIST_VEL_MULT,
+                   help="Lateral approach speed multiplier (m/s) in approach")
+    p.add_argument("--p1_threshold", type=float, default=PHASE_1_THRSH_DIST,
+                   help="Horizontal offset (m) that triggers descent handoff")
+    p.add_argument("--p2_max_speed", type=float, default=PHASE_2_DIST_VEL_MAX,
+                   help="Max lateral speed (m/s) in descent")
+    p.add_argument("--p2_mult_speed", type=float, default=PHASE_2_DIST_VEL_MULT,
+                   help="Lateral speed multiplier (m/s) in descent")
+    p.add_argument("--p2_descent", type=float, default=PHASE_2_DESCENT,
+                   help="Max descent speed")
+    p.add_argument("--p2_threshold", type=float, default=PHASE_2_THRSH_ALT,
+                   help="Threshold altitude (m) that triggers LAND handoff")
     p.add_argument("--cam-roll",  type=float, default=0.0,
                    help="Camera mount roll (deg)")
     p.add_argument("--cam-pitch", type=float, default=-90.0,
@@ -229,7 +263,11 @@ def main():
 
     mav.arm_and_takeoff(args.alt)
 
-    precision_land(mav, cameras, args.max_speed, args.hz, args.overhead_threshold, args.display)
+    if approach(mav, cameras, args.p1_max_speed, args.p1_mult_speed, args.p1_threshold, args.hz, args.display) < 0: return -1
+    
+    if descent(mav, cameras, args.p2_max_speed, args.p2_mult_speed, args.p2_descent, args.p2_threshold, args.hz, args.display) < 0: return -1
+
+    mav.switch_to_land()
 
 if __name__ == "__main__":
     main()

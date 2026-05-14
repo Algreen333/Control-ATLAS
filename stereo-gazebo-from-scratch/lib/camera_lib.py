@@ -380,8 +380,16 @@ class StereoCapture:
         self.capture_server = self.setup_video_sync_node_picamera(idx_server, "server", size=size_server)
         self.capture_client = self.setup_video_sync_node_picamera(idx_client, "client", size=size_client)
 
+        self.lock = Lock()
         self.latest_frame_server = None
         self.latest_frame_client = None
+        self.latest_drift_ms = None
+
+        self.running = False
+        self.thread = None
+        self.latest_tvec = None
+        self.latest_rvec = None
+        self.latest_display_frame = None
         
     def setup_video_sync_node_picamera(self, cam_index, sync_mode, size=(640, 480), format="RGB888", framerate=30.0):
         from picamera2 import Picamera2
@@ -407,6 +415,66 @@ class StereoCapture:
         picam.start()
         return picam
 
+    def _update_loop(self):
+        """Pulls continuous synchronized frames and monitors temporal drift."""
+        time.sleep(2)
+                
+        try:
+            while self.running:
+                # Capture continuous requests from the hardware [cite: 60]
+                req_server = cam_server.capture_request()
+                req_client = cam_client.capture_request()
+                
+                # Extract the precise nanosecond the sensor began reading out the frame [cite: 63]
+                ts_server = req_server.get_metadata().get('SensorTimestamp', 0)
+                ts_client = req_client.get_metadata().get('SensorTimestamp', 0)
+                
+                drift_ns = abs(ts_server - ts_client)
+                self.latest_drift_ms = drift_ns / 1_000_000.0
+                
+                # Extract image buffers
+                img_server = req_server.make_array("main")
+                img_client = req_client.make_array("main")
+                
+                # Release requests to prevent memory exhaustion
+                req_server.release()
+                req_client.release()
+
+                with self.lock:
+                    self.latest_frame_server = img_server.copy()
+                    self.latest_frame_client = img_client.copy()
+                    
+        finally:
+            cv2.destroyAllWindows()
+
+    def start(self):
+        self.running = True
+        self.thread = Thread(target=self._update_loop, daemon=True)
+        self.thread.start()
+        print("[SYNC-CAP] Sync camera thread started.")
+        return self
+    
+    
+    def read(self):
+        """
+        Returns latest frames captured
+        
+        :return frame_server: (ret, frame) of the server capture
+        :return frame_client: (ret, frame) of the client capture
+        :return drift_ms (float | None): Time drift (in ms) of the captures.
+        """
+        with self.lock:
+            if self.latest_frame_server is not None: serv = (True, self.latest_frame_server)
+            else: serv = (False, None)
+
+            if self.latest_frame_client is not None: clnt = (True, self.latest_frame_client)
+            else: clnt = (False, None)
+
+            if self.latest_drift_ms is not None: drft = self.latest_drift_ms
+            else: drft = None
+
+            return serv, clnt, drft
+        
 
 class GazeboStereoCapture:
     def __init__(self, pipeline_wide, pipeline_narr,

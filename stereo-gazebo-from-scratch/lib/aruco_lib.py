@@ -174,7 +174,7 @@ class ArucoDetector():
             [-marker_size / 2, -marker_size / 2, 0]
         ], dtype=np.float32)
 
-        image_points = current_marker_corners.reshape((4, 2))
+        image_points = current_marker_corners.reshape(-1,2).astype(np.float32)
         
         if VERBOSE: print("solving...")
 
