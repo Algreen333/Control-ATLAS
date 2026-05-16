@@ -364,9 +364,10 @@ def main():
             arucoDICT=aruco.DICT_4X4_50, marker_id=MARKER_ID, marker_size=MARKER_SIZE)
         cameras.start(True)
 
+    web_server_thread = None
     if args.server:
         web_server = TelemetryServer(capture_instance=cameras, port=5000)
-        web_server.start()
+        web_server_thread = web_server.start_background()
 
     if not args.onlycam:
         mav = MavlinkConnection(args.connect, args.baud, args.debug)
@@ -390,6 +391,7 @@ def main():
     
     else:
         while input("Stop? (y)") != "y": pass
+        if web_server_thread is not None: web_server_thread.join()
 
 if __name__ == "__main__":
     main()

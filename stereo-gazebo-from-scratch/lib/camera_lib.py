@@ -490,6 +490,21 @@ class TelemetryServer:
         print(f"[TELEMETRY] Starting web server on {self.host}:{self.port}...")
         self.app.run(host=self.host, port=self.port, threaded=True)
 
+    def start_background(self):
+        """Starts the Flask server in a non-blocking background thread."""
+        print(f"[TELEMETRY] Starting background web server on {self.host}:{self.port}...")
+        
+        # We wrap app.run in a thread. 
+        # use_reloader=False is REQUIRED when running Flask outside the main thread.
+        self.server_thread = Thread(
+            target=self.app.run,
+            kwargs={'host': self.host, 'port': self.port, 'threaded': True, 'use_reloader': False},
+            daemon=True # Daemon ensures this thread dies automatically when your main script ends
+        )
+        self.server_thread.start()
+        
+        return self.server_thread
+
 class StereoCapture:
     def __init__(self, idx_server, size_server, idx_client, size_client, 
                  T_C_WIDE=None, T_C_NARR=None, arucoDICT = aruco.DICT_4X4_50, marker_size = 1, marker_id = 49,
@@ -561,6 +576,17 @@ class StereoCapture:
                 
                 drift_ns = abs(ts_server - ts_client)
                 self.latest_drift_ms = drift_ns / 1_000_000.0
+
+                    
+                #print(f"1-Frame offset detected ({self.latest_drift_ms:.3f} ms). Flushing older frame...")
+                if drift_ns < 0:
+                    # Server frame is older, drop it and pull a new one to catch up
+                    req_server.release()
+                    req_server = self.capture_server.capture_request()
+                else:
+                    # Client frame is older, drop it and pull a new one to catch up
+                    req_client.release()
+                    req_client = self.capture_client.capture_request()
                 
                 # Extract image buffers
                 img_server = req_server.make_array("main")
