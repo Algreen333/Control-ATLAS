@@ -62,6 +62,14 @@ def create_homogeneous_matrix(rvec, tvec):
     T[0:3, 3] = tvec.flatten()
     return T
 
+def transform_auco_poses(rvec, tvec, T_C):
+    T_M = create_homogeneous_matrix(rvec, tvec)
+    T = T_C @ T_M 
+    t = T[0:3, 3]
+    tvec = t.reshape((3, 1))
+    
+    return rvec, tvec
+
 def fuse_stereo_aruco_poses(rvec_1, tvec_1, T_C_1, rvec_2, tvec_2, T_C_2):
     """
     Transforms left and right camera ArUco detections to the center frame 

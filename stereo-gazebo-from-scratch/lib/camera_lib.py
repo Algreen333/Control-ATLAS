@@ -375,8 +375,125 @@ class CalibrationConfig:
             json.dump(config_data, f, indent=4)
 
     
+class TelemetryServer:
+    def __init__(self, capture_instance, host='0.0.0.0', port=5000):
+        """
+        Initializes the web server using an existing StereoCapture instance.
+        
+        :param capture_instance: Initialized and running StereoCapture object.
+        """
+        self.capture = capture_instance
+        self.host = host
+        self.port = port
+        
+        self.app = Flask(__name__)
+        self.setup_routes()
+
+    def setup_routes(self):
+        self.app.add_url_rule('/', 'index', self.index)
+        self.app.add_url_rule('/video_feed', 'video_feed', self.video_feed)
+
+    def joint_display(self, img_server, img_client, drift_ms, tvec=None):
+        """Formats, dynamically pads, and annotates frames for combined visualization."""
+        h_server, w_server = img_server.shape[:2]
+        h_client, w_client = img_client.shape[:2]
+        
+        # Pad to match heights if resolutions differ
+        if h_server > h_client:
+            padding = h_server - h_client
+            img_client = cv2.copyMakeBorder(img_client, 0, padding, 0, 0, 
+                                            cv2.BORDER_CONSTANT, value=[0, 0, 0])
+        elif h_client > h_server:
+            padding = h_client - h_server
+            img_server = cv2.copyMakeBorder(img_server, 0, padding, 0, 0, 
+                                            cv2.BORDER_CONSTANT, value=[0, 0, 0])
+
+        # PiCamera2 usually outputs RGB. OpenCV imencode expects BGR.
+        img_server_bgr = cv2.cvtColor(img_server, cv2.COLOR_RGB2BGR)
+        img_client_bgr = cv2.cvtColor(img_client, cv2.COLOR_RGB2BGR)
+
+        # Draw drift data
+        drift_text = f"{drift_ms:.3f} ms" if drift_ms is not None else "N/A"
+        status_color = (0, 255, 0) if drift_ms is not None and drift_ms < 1.0 else (0, 0, 255)
+        
+        cv2.putText(img_server_bgr, f"SERVER | Drift: {drift_text}", (10, 30), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, status_color, 2)
+        cv2.putText(img_client_bgr, f"CLIENT | Drift: {drift_text}", (10, 30), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, status_color, 2)
+
+        # Draw pose data if available
+        if tvec is not None:
+            pose_text = f"Pose [X: {tvec[0][0]:.2f} Y: {tvec[1][0]:.2f} Z: {tvec[2][0]:.2f}]"
+            cv2.putText(img_server_bgr, pose_text, (10, 70), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
+
+        # Concatenate horizontally and scale down
+        combined_frame = cv2.hconcat([img_server_bgr, img_client_bgr])
+        resized = cv2.resize(combined_frame, (0, 0), fx=0.5, fy=0.5)
+
+        return resized
+
+    def generate_stream(self):
+        """Continuously pulls frames from the capture object and streams them."""
+        while True:
+            # 1. Poll the capture object for new frames
+            serv, clnt, drift_ms = self.capture.read()
+            ret_s, frame_s = serv
+            ret_c, frame_c = clnt
+
+            # Wait if hardware hasn't pushed frames to the buffer yet
+            if not ret_s or not ret_c or frame_s is None or frame_c is None:
+                time.sleep(0.05)
+                continue
+
+            # 2. Fetch latest pose metrics from the capture object's process loop
+            pose = self.capture.get_latest_pose()
+            tvec, rvec = pose if pose else (None, None)
+
+            # 3. Assemble the UI
+            frame_to_encode = self.joint_display(frame_s, frame_c, drift_ms, tvec)
+
+            # 4. Compress to JPEG
+            ret, buffer = cv2.imencode('.jpg', frame_to_encode, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
+            if ret:
+                frame_bytes = buffer.tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                
+            # Throttle web stream slightly to save CPU for the actual ArUco math
+            time.sleep(0.05)
+
+    def index(self):
+        return '''
+        <html>
+            <head>
+                <title>UAV Stereo Vision Telemetry</title>
+                <style>
+                    body { background-color: #121212; color: #ffffff; text-align: center; font-family: sans-serif; }
+                    img { max-width: 100%; height: auto; border: 2px solid #333; margin-top: 20px; }
+                </style>
+            </head>
+            <body>
+                <h2>Synchronized Optical Feed</h2>
+                <p>Real-time telemetry view connected to StereoCapture node.</p>
+                <img src="/video_feed" />
+            </body>
+        </html>
+        '''
+
+    def video_feed(self):
+        return Response(self.generate_stream(),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
+
+    def start(self):
+        """Starts the Flask server. This is a blocking call."""
+        print(f"[TELEMETRY] Starting web server on {self.host}:{self.port}...")
+        self.app.run(host=self.host, port=self.port, threaded=True)
+
 class StereoCapture:
-    def __init__(self, idx_server, size_server, idx_client, size_client):
+    def __init__(self, idx_server, size_server, idx_client, size_client, 
+                 T_C_WIDE=None, T_C_NARR=None, arucoDICT = aruco.DICT_4X4_50, marker_size = 1, marker_id = 49,
+                 configWide:CalibrationConfig = None, configNarr:CalibrationConfig = None):
         self.capture_server = self.setup_video_sync_node_picamera(idx_server, "server", size=size_server)
         self.capture_client = self.setup_video_sync_node_picamera(idx_client, "client", size=size_client)
 
@@ -390,7 +507,20 @@ class StereoCapture:
         self.latest_tvec = None
         self.latest_rvec = None
         self.latest_display_frame = None
+
+        self.T_C_WIDE = T_C_WIDE
+        self.T_C_NARR = T_C_NARR
+
+        self.MARKER_SIZE = marker_size
+        self.MARKER_ID = marker_id
+
+        if configWide is not None:
+            self.detWide = ArucoDetector(configWide.mtx, configWide.dist, arucoDICT)
+        if configNarr is not None:
+            self.detNarr = ArucoDetector(configNarr.mtx, configNarr.dist, arucoDICT)
         
+        self.do_process = False
+
     def setup_video_sync_node_picamera(self, cam_index, sync_mode, size=(640, 480), format="RGB888", framerate=30.0):
         from picamera2 import Picamera2
         from libcamera import controls
@@ -422,8 +552,8 @@ class StereoCapture:
         try:
             while self.running:
                 # Capture continuous requests from the hardware [cite: 60]
-                req_server = cam_server.capture_request()
-                req_client = cam_client.capture_request()
+                req_server = self.capture_server.capture_request()
+                req_client = self.capture_client.capture_request()
                 
                 # Extract the precise nanosecond the sensor began reading out the frame [cite: 63]
                 ts_server = req_server.get_metadata().get('SensorTimestamp', 0)
@@ -443,17 +573,20 @@ class StereoCapture:
                 with self.lock:
                     self.latest_frame_server = img_server.copy()
                     self.latest_frame_client = img_client.copy()
+
+                if self.do_process:
+                    self.process(True, img_server, True, img_client)
                     
         finally:
             cv2.destroyAllWindows()
 
-    def start(self):
+    def start(self, do_process=False):
+        self.do_process = do_process
         self.running = True
         self.thread = Thread(target=self._update_loop, daemon=True)
         self.thread.start()
         print("[SYNC-CAP] Sync camera thread started.")
         return self
-    
     
     def read(self):
         """
@@ -474,6 +607,59 @@ class StereoCapture:
             else: drft = None
 
             return serv, clnt, drft
+    
+    def process(self, ret_w, frame_wide, ret_n, frame_narr):
+        rvec_wide = None
+        tvec_wide = None
+        rvec_narr = None
+        tvec_narr = None
+        rvec = None
+        tvec = None
+
+        if ret_w:
+            gray = cv2.cvtColor(frame_wide, cv2.COLOR_BGR2GRAY)
+            corners_wide, ids_wide, rejected_wide = self.detWide.detectMarkers(gray)
+            if ids_wide is not None:                                          
+                indices = np.where(ids_wide == self.MARKER_ID)[0]
+                if len(indices) > 0:
+                    rvec_wide, tvec_wide = self.detWide.estimate_pose(corners_wide[indices[0]], self.MARKER_SIZE)
+
+        if ret_n:
+            gray = cv2.cvtColor(frame_narr, cv2.COLOR_BGR2GRAY)
+            corners_narr, ids_narr, rejected_narr = self.detNarr.detectMarkers(gray)
+            if ids_narr is not None:                                          
+                indices = np.where(ids_narr == self.MARKER_ID)[0]
+                if len(indices) > 0:
+                    rvec_narr, tvec_narr = self.detNarr.estimate_pose(corners_narr[indices[0]], self.MARKER_SIZE)
+
+        # Estimation from both cameras
+        if rvec_wide is not None and rvec_narr is not None and self.T_C_WIDE is not None and self.T_C_NARR is not None:
+            rvec, tvec = fuse_stereo_aruco_poses(rvec_wide, tvec_wide, self.T_C_WIDE, rvec_narr, tvec_narr, self.T_C_NARR)
+
+        elif rvec_wide is not None:
+            rvec, tvec = transform_auco_poses(rvec_wide, tvec_wide, self.T_C_WIDE)
+
+        elif rvec_narr is not None:
+            rvec, tvec = transform_auco_poses(rvec_narr, tvec_narr, self.T_C_NARR)
+        
+        # Safely update the latest pose variables
+        with self.lock:
+            if rvec is not None and tvec is not None:
+                self.latest_tvec = tvec
+                self.latest_rvec = rvec
+            else:
+                self.latest_tvec = None
+                self.latest_rvec = None
+        
+    def get_latest_pose(self) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+        """
+        Fetch the most recently estimated pose without blocking.
+        Returns (tvec, rvec) or None.
+        """
+        with self.lock:
+            if self.latest_tvec is not None and self.latest_rvec is not None:
+                return self.latest_tvec, self.latest_rvec
+            return None
         
 
 class GazeboStereoCapture:
@@ -561,10 +747,10 @@ class GazeboStereoCapture:
                 rvec, tvec = fuse_stereo_aruco_poses(rvec_wide, tvec_wide, self.T_C_WIDE, rvec_narr, tvec_narr, self.T_C_NARR)
 
             elif rvec_wide is not None:
-                rvec, tvec = rvec_wide, tvec_wide
+                rvec, tvec = transform_auco_poses(rvec_wide, tvec_wide, self.T_C_WIDE)
 
             elif rvec_narr is not None:
-                rvec, tvec = rvec_narr, tvec_narr
+                rvec, tvec = transform_auco_poses(rvec_narr, tvec_narr, self.T_C_NARR)
             
             # Safely update the latest pose variables
             with self.lock:

@@ -15,7 +15,7 @@ import numpy as np
 
 
 class MavlinkConnection:
-    def __init__(self, connection_string: str, baud: int = 57600):
+    def __init__(self, connection_string: str, baud: int = 57600, debug=False):
         """
         Open a MAVLink connection, wait for the first heartbeat, then request
         all telemetry streams needed by the landing sequence.
@@ -24,6 +24,7 @@ class MavlinkConnection:
         ----------
         connection_string : pymavlink URI, e.g. "udpin:0.0.0.0:14550" or "/dev/ttyUSB0"
         baud              : serial baud rate (ignored for UDP/TCP connections)
+        debug             : if set, action commands will not be executed
         """
         print(f"[MAV] Connecting to {connection_string} ...")
         self.mav = mavutil.mavlink_connection(connection_string, baud=baud)
@@ -31,6 +32,9 @@ class MavlinkConnection:
         print(f"[MAV] Heartbeat from system {self.mav.target_system}, "
             f"component {self.mav.target_component}")
         self.request_data_streams(rate_hz=4.0)
+
+        self.debug = debug
+
 
     # ---------------------------------------------------------------------------
     # Telemetry stream requests
@@ -119,8 +123,67 @@ class MavlinkConnection:
     # Flight control commands
     # ---------------------------------------------------------------------------
 
+    def arm(self) -> None:
+        print("[MAV] Arming ...")
+        self.mav.arducopter_arm()
+        self.mav.motors_armed_wait()
+        print("[MAV] Armed")
+    
+    def waitArmed(self) -> None:
+        print("[MAV] Waiting for Arm ...")
+        self.mav.motors_armed_wait()
+        print("[MAV] Armed")
+
+    def setGuided(self) -> None:
+        print("[MAV] Switching to GUIDED ...")
+
+        self.mav.set_mode("GUIDED")
+        # Wait for guided
+        msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
+            if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
+                print("[MAV] Retrying to switch to GUIDED ...")
+                self.mav.set_mode("GUIDED")
+            msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+
+        print("[MAV] GUIDED mode set")
+
+    def waitGuided(self) -> None:
+        print("[MAV] Waiting for GUIDED mode ...")
+
+        msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
+            msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        
+        print("[MAV] GUIDED mode set")
+
+    def takeoff(self, altitude_m: float):
+        if self.debug: 
+            print(f"<DEBUG> [MAV] Taking off to {altitude_m} m ...")
+            return
+        
+        print(f"[MAV] Taking off to {altitude_m} m ...")
+        self.mav.mav.command_long_send(
+            self.mav.target_system,
+            self.mav.target_component,
+            mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
+            0,            # confirmation
+            0, 0, 0, 0,   # params 1-4 (unused for copter)
+            0, 0,         # lat, lon (unused)
+            altitude_m,
+        )
+        while True:
+            msg = self.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=True, timeout=2)
+            if msg and msg.relative_alt / 1000.0 >= altitude_m * 0.92:
+                print(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
+                break
+
     def arm_and_takeoff(self, altitude_m: float) -> None:
         """Switch to GUIDED, arm, and climb to altitude_m metres."""
+        if self.debug: 
+            print(f"<DEBUG> [MAV] Arm and takeoff")
+            return
+
         print("[MAV] Switching to GUIDED ...")
         self.mav.set_mode("GUIDED")
         time.sleep(1)
@@ -181,6 +244,11 @@ class MavlinkConnection:
         :param int|float horizontal: Positive is right
         :param int|float updown: Positive is down
         """
+
+        if self.debug: 
+            print(f"<DEBUG> [MAV] Moving ({vertical, horizontal, updown}) m ...")
+            return
+
         self.mav.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
             0, 
             self.mav.target_system, 
@@ -203,6 +271,11 @@ class MavlinkConnection:
         :param int|float horizontal: Positive is right
         :param int|float updown: Positive is down
         """
+
+        if self.debug: 
+            print(f"<DEBUG> [MAV] Moving ({vertical}, {horizontal}, {updown}) m at ({speedv}, {speedh}, {speedz}) m/s ...")
+            return
+
         self.mav.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
             0, 
             self.mav.target_system, 
@@ -229,6 +302,11 @@ class MavlinkConnection:
         :param float v_right: Rightward velocity in m/s
         :param float v_down: Downward velocity in m/s
         """
+
+        if self.debug: 
+            print(f"<DEBUG> [MAV] Moving ({v_fwd}, {v_right}, {v_down}) m/s ...")
+            return
+
         self.mav.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
             0, 
             self.mav.target_system, 
@@ -353,6 +431,9 @@ class MavlinkConnection:
             1
         )
     
+    def abort(self):
+        self.move_velocity_body(0,0,0)
+        self.switch_to_land()
+
     def send_vision_position_message(self, tvec, rvec):
-        
-        self.mav.mav
+        return

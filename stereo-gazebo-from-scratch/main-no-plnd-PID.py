@@ -104,7 +104,6 @@ def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_t
 
                 distance = float(np.linalg.norm((fwd, right)))
 
-                print(fwd, right, down)
                 mav.send_landing_target_pos_quat(fwd, right, down)
 
                 if not target_visible_prev:
@@ -179,10 +178,10 @@ def descent(mav, cameras, max_lateral_speed_mps, descent_speed, threshold_alt, l
             msg = mav.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=False)
             if msg:
                 alt = msg.relative_alt / 1000.0
-                print("ALT:", alt)
 
                 if alt != -1 and alt < threshold_alt:
                     print(f"[DSCT] Height: {alt:.2f}m, target at {distance:.2f}m - Descent complete")
+                    mav.move_velocity_body(0, 0, 0)
                     break
 
             if do_display:
@@ -201,7 +200,6 @@ def descent(mav, cameras, max_lateral_speed_mps, descent_speed, threshold_alt, l
                 distance = float(np.linalg.norm((fwd, right)))
                 last_seen_time = time.monotonic()
 
-                print(f"{fwd:.2f}, {right:.2f}, {down:.2f}")
                 mav.send_landing_target_pos_quat(fwd, right, down)
 
                 # Lateral Corrections
