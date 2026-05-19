@@ -13,7 +13,7 @@
     <link name="cam1_link">
       <!-- Positioned slightly forward (0.1) and up (0.05) to clear the ground -->
       <!-- Pitch of 90 degrees points it straight down -->
-      <pose degrees="true">0 -0.05 -0.05 0 90 0</pose>
+      <pose degrees="true">0 -0.095675 -0.05 0 90 0</pose>
       
       <!-- Negligible mass prevents the drone from becoming too heavy to fly -->
       <inertial>
@@ -59,7 +59,7 @@
     <!-- CAMERA 2 (Right, Narrower FOV)                 -->
     <!-- ============================================== -->
     <link name="cam2_link">
-      <pose degrees="true">0 0.05 -0.05 0 90 0</pose>
+      <pose degrees="true">0 0.095675 -0.05 180 90 0</pose>
       
       <inertial>
         <mass>0.01</mass>
