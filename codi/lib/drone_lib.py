@@ -16,8 +16,10 @@ class MavlinkConnection:
         self.baud_rate = baud_rate
 
         ### INICIALITZAR MAVLINK
+        print("connecting...")
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
-        self.master.wait_heartbeat()
+        hb = self.master.wait_heartbeat()
+        print("connected: ", hb)
 
         # Obtenim els IDs dels modes necessaris
         #self.mode_guided_id = self.master.mode_mapping()['GUIDED']

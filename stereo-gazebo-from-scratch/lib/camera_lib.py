@@ -556,6 +556,14 @@ class StereoCapture:
         elif sync_mode == "client":
             picam.set_controls({"SyncMode": controls.rpi.SyncModeEnum.Client})
             print(f"Hardware node {cam_index} initialized as IPA SYNC CLIENT.")
+
+        picam.set_controls({
+            "NoiseReductionMode": 2,
+            "ExposureTime": 100,       # microseconds — go as low as lighting allows
+            "AnalogueGain": 20.0,        # compensate brightness with gain
+            "AeEnable": False,          # disable auto-exposure so it doesn't fight you
+        })
+
             
         picam.start()
         return picam
@@ -591,6 +599,8 @@ class StereoCapture:
                 # Extract image buffers
                 img_server = req_server.make_array("main")
                 img_client = req_client.make_array("main")
+
+                img_client = cv2.rotate(img_client, cv2.ROTATE_180)
                 
                 # Release requests to prevent memory exhaustion
                 req_server.release()

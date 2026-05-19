@@ -27,23 +27,23 @@ print(T_C_WIDE, "\n", T_C_NARR)
 DO_LAND = True
 DO_TAKEOFF = True
 
-MARKER_SIZE = 0.48
-MARKER_ID = 49
+MARKER_SIZE = 0.18
+MARKER_ID = 101
 
 TAKEOFF_ALT = 7
 
 TARGET_LOST_TIMEOUT = 5.0
 
-PHASE_1_THRSH_DIST = 1          # Lateral distance at which PHASE 1 will finish 
+PHASE_1_THRSH_DIST = 0.25       # Lateral distance at which PHASE 1 will finish 
 PHASE_1_DIST_VEL_MULT = 0.2     # Multiplier to distance to calculate speed (speed = distance*MULT)
-PHASE_1_DIST_VEL_MAX = 0.5
+PHASE_1_DIST_VEL_MAX = 0.2
 
 PHASE_2_DIST_VEL_MAX = 0.1
-PHASE_2_THRSH_ALT = 0.5
-PHASE_2_DESCENT = 0.2
-PHASE_2_DIST_VEL_MULT = 0.2
+PHASE_2_THRSH_ALT = 2
+PHASE_2_DESCENT = 0.025
+PHASE_2_DIST_VEL_MULT = 0.1
 
-PHASE_3_THRSH_DIST = 0.1        # Lateral distance at which PHASE 1 will finish 
+PHASE_3_THRSH_DIST = 0.1        # Lateral distance at which PHASE 3 will finish 
 PHASE_3_DIST_VEL_MULT = 0.2     # Multiplier to distance to calculate speed (speed = distance*MULT)
 PHASE_3_DIST_VEL_MAX = 0.03
 
@@ -70,7 +70,7 @@ pipeline_narr = (
     "appsink drop=1"
 )
 
-mtx_wide = get_gazebo_camera_matrix(1536, 864, 102/180*np.pi, 48.8/180*np.pi)
+mtx_wide = get_gazebo_camera_matrix(2304, 1296, 102/180*np.pi, 48.8/180*np.pi)
 dst_wide = np.zeros(5, dtype=np.float32)
 mtx_narr = get_gazebo_camera_matrix(1640, 1232, 62.2/180*np.pi, 67/180*np.pi)
 dst_narr = np.zeros(5, dtype=np.float32)
@@ -99,7 +99,7 @@ class TargetTimeout:
         mav.move_velocity_body(0,0,0)
 
         elapsed = now - self._lost_since
-        if elapsed >= self.timeout_sec:
+        if self.timeout_sec != -1 and elapsed >= self.timeout_sec:
             print(f"[{phase_tag}] ABORT: Target lost for {elapsed:.1f}s"
                   f"(timeout={self.timeout_sec:.1f}s). Aborting...")
             
@@ -405,8 +405,6 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
 
-    global TARGET_LOST_TIMEOUT
-    TARGET_LOST_TIMEOUT = args.target_timeout
 
     print("[SYSTEM] Initializing cameras...")
     if args.gazebo:
@@ -414,9 +412,9 @@ def main():
         cameras.start()
     else:
         cameras = StereoCapture(0, (1536, 864), 1, (1640, 1232), T_C_WIDE=T_C_WIDE, T_C_NARR=T_C_NARR, 
-            configWide=CalibrationConfig.from_path("configs/1536x864-v3.conf"),
+            configWide=CalibrationConfig.from_path("configs/2304x1296-v3.conf"),
             configNarr=CalibrationConfig.from_path("configs/1640x1232-v2.conf"),
-            arucoDICT=aruco.DICT_4X4_50, marker_id=MARKER_ID, marker_size=MARKER_SIZE)
+            arucoDICT=aruco.DICT_ARUCO_ORIGINAL, marker_id=MARKER_ID, marker_size=MARKER_SIZE)
         cameras.start(True)
 
     web_server_thread = None
@@ -447,7 +445,24 @@ def main():
         mav.wait_for_disarm()
     
     else:
-        while input("Stop? (y)") != "y": pass
+        import code
+        
+        banner = """
+            [ONLYCAM] Interactive Python shell.
+
+            Example:
+            cameras.set_param('marker_id', 42)
+            cameras.wide.controls.ExposureTime = 5000
+            Type Ctrl-D or exit() to quit.
+        """
+        local_vars = {**globals(), "cameras": cameras, "args": args}
+        code.interact(banner=banner, local=local_vars)
+        
+        
+        if web_server_thread is not None:
+            web_server_thread.join()
+
+
         if web_server_thread is not None: web_server_thread.join()
 
 if __name__ == "__main__":
