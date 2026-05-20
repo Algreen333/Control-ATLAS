@@ -113,8 +113,6 @@ class TargetTimeout:
 # Procedures
 # ---------------------------------------------------------------------------
 
-
-
 def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display, target_timeout):
     try:
         print(f"[APPR] Phase 1 – Initial approach "
@@ -419,7 +417,7 @@ def main():
         cameras.start()
     else:
         cameras = StereoCapture(0, (1536, 864), 1, (1640, 1232), T_C_WIDE=T_C_WIDE, T_C_NARR=T_C_NARR, 
-            configWide=CalibrationConfig.from_path("configs/2304x1296-v3.conf"),
+            configWide=CalibrationConfig.from_path("configs/1536x864-v3.conf"),
             configNarr=CalibrationConfig.from_path("configs/1640x1232-v2.conf"),
             arucoDICT=aruco.DICT_ARUCO_ORIGINAL, marker_id=MARKER_ID, marker_size=MARKER_SIZE)
         cameras.start(True)
