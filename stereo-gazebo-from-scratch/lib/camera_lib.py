@@ -559,8 +559,8 @@ class StereoCapture:
 
         picam.set_controls({
             "NoiseReductionMode": 2,
-            "ExposureTime": 100,       # microseconds — go as low as lighting allows
-            "AnalogueGain": 20.0,        # compensate brightness with gain
+            "ExposureTime": 200,       # microseconds — go as low as lighting allows
+            "AnalogueGain": 60.0,        # compensate brightness with gain
             "AeEnable": False,          # disable auto-exposure so it doesn't fight you
         })
 
@@ -720,9 +720,9 @@ class GazeboStereoCapture:
         self.detNarr = ArucoDetector(mtx_wide, dst_wide, cv2.aruco.DICT_4X4_50)
 
         self.T_C_WIDE = np.eye(4)
-        self.T_C_WIDE[0, 3] = 0.05
+        self.T_C_WIDE[0, 3] = 0.09675
         self.T_C_NARR = np.eye(4)
-        self.T_C_NARR[0, 3] = -0.05
+        self.T_C_NARR[0, 3] = -0.09675
 
         self.MARKER_SIZE = 1
         self.MARKER_ID = 49

@@ -1,5 +1,3 @@
-##### TO WATCH!!!!! https://landmarklanding.com/blogs/landmark-lab-notes/ardupilot-precision-landing?srsltid=AfmBOopRb_8qfYKOU5efXQ0mQedGTP3hKf4MeQ8MP-QD6iZekGplSPor
-
 import cv2
 import numpy as np
 import argparse
@@ -30,17 +28,17 @@ DO_TAKEOFF = True
 MARKER_SIZE = 0.18
 MARKER_ID = 101
 
-TAKEOFF_ALT = 7
+TAKEOFF_ALT = 4
 
 TARGET_LOST_TIMEOUT = 5.0
 
-PHASE_1_THRSH_DIST = 0.25       # Lateral distance at which PHASE 1 will finish 
-PHASE_1_DIST_VEL_MULT = 0.2     # Multiplier to distance to calculate speed (speed = distance*MULT)
-PHASE_1_DIST_VEL_MAX = 0.2
+PHASE_1_THRSH_DIST = 0.6       # Lateral distance at which PHASE 1 will finish 
+PHASE_1_DIST_VEL_MULT = 0.4     # Multiplier to distance to calculate speed (speed = distance*MULT)
+PHASE_1_DIST_VEL_MAX = 0.4
 
 PHASE_2_DIST_VEL_MAX = 0.1
-PHASE_2_THRSH_ALT = 2
-PHASE_2_DESCENT = 0.025
+PHASE_2_THRSH_ALT = 1
+PHASE_2_DESCENT = 0.2
 PHASE_2_DIST_VEL_MULT = 0.1
 
 PHASE_3_THRSH_DIST = 0.1        # Lateral distance at which PHASE 3 will finish 
@@ -70,7 +68,7 @@ pipeline_narr = (
     "appsink drop=1"
 )
 
-mtx_wide = get_gazebo_camera_matrix(2304, 1296, 102/180*np.pi, 48.8/180*np.pi)
+mtx_wide = get_gazebo_camera_matrix(1536, 864, 102/180*np.pi, 48.8/180*np.pi)
 dst_wide = np.zeros(5, dtype=np.float32)
 mtx_narr = get_gazebo_camera_matrix(1640, 1232, 62.2/180*np.pi, 67/180*np.pi)
 dst_narr = np.zeros(5, dtype=np.float32)
@@ -146,8 +144,11 @@ def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_t
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
-                
-                mav.send_landing_target_pos_quat(fwd, right, down)
+
+                # Odometry message
+                roll, pitch, yaw = get_drone_attitude_from_marker(rvec)
+                q_wxyz = get_quaternions(roll, pitch, yaw, degrees=False)
+                mav.send_odometry_message(fwd, right, down, q_wxyz=q_wxyz)
 
                 if not target_visible_prev:
                     print(f"[APPR] Target acquired - Distance ({fwd:.1f}, {right:.1f}, {down:.1f}) m")
@@ -225,9 +226,12 @@ def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_spe
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
-                
-                mav.send_landing_target_pos_quat(fwd, right, down)
-                
+
+                # Odometry message
+                roll, pitch, yaw = get_drone_attitude_from_marker(rvec)
+                q_wxyz = get_quaternions(roll, pitch, yaw, degrees=False)
+                mav.send_odometry_message(fwd, right, down, q_wxyz=q_wxyz)
+                                
                 print(f"[DSCT] Target at {distance:.2f}m - Descending...")
                 
                 v_fwd = fwd * lateral_speed_mult
@@ -286,9 +290,12 @@ def final(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_thre
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
-                
-                mav.send_landing_target_pos_quat(fwd, right, down)
 
+                # Odometry message
+                roll, pitch, yaw = get_drone_attitude_from_marker(rvec)
+                q_wxyz = get_quaternions(roll, pitch, yaw, degrees=False)
+                mav.send_odometry_message(fwd, right, down, q_wxyz=q_wxyz)
+                
                 if not target_visible_prev:
                     print(f"[FINAL] Target acquired - Distance ({fwd:.1f}, {right:.1f}, {down:.1f}) m")
                 target_visible_prev = True
@@ -443,6 +450,25 @@ def main():
         else: mav.switch_to_land()
 
         mav.wait_for_disarm()
+
+        # Drop and tajeoff sequence
+        mav.open_gripper()
+
+        time.sleep(1)
+        
+        mav.setStabilize()
+        
+        mav.arm()
+        mav.waitArmed()
+
+        mav.setGuided()
+        mav.waitGuided()
+
+        mav.takeoff(args.alt)
+
+        time.sleep(1)
+
+        mav.close_gripper()
     
     else:
         import code

@@ -156,6 +156,29 @@ class MavlinkConnection:
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         
         print("[MAV] GUIDED mode set")
+    
+    def setStabilize(self) -> None:
+        print("[MAV] Switching to STABILIZE ...")
+
+        self.mav.set_mode("STABILIZE")
+        # Wait for guided
+        msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED) or not (msg.custom_mode & 4)):
+            if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED) or not (msg.custom_mode & 4)):
+                print("[MAV] Retrying to switch to STABILIZE ...")
+                self.mav.set_mode("STABILIZE")
+            msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+
+        print("[MAV] STABILIZE mode set")
+
+    def waitStabilize(self) -> None:
+        print("[MAV] Waiting for STABILIZE mode ...")
+
+        msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED) or not (msg.custom_mode & 4)):
+            msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        
+        print("[MAV] STABILIZE mode set")
 
     def takeoff(self, altitude_m: float):
         if self.debug: 
@@ -435,5 +458,40 @@ class MavlinkConnection:
         self.move_velocity_body(0,0,0)
         self.switch_to_land()
 
-    def send_vision_position_message(self, tvec, rvec):
-        return
+    def send_odometry_message(self, x, y, z, q_wxyz=[1,0,0,0], vx=0, vy=0, vz=0, rollspeed=0, pitchspeed=0, yawspeed=0):
+        """
+        Send a VISION_POSITION_ESTIMATE MAVLink message.
+
+        Parameters
+        ----------
+        """
+        
+        self.mav.mav.odometry_send(
+            int(time.monotonic() * 1e6),
+            mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED,
+            mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED,
+            x, y, z,
+            q_wxyz, 
+            vx, vy, vz,
+            rollspeed, pitchspeed, yawspeed, 
+            [0.0]*21,
+            [0.0]*21
+            )
+    
+    
+    def actuate_servo(self, servo_number=8, pwm_value=1900):
+        self.mav.mav.command_long_send(
+        self.mav.target_system,    # Target system ID
+        self.mav.target_component, # Target component ID
+        mavutil.mavlink.MAV_CMD_DO_SET_SERVO, # Command ID
+        0,                       # Confirmation
+        servo_number,            # Parameter 1: Servo instance (1 for channel 1, 2 for channel 2, etc.)
+        pwm_value,               # Parameter 2: PWM value (e.g., 1500)
+        0, 0, 0, 0, 0            # Unused parameters
+    )
+        
+    def open_gripper(self):
+        self.actuate_servo(8, 1900)
+    
+    def close_gripper(self):
+        self.actuate_servo(8, 1100)
