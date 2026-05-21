@@ -16,33 +16,45 @@ try:
 except (ImportError, RuntimeError):
     HAS_PICAMERA = False
 
-def joint_display(img_server, img_client, drift_ms=-1):
-    # --- DYNAMIC DIMENSION MATCHING (ZERO-PADDING) ---
-    h_server, w_server = img_server.shape[:2]
-    h_client, w_client = img_client.shape[:2]
-    
-    # If heights mismatch, pad the bottom of the shorter image with zeros (black)
-    if h_server > h_client:
-        padding = h_server - h_client
-        img_client = cv2.copyMakeBorder(img_client, 0, padding, 0, 0, 
-                                        cv2.BORDER_CONSTANT, value=[0, 0, 0])
-    elif h_client > h_server:
-        padding = h_client - h_server
-        img_server = cv2.copyMakeBorder(img_server, 0, padding, 0, 0, 
-                                        cv2.BORDER_CONSTANT, value=[0, 0, 0])
+def joint_display(img_server, img_client, drift_ms = 0, tvec=None):
+        """Formats, dynamically pads, and annotates frames for combined visualization."""
+        h_server, w_server = img_server.shape[:2]
+        h_client, w_client = img_client.shape[:2]
+        
+        # Pad to match heights if resolutions differ
+        if h_server > h_client:
+            padding = h_server - h_client
+            img_client = cv2.copyMakeBorder(img_client, 0, padding, 0, 0, 
+                                            cv2.BORDER_CONSTANT, value=[0, 0, 0])
+        elif h_client > h_server:
+            padding = h_client - h_server
+            img_server = cv2.copyMakeBorder(img_server, 0, padding, 0, 0, 
+                                            cv2.BORDER_CONSTANT, value=[0, 0, 0])
 
-    if drift_ms > 0:
-        status_color = (0, 255, 0) if drift_ms < 1.0 else (0, 0, 255)
-        cv2.putText(img_server, f"SERVER | Drift: {drift_ms:.3f} ms", (10, 30), 
+        # PiCamera2 usually outputs RGB. OpenCV imencode expects BGR.
+        img_server_bgr = cv2.cvtColor(img_server, cv2.COLOR_RGB2BGR)
+        img_client_bgr = cv2.cvtColor(img_client, cv2.COLOR_RGB2BGR)
+
+        # Draw drift data
+        drift_text = f"{drift_ms:.3f} ms" if drift_ms is not None else "N/A"
+        status_color = (0, 255, 0) if drift_ms is not None and drift_ms < 1.0 else (0, 0, 255)
+        
+        cv2.putText(img_server_bgr, f"SERVER | Drift: {drift_text}", (10, 30), 
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, status_color, 2)
-        cv2.putText(img_client, f"CLIENT | Drift: {drift_ms:.3f} ms", (10, 30), 
+        cv2.putText(img_client_bgr, f"CLIENT | Drift: {drift_text}", (10, 30), 
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, status_color, 2)
 
-    combined_frame = cv2.hconcat([img_server, img_client])
-    resized = cv2.resize(combined_frame, (0,0), fx = 0.5, fy = 0.5)
+        # Draw pose data if available
+        if tvec is not None:
+            pose_text = f"Pose [X: {tvec[0][0]:.2f} Y: {tvec[1][0]:.2f} Z: {tvec[2][0]:.2f}]"
+            cv2.putText(img_server_bgr, pose_text, (10, 70), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
 
-    # Safely update the global frame reference
-    return resized
+        # Concatenate horizontally and scale down
+        combined_frame = cv2.hconcat([img_server_bgr, img_client_bgr])
+        resized = cv2.resize(combined_frame, (0, 0), fx=0.5, fy=0.5)
+
+        return resized
 
 class VideoCapture:
     def __init__(self, capture_source = 0, resolution=(640, 480), format="RGB888", fps=30.0):
@@ -451,7 +463,7 @@ class TelemetryServer:
             tvec, rvec = pose if pose else (None, None)
 
             # 3. Assemble the UI
-            frame_to_encode = self.joint_display(frame_s, frame_c, drift_ms, tvec)
+            frame_to_encode = joint_display(frame_s, frame_c, drift_ms, tvec)
 
             # 4. Compress to JPEG
             ret, buffer = cv2.imencode('.jpg', frame_to_encode, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
@@ -659,6 +671,7 @@ class StereoCapture:
                 indices = np.where(ids_wide == self.MARKER_ID)[0]
                 if len(indices) > 0:
                     rvec_wide, tvec_wide = self.detWide.estimate_pose(corners_wide[indices[0]], self.MARKER_SIZE)
+                    frame_wide = aruco.drawDetectedMarkers(frame_wide, corners_wide, ids_wide)
 
         if ret_n:
             gray = cv2.cvtColor(frame_narr, cv2.COLOR_BGR2GRAY)
@@ -667,6 +680,7 @@ class StereoCapture:
                 indices = np.where(ids_narr == self.MARKER_ID)[0]
                 if len(indices) > 0:
                     rvec_narr, tvec_narr = self.detNarr.estimate_pose(corners_narr[indices[0]], self.MARKER_SIZE)
+                    frame_narr = aruco.drawDetectedMarkers(frame_narr, corners_narr, ids_narr)
 
         # Estimation from both cameras
         if rvec_wide is not None and rvec_narr is not None and self.T_C_WIDE is not None and self.T_C_NARR is not None:
@@ -686,6 +700,9 @@ class StereoCapture:
             else:
                 self.latest_tvec = None
                 self.latest_rvec = None
+
+            self.latest_frame_server = frame_wide
+            self.latest_frame_client = frame_narr
         
     def get_latest_pose(self) -> Optional[Tuple[np.ndarray, np.ndarray]]:
         """
@@ -769,6 +786,7 @@ class GazeboStereoCapture:
                     indices = np.where(ids_wide == self.MARKER_ID)[0]
                     if len(indices) > 0:
                         rvec_wide, tvec_wide = self.detWide.estimate_pose(corners_wide[indices[0]], self.MARKER_SIZE)
+                        frame_wide = aruco.drawDetectedMarkers(frame_wide, corners_wide, ids_wide)
 
             if ret_n:
                 gray = cv2.cvtColor(frame_narr, cv2.COLOR_BGR2GRAY)
@@ -777,6 +795,7 @@ class GazeboStereoCapture:
                     indices = np.where(ids_narr == self.MARKER_ID)[0]
                     if len(indices) > 0:
                         rvec_narr, tvec_narr = self.detNarr.estimate_pose(corners_narr[indices[0]], self.MARKER_SIZE)
+                        frame_narr = aruco.drawDetectedMarkers(frame_narr, corners_narr, ids_narr)
 
             # Estimation from both cameras
             if rvec_wide is not None and rvec_narr is not None:
@@ -798,7 +817,7 @@ class GazeboStereoCapture:
                     self.latest_rvec = None
                 
                 if ret_w and ret_n:
-                    self.latest_display_frame = joint_display(frame_wide, frame_narr)
+                    self.latest_display_frame = joint_display(frame_wide, frame_narr, 0, tvec)
 
     def get_latest_pose(self) -> Optional[Tuple[np.ndarray, np.ndarray]]:
         """
