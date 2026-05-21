@@ -25,8 +25,8 @@ print(T_C_WIDE, "\n", T_C_NARR)
 DO_LAND = True
 DO_TAKEOFF = True
 
-MARKER_SIZE = 0.18
-MARKER_ID = 101
+MARKER_SIZE = 0.48
+MARKER_ID = 26
 
 TAKEOFF_ALT = 4
 
@@ -424,7 +424,7 @@ def main():
 
     web_server_thread = None
     if args.server:
-        web_server = TelemetryServer(capture_instance=cameras, port=5000)
+        web_server = TelemetryServer(capture_instance=cameras, port=5001)
         web_server_thread = web_server.start_background()
 
     if not args.onlycam:

@@ -163,8 +163,8 @@ class MavlinkConnection:
         self.mav.set_mode("STABILIZE")
         # Wait for guided
         msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
-        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED) or not (msg.custom_mode & 4)):
-            if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED) or not (msg.custom_mode & 4)):
+        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED)):
+            if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED)):
                 print("[MAV] Retrying to switch to STABILIZE ...")
                 self.mav.set_mode("STABILIZE")
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
