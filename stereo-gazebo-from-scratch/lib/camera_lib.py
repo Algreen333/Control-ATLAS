@@ -394,16 +394,33 @@ class TelemetryServer:
         
         :param capture_instance: Initialized and running StereoCapture object.
         """
+
         self.capture = capture_instance
         self.host = host
         self.port = port
-        
+        self.currentPhase = "Non Autonomous"
+        self.currentAltitude = None
+
         self.app = Flask(__name__)
         self.setup_routes()
+
+    def setPhase(self, phase: str):
+        self.currentPhase = phase
+
+    def setAltitude(self, alt_m: float):
+        self.currentAltitude = round(alt_m, 2)
+
+    def telemetry(self):
+        from flask import jsonify
+        return jsonify({
+            'phase': self.currentPhase,
+            'altitude': self.currentAltitude
+        })
 
     def setup_routes(self):
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/video_feed', 'video_feed', self.video_feed)
+        self.app.add_url_rule('/telemetry', 'telemetry', self.telemetry)
 
     def joint_display(self, img_server, img_client, drift_ms, tvec=None):
         """Formats, dynamically pads, and annotates frames for combined visualization."""
@@ -478,18 +495,62 @@ class TelemetryServer:
     def index(self):
         return '''
         <html>
-            <head>
-                <title>UAV Stereo Vision Telemetry</title>
-                <style>
-                    body { background-color: #121212; color: #ffffff; text-align: center; font-family: sans-serif; }
-                    img { max-width: 100%; height: auto; border: 2px solid #333; margin-top: 20px; }
-                </style>
-            </head>
-            <body>
-                <h2>Synchronized Optical Feed</h2>
-                <p>Real-time telemetry view connected to StereoCapture node.</p>
-                <img src="/video_feed" />
-            </body>
+        <head>
+            <title>UAV Telemetry</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { background: #000; font-family: monospace; overflow: hidden; height: 100vh; }
+
+                /* Video fills the screen */
+                #stream { width: 100%; height: 100vh; object-fit: contain; display: block; }
+
+                /* HUD overlay — always visible, top-left corner */
+                #hud {
+                    position: fixed; top: 0; left: 0;
+                    padding: 14px 18px;
+                    background: linear-gradient(135deg, rgba(0,0,0,0.75), rgba(0,0,0,0.4));
+                    color: #0f0; border-bottom-right-radius: 10px;
+                    z-index: 99;
+                }
+                #hud .label { font-size: 11px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+                #hud .value { font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+                #hud .value.phase { color: #0ff; }
+                #hud .value.alt   { color: #0f0; }
+
+                /* Dot that blinks to show live data */
+                #live-dot {
+                    position: fixed; top: 12px; right: 14px;
+                    width: 10px; height: 10px; border-radius: 50%;
+                    background: #f00; z-index: 99;
+                    animation: blink 1s infinite;
+                }
+                @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+            </style>
+        </head>
+        <body>
+            <div id="hud">
+                <div class="label">Phase</div>
+                <div class="value phase" id="phase-val">---</div>
+                <div class="label">Altitude</div>
+                <div class="value alt" id="alt-val">--- m</div>
+            </div>
+            <div id="live-dot"></div>
+            <img id="stream" src="/video_feed" />
+
+            <script>
+                async function poll() {
+                    try {
+                        const r = await fetch('/telemetry');
+                        const d = await r.json();
+                        document.getElementById('phase-val').textContent = d.phase ?? '---';
+                        document.getElementById('alt-val').textContent =
+                            d.altitude !== null ? d.altitude.toFixed(1) + ' m' : '--- m';
+                    } catch(e) {}
+                }
+                poll();
+                setInterval(poll, 500);
+            </script>
+        </body>
         </html>
         '''
 
@@ -787,6 +848,8 @@ class GazeboStereoCapture:
                     if len(indices) > 0:
                         rvec_wide, tvec_wide = self.detWide.estimate_pose(corners_wide[indices[0]], self.MARKER_SIZE)
                         frame_wide = aruco.drawDetectedMarkers(frame_wide, corners_wide, ids_wide)
+                        x, y, w, h = cv2.boundingRect(corners_wide[indices[0]])
+                        cv2.rectangle(frame_wide, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
             if ret_n:
                 gray = cv2.cvtColor(frame_narr, cv2.COLOR_BGR2GRAY)
@@ -796,6 +859,8 @@ class GazeboStereoCapture:
                     if len(indices) > 0:
                         rvec_narr, tvec_narr = self.detNarr.estimate_pose(corners_narr[indices[0]], self.MARKER_SIZE)
                         frame_narr = aruco.drawDetectedMarkers(frame_narr, corners_narr, ids_narr)
+                        x, y, w, h = cv2.boundingRect(corners_narr[indices[0]])
+                        cv2.rectangle(frame_narr, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
             # Estimation from both cameras
             if rvec_wide is not None and rvec_narr is not None:

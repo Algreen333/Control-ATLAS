@@ -1,3 +1,5 @@
+##### TO WATCH!!!!! https://landmarklanding.com/blogs/landmark-lab-notes/ardupilot-precision-landing?srsltid=AfmBOopRb_8qfYKOU5efXQ0mQedGTP3hKf4MeQ8MP-QD6iZekGplSPor
+
 import cv2
 import numpy as np
 import argparse
@@ -25,26 +27,25 @@ print(T_C_WIDE, "\n", T_C_NARR)
 DO_LAND = True
 DO_TAKEOFF = True
 
-MARKER_SIZE = 0.48
-MARKER_ID = 26
+MARKER_SIZE = 0.18
+MARKER_ID = 101
 
-TAKEOFF_ALT = 4
+TAKEOFF_ALT = 7
 
 TARGET_LOST_TIMEOUT = 5.0
 
-PHASE_1_THRSH_DIST = 0.6       # Lateral distance at which PHASE 1 will finish 
-PHASE_1_DIST_VEL_MULT = 0.4     # Multiplier to distance to calculate speed (speed = distance*MULT)
-PHASE_1_DIST_VEL_MAX = 0.4
+PHASE_1_THRSH_DIST = 0.25       # Lateral distance at which PHASE 1 will finish 
+PHASE_1_DIST_VEL_MULT = 0.2     # Multiplier to distance to calculate speed (speed = distance*MULT)
+PHASE_1_DIST_VEL_MAX = 0.2
 
 PHASE_2_DIST_VEL_MAX = 0.1
-PHASE_2_THRSH_ALT = 1
-PHASE_2_DESCENT = 0.2
+PHASE_2_THRSH_ALT = 2
+PHASE_2_DESCENT = 0.025
 PHASE_2_DIST_VEL_MULT = 0.1
 
 PHASE_3_THRSH_DIST = 0.1        # Lateral distance at which PHASE 3 will finish 
 PHASE_3_DIST_VEL_MULT = 0.2     # Multiplier to distance to calculate speed (speed = distance*MULT)
 PHASE_3_DIST_VEL_MAX = 0.03
-
 
 # ---------------------------------------------------------------------------
 # Camera initialization (for Gazebo)
@@ -68,7 +69,7 @@ pipeline_narr = (
     "appsink drop=1"
 )
 
-mtx_wide = get_gazebo_camera_matrix(1536, 864, 102/180*np.pi, 48.8/180*np.pi)
+mtx_wide = get_gazebo_camera_matrix(2304, 1296, 102/180*np.pi, 48.8/180*np.pi)
 dst_wide = np.zeros(5, dtype=np.float32)
 mtx_narr = get_gazebo_camera_matrix(1640, 1232, 62.2/180*np.pi, 67/180*np.pi)
 dst_narr = np.zeros(5, dtype=np.float32)
@@ -113,6 +114,8 @@ class TargetTimeout:
 # Procedures
 # ---------------------------------------------------------------------------
 
+
+
 def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display, target_timeout):
     try:
         print(f"[APPR] Phase 1 – Initial approach "
@@ -142,11 +145,8 @@ def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_t
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
-
-                # Odometry message
-                roll, pitch, yaw = get_drone_attitude_from_marker(rvec)
-                q_wxyz = get_quaternions(roll, pitch, yaw, degrees=False)
-                mav.send_odometry_message(fwd, right, down, q_wxyz=q_wxyz)
+                
+                mav.send_landing_target_pos_quat(fwd, right, down)
 
                 if not target_visible_prev:
                     print(f"[APPR] Target acquired - Distance ({fwd:.1f}, {right:.1f}, {down:.1f}) m")
@@ -224,12 +224,9 @@ def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_spe
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
-
-                # Odometry message
-                roll, pitch, yaw = get_drone_attitude_from_marker(rvec)
-                q_wxyz = get_quaternions(roll, pitch, yaw, degrees=False)
-                mav.send_odometry_message(fwd, right, down, q_wxyz=q_wxyz)
-                                
+                
+                mav.send_landing_target_pos_quat(fwd, right, down)
+                
                 print(f"[DSCT] Target at {distance:.2f}m - Descending...")
                 
                 v_fwd = fwd * lateral_speed_mult
@@ -288,12 +285,9 @@ def final(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_thre
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
-
-                # Odometry message
-                roll, pitch, yaw = get_drone_attitude_from_marker(rvec)
-                q_wxyz = get_quaternions(roll, pitch, yaw, degrees=False)
-                mav.send_odometry_message(fwd, right, down, q_wxyz=q_wxyz)
                 
+                mav.send_landing_target_pos_quat(fwd, right, down)
+
                 if not target_visible_prev:
                     print(f"[FINAL] Target acquired - Distance ({fwd:.1f}, {right:.1f}, {down:.1f}) m")
                 target_visible_prev = True
@@ -417,20 +411,29 @@ def main():
         cameras.start()
     else:
         cameras = StereoCapture(0, (1536, 864), 1, (1640, 1232), T_C_WIDE=T_C_WIDE, T_C_NARR=T_C_NARR, 
-            configWide=CalibrationConfig.from_path("configs/1536x864-v3.conf"),
+            configWide=CalibrationConfig.from_path("configs/2304x1296-v3.conf"),
             configNarr=CalibrationConfig.from_path("configs/1640x1232-v2.conf"),
             arucoDICT=aruco.DICT_ARUCO_ORIGINAL, marker_id=MARKER_ID, marker_size=MARKER_SIZE)
         cameras.start(True)
 
     web_server_thread = None
     if args.server:
-        web_server = TelemetryServer(capture_instance=cameras, port=5001)
+        web_server = TelemetryServer(capture_instance=cameras, port=5000)
         web_server_thread = web_server.start_background()
 
     if not args.onlycam:
         target_timeout = TargetTimeout(args.timeout)
 
         mav = MavlinkConnection(args.connect, args.baud, args.debug)
+
+        if args.server:                 
+            def _alt_poller():
+                while True:
+                    msg = mav.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=False)
+                    if msg:
+                        web_server.set_altitude(msg.relative_alt / 1000.0)
+                    time.sleep(0.25)
+            Thread(target=_alt_poller, daemon=True).start()
 
         if (args.auto_guided): mav.setGuided()
         else: mav.waitGuided()
@@ -440,33 +443,22 @@ def main():
 
         if (args.takeoff): mav.takeoff(args.alt)
 
+        if args.server:
+            web_server.setPhase("Phase 1 - APPROACH")
         if approach(mav, cameras, args.p1_max_speed, args.p1_mult_speed, args.p1_threshold, args.hz, args.display, target_timeout) < 0: return -1
         
+        if args.server:
+            web_server.setPhase("Phase 2 - DESCENT")
         if descent(mav, cameras, args.p2_max_speed, args.p2_mult_speed, args.p2_descent, args.p2_threshold, args.hz, args.display, target_timeout) < 0: return -1
-
+        if args.server:
+            web_server.setPhase("Phase 3 - FINAL")
         if final(mav, cameras, args.p3_max_speed, args.p3_mult_speed, args.p3_threshold, args.hz, args.display, target_timeout) < 0: return -1
-        else: mav.switch_to_land()
+        else: 
+            if args.server:
+                web_server.setPhase("LAND")
+            mav.switch_to_land()
 
         mav.wait_for_disarm()
-
-        # Drop and tajeoff sequence
-        mav.open_gripper()
-
-        time.sleep(1)
-        
-        mav.setStabilize()
-        
-        mav.arm()
-        mav.waitArmed()
-
-        mav.setGuided()
-        mav.waitGuided()
-
-        mav.takeoff(args.alt)
-
-        time.sleep(1)
-
-        mav.close_gripper()
     
     else:
         import code
