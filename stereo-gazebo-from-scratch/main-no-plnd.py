@@ -13,6 +13,7 @@ import os; os.environ["MAVLINK20"] = "1"
 from lib.drone_lib import *
 from lib.aruco_lib import *
 from lib.camera_lib import *
+from lib.matlab_udp_bridge import MatlabUdpBridge
 from lib.utils import *
 
 
@@ -116,7 +117,7 @@ class TargetTimeout:
 
 
 
-def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display, target_timeout):
+def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display, target_timeout, matlab_bridge=None):
     try:
         print(f"[APPR] Phase 1 – Initial approach "
             f"(max {max_lateral_speed_mps * 100:.0f} cm/s) ...")
@@ -145,6 +146,7 @@ def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_t
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
+                _send_matlab_state(matlab_bridge, "approach", True, fwd, right, distance, down)
                 
                 mav.send_landing_target_pos_quat(fwd, right, down)
 
@@ -167,9 +169,14 @@ def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_t
                         v_right = (v_right / current_speed) * max_lateral_speed_mps
                         current_speed = max_lateral_speed_mps
 
-                    print(f"[APPR] Target at {distance:.2f}m - Approaching at ({v_fwd:.2f}, {v_right:.2f}, 0) m/s -> {current_speed:.2f} m/s...")
-                    mav.move_velocity_body(v_fwd, v_right, 0)
+                    v_fwd, v_right, v_down = _apply_matlab_velocity(
+                        matlab_bridge,
+                        (v_fwd, v_right, 0.0),
+                    )
+                    print(f"[APPR] Target at {distance:.2f}m - Approaching at ({v_fwd:.2f}, {v_right:.2f}, {v_down:.2f}) m/s -> {current_speed:.2f} m/s...")
+                    mav.move_velocity_body(v_fwd, v_right, v_down)
             else:
+                _send_matlab_state(matlab_bridge, "approach", False)
                 target_visible_prev = False 
 
             _pace(t0, 1/loop_hz)
@@ -183,7 +190,7 @@ def approach(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_t
 
         return -1
 
-def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_speed, threshold_alt, loop_hz, do_display, target_timeout):
+def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_speed, threshold_alt, loop_hz, do_display, target_timeout, matlab_bridge=None):
     try:
         print(f"[DSCT] Phase 2 – Initial descent "
             f"(max {max_lateral_speed_mps * 100:.0f} cm/s) ...")
@@ -224,6 +231,7 @@ def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_spe
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
+                _send_matlab_state(matlab_bridge, "descent", True, fwd, right, distance, alt if alt != -1 else down)
                 
                 mav.send_landing_target_pos_quat(fwd, right, down)
                 
@@ -239,10 +247,16 @@ def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_spe
                     v_right = (v_right / current_speed) * max_lateral_speed_mps
                     current_speed = max_lateral_speed_mps
                 
+                v_fwd, v_right, v_down = _apply_matlab_velocity(
+                    matlab_bridge,
+                    (v_fwd, v_right, descent_speed),
+                )
                 print(f"[DSCT] offset=({fwd:+.2f}, {right:+.2f}) m  "
-                                f"vel=({v_fwd:+.3f}, {v_right:+.3f}, {descent_speed:+.2f}) m/s  "
+                                f"vel=({v_fwd:+.3f}, {v_right:+.3f}, {v_down:+.2f}) m/s  "
                                 f"alt={alt:.1f} m  dist={distance:.2f} m")
-                mav.move_velocity_body(v_fwd, v_right, descent_speed)
+                mav.move_velocity_body(v_fwd, v_right, v_down)
+            else:
+                _send_matlab_state(matlab_bridge, "descent", False, alt_m=alt if alt != -1 else None)
                 
             _pace(t0, 1/loop_hz)
         
@@ -255,7 +269,7 @@ def descent(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, descent_spe
 
         return -1
     
-def final(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display, target_timeout):
+def final(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_threshold, loop_hz, do_display, target_timeout, matlab_bridge=None):
     try:
         print(f"[FINAL] Phase 3 – Final "
             f"(max {max_lateral_speed_mps * 100:.0f} cm/s) ...")
@@ -285,6 +299,7 @@ def final(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_thre
                 down = float(np.ravel(tvec[2]))
 
                 distance = float(np.linalg.norm((fwd, right)))
+                _send_matlab_state(matlab_bridge, "final", True, fwd, right, distance, down)
                 
                 mav.send_landing_target_pos_quat(fwd, right, down)
 
@@ -308,11 +323,16 @@ def final(mav, cameras, max_lateral_speed_mps, lateral_speed_mult, overhead_thre
                         v_right = (v_right / current_speed) * max_lateral_speed_mps
                         current_speed = max_lateral_speed_mps
 
-                    mav.move_velocity_body(v_fwd, v_right, 0)
+                    v_fwd, v_right, v_down = _apply_matlab_velocity(
+                        matlab_bridge,
+                        (v_fwd, v_right, 0.0),
+                    )
+                    mav.move_velocity_body(v_fwd, v_right, v_down)
                     print(f"[FINAL] offset=({fwd:+.2f}, {right:+.2f}) m  "
-                                                    f"vel=({v_fwd:+.3f}, {v_right:+.3f}, 0) m/s  "
+                                                    f"vel=({v_fwd:+.3f}, {v_right:+.3f}, {v_down:+.3f}) m/s  "
                                                     f"dist={distance:.2f} m")
             else:
+                _send_matlab_state(matlab_bridge, "final", False)
                 target_visible_prev = False
             _pace(t0, 1/loop_hz)
 
@@ -335,6 +355,39 @@ def _pace(t0: float, period: float) -> None:
     remaining = period - (time.monotonic() - t0)
     if remaining > 0:
         time.sleep(remaining)
+
+
+def _send_matlab_state(
+    matlab_bridge,
+    phase: str,
+    visible: bool,
+    err_x_m: Optional[float] = None,
+    err_y_m: Optional[float] = None,
+    dist_m: Optional[float] = None,
+    alt_m: Optional[float] = None,
+) -> None:
+    if matlab_bridge is None:
+        return
+
+    matlab_bridge.send_state(
+        phase=phase,
+        visible=visible,
+        err_x_m=err_x_m,
+        err_y_m=err_y_m,
+        dist_m=dist_m,
+        alt_m=alt_m,
+    )
+
+
+def _apply_matlab_velocity(matlab_bridge, python_velocity: Tuple[float, float, float]) -> Tuple[float, float, float]:
+    if matlab_bridge is None:
+        return python_velocity
+
+    matlab_velocity = matlab_bridge.get_velocity_override()
+    if matlab_velocity is None:
+        return python_velocity
+
+    return matlab_velocity
 
 
 # ---------------------------------------------------------------------------
@@ -397,6 +450,22 @@ def parse_args() -> argparse.Namespace:
                    help="Camera mount yaw (deg)")
     p.add_argument("--display", action="store_true", help="If set, will display the view of the cameras")
     p.add_argument("--server", action="store_true", help="Start telemetry video server to display cameras")
+    p.add_argument("--matlab-udp", action="store_true",
+                   help="Send ArUco/drone state JSON to MATLAB over UDP")
+    p.add_argument("--matlab-host", default="127.0.0.1",
+                   help="Host/IP where MATLAB listens for state UDP packets")
+    p.add_argument("--matlab-port", type=int, default=15000,
+                   help="UDP port where MATLAB listens for state packets")
+    p.add_argument("--matlab-send-hz", type=float, default=10.0,
+                   help="State UDP send frequency for MATLAB")
+    p.add_argument("--matlab-control", action="store_true",
+                   help="Accept optional velocity commands from MATLAB over UDP")
+    p.add_argument("--matlab-control-port", type=int, default=15001,
+                   help="UDP port where Python listens for MATLAB control commands")
+    p.add_argument("--matlab-command-timeout", type=float, default=0.75,
+                   help="Seconds before stale MATLAB commands are ignored")
+    p.add_argument("--matlab-debug", action="store_true",
+                   help="Print MATLAB UDP packets and command fallback events")
     return p.parse_args()
 
 
@@ -423,6 +492,18 @@ def main():
 
     if not args.onlycam:
         target_timeout = TargetTimeout(args.timeout)
+        matlab_bridge = None
+        if args.matlab_udp or args.matlab_control:
+            matlab_bridge = MatlabUdpBridge(
+                send_enabled=args.matlab_udp,
+                host=args.matlab_host,
+                port=args.matlab_port,
+                send_hz=args.matlab_send_hz,
+                control_enabled=args.matlab_control,
+                control_port=args.matlab_control_port,
+                command_timeout_s=args.matlab_command_timeout,
+                debug=args.matlab_debug,
+            )
 
         mav = MavlinkConnection(args.connect, args.baud, args.debug)
 
@@ -445,20 +526,31 @@ def main():
 
         if args.server:
             web_server.setPhase("Phase 1 - APPROACH")
-        if approach(mav, cameras, args.p1_max_speed, args.p1_mult_speed, args.p1_threshold, args.hz, args.display, target_timeout) < 0: return -1
+        if approach(mav, cameras, args.p1_max_speed, args.p1_mult_speed, args.p1_threshold, args.hz, args.display, target_timeout, matlab_bridge) < 0:
+            if matlab_bridge is not None:
+                matlab_bridge.close()
+            return -1
         
         if args.server:
             web_server.setPhase("Phase 2 - DESCENT")
-        if descent(mav, cameras, args.p2_max_speed, args.p2_mult_speed, args.p2_descent, args.p2_threshold, args.hz, args.display, target_timeout) < 0: return -1
+        if descent(mav, cameras, args.p2_max_speed, args.p2_mult_speed, args.p2_descent, args.p2_threshold, args.hz, args.display, target_timeout, matlab_bridge) < 0:
+            if matlab_bridge is not None:
+                matlab_bridge.close()
+            return -1
         if args.server:
             web_server.setPhase("Phase 3 - FINAL")
-        if final(mav, cameras, args.p3_max_speed, args.p3_mult_speed, args.p3_threshold, args.hz, args.display, target_timeout) < 0: return -1
+        if final(mav, cameras, args.p3_max_speed, args.p3_mult_speed, args.p3_threshold, args.hz, args.display, target_timeout, matlab_bridge) < 0:
+            if matlab_bridge is not None:
+                matlab_bridge.close()
+            return -1
         else: 
             if args.server:
                 web_server.setPhase("LAND")
             mav.switch_to_land()
 
         mav.wait_for_disarm()
+        if matlab_bridge is not None:
+            matlab_bridge.close()
     
     else:
         import code
