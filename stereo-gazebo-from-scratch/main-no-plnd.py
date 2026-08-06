@@ -390,6 +390,54 @@ def _apply_matlab_velocity(matlab_bridge, python_velocity: Tuple[float, float, f
     return matlab_velocity
 
 
+def perception_only(cameras, send_hz: float, do_display: bool, matlab_bridge=None) -> int:
+    print("[PERCEPTION] Sending ArUco state only; no MAVLink connection or movement commands.")
+    period = 1.0 / max(send_hz, 0.001)
+    target_visible_prev = False
+
+    try:
+        while True:
+            t0 = time.monotonic()
+            result = cameras.get_latest_pose()
+
+            if do_display and hasattr(cameras, "get_latest_frame"):
+                display_frame = cameras.get_latest_frame()
+                if display_frame is not None:
+                    cv2.imshow("img", display_frame)
+                    cv2.waitKey(1)
+
+            if result is not None:
+                tvec, rvec = result
+
+                right = float(np.ravel(tvec[0]))
+                fwd = -float(np.ravel(tvec[1]))
+                down = float(np.ravel(tvec[2]))
+
+                distance = float(np.linalg.norm((fwd, right)))
+                _send_matlab_state(matlab_bridge, "perception", True, fwd, right, distance, down)
+
+                if not target_visible_prev:
+                    print(f"[PERCEPTION] Target acquired - offset=({fwd:+.2f}, {right:+.2f}, {down:+.2f}) m")
+                target_visible_prev = True
+            else:
+                _send_matlab_state(matlab_bridge, "perception", False, 0.0, 0.0, 0.0, 0.0)
+                if target_visible_prev:
+                    print("[PERCEPTION] Target lost.")
+                target_visible_prev = False
+
+            _pace(t0, period)
+
+    except KeyboardInterrupt:
+        print("[PERCEPTION] Stopping perception-only mode.")
+        return 0
+
+    finally:
+        stop = getattr(cameras, "stop", None)
+        if callable(stop):
+            stop()
+        cv2.destroyAllWindows()
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -406,6 +454,8 @@ def parse_args() -> argparse.Namespace:
                    help="Serial baud rate (ignored for UDP/TCP)")
     p.add_argument("--debug", action="store_true", help="IF ENABLED, WILL NOT SEND MOVE COMMANDS")
     p.add_argument("--onlycam", action="store_true", help="ONLY SHOW CAMERA DISPLAY")
+    p.add_argument("--perception-only", action="store_true",
+                   help="Send ArUco perception state to MATLAB/Simulink without connecting to MAVLink")
 
     p.add_argument("--auto_arm", action="store_true", help="Automatically arm")
     p.add_argument("--auto_guided", action="store_true", help="Automatically set guided mode")
@@ -466,7 +516,14 @@ def parse_args() -> argparse.Namespace:
                    help="Seconds before stale MATLAB commands are ignored")
     p.add_argument("--matlab-debug", action="store_true",
                    help="Print MATLAB UDP packets and command fallback events")
-    return p.parse_args()
+    args = p.parse_args()
+
+    if args.perception_only and args.onlycam:
+        p.error("--perception-only cannot be combined with --onlycam")
+    if args.perception_only and args.matlab_control:
+        p.error("--perception-only cannot be combined with --matlab-control")
+
+    return args
 
 
 
@@ -489,6 +546,26 @@ def main():
     if args.server:
         web_server = TelemetryServer(capture_instance=cameras, port=5000)
         web_server_thread = web_server.start_background()
+
+    if args.perception_only:
+        matlab_bridge = None
+        if args.matlab_udp:
+            matlab_bridge = MatlabUdpBridge(
+                send_enabled=True,
+                host=args.matlab_host,
+                port=args.matlab_port,
+                send_hz=args.matlab_send_hz,
+                control_enabled=False,
+                debug=args.matlab_debug,
+            )
+        if args.server:
+            web_server.setPhase("PERCEPTION")
+
+        try:
+            return perception_only(cameras, args.matlab_send_hz, args.display, matlab_bridge)
+        finally:
+            if matlab_bridge is not None:
+                matlab_bridge.close()
 
     if not args.onlycam:
         target_timeout = TargetTimeout(args.timeout)
