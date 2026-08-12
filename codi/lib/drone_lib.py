@@ -1,12 +1,15 @@
 from pymavlink import mavutil
+import math
 
 # Coses a mirar:
 # https://mavlink.io/en/messages/common.html#MAV_CMD_REQUEST_MESSAGE -> request_message
 # https://mavlink.io/en/messages/common.html#COMMAND_INT -> COMMAND_INT
 # https://mavlink.io/en/messages/common.html#ORBIT_YAW_BEHAVIOUR -> Behaviour 
 # https://mavlink.io/en/messages/common.html#MAV_FRAME -> Reference frame
+# https://mavlink.io/en/messages/common.html#SET_POSITION_TARGET_GLOBAL_INT -> Global setpoint
 
 
+EARTH_RADIUS = 6378137.0   # Radi equatorial WGS84 (m), per a conversions lat/lon <-> metres
 
 
 class MavlinkConnection:
@@ -44,6 +47,66 @@ class MavlinkConnection:
             updown, 
 
             0, 0, 0, 0, 0, 0, 0, 0))
+
+    # ------------------------------------------------------------------ #
+    #  MOVIMENT AMB COORDENADES GLOBALS (GPS)                            #
+    # ------------------------------------------------------------------ #
+
+    def request_global_position_stream(self, hz:int|float=5):
+        """
+        Demana a l'autopilot que emeti GLOBAL_POSITION_INT a 'hz' Hz.
+        Útil per garantir telemetria de posició fresca abans de moure's.
+
+        :param int|float hz: Freqüència desitjada (Hz).
+        """
+        self.master.mav.command_long_send(
+            self.master.target_system,
+            self.master.target_component,
+
+            mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,
+
+            0,
+            mavutil.mavlink.MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+            int(1e6 / hz),   # interval en microsegons
+            0, 0, 0, 0, 0)
+
+    def get_global_position(self, timeout:int|float=2):
+        """
+        Llegeix la posició global actual a partir de GLOBAL_POSITION_INT.
+
+        :param int|float timeout: Temps màxim d'espera del missatge (s).
+        :return (lat, lon, rel_alt) en (graus, graus, m), o None si no arriba res.
+        """
+        msg = self.master.recv_match(type='GLOBAL_POSITION_INT', blocking=True, timeout=timeout)
+        if msg is None:
+            return None
+        return msg.lat / 1e7, msg.lon / 1e7, msg.relative_alt / 1000.0
+
+    def goto_global(self, lat:float, lon:float, alt:float):
+        """
+        Envia un setpoint de posició global (només posició; velocitat,
+        acceleració i yaw ignorats). L'autopilot vola cap al punt i s'hi manté.
+        Requereix mode GUIDED i el dron armat.
+
+        :param float lat: Latitud en graus decimals.
+        :param float lon: Longitud en graus decimals.
+        :param float alt: Alçada RELATIVA al punt d'armat (m).
+        """
+        self.master.mav.set_position_target_global_int_send(
+            0,
+            self.master.target_system,
+            self.master.target_component,
+
+            mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
+
+            0b110111111000,          # type_mask: només posició
+            int(lat * 1e7),
+            int(lon * 1e7),
+            alt,
+
+            0, 0, 0,                 # vx, vy, vz
+            0, 0, 0,                 # afx, afy, afz
+            0, 0)                    # yaw, yaw_rate
 
     def loiter_unlim(self, F, R, D):
         self.master.mav.command_long_send(
@@ -150,3 +213,23 @@ class MavlinkConnection:
                 if msg.custom_mode != self.mode_guided_id:
                     print(">>> Reset completat")
                     return
+
+def offset_location(lat:float, lon:float, d_north:float, d_east:float):
+    """
+    Desplaça una posició lat/lon 'd_north' i 'd_east' metres (Nord/Est positius).
+    Aproximació de terra plana, precisa de sobres a escala de pocs metres.
+
+    :return (lat, lon) desplaçats, en graus decimals.
+    """
+    d_lat = (d_north / EARTH_RADIUS) * (180.0 / math.pi)
+    d_lon = (d_east / (EARTH_RADIUS * math.cos(math.radians(lat)))) * (180.0 / math.pi)
+    return lat + d_lat, lon + d_lon
+
+
+def horizontal_distance(lat1:float, lon1:float, lat2:float, lon2:float):
+    """
+    Distància horitzontal (m) entre dues posicions lat/lon (aprox. terra plana).
+    """
+    d_north = math.radians(lat2 - lat1) * EARTH_RADIUS
+    d_east = math.radians(lon2 - lon1) * EARTH_RADIUS * math.cos(math.radians(lat1))
+    return math.sqrt(d_north * d_north + d_east * d_east)
