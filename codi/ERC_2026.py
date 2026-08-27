@@ -26,7 +26,7 @@ import numpy as np
 SEARCH_SQUARE_SIDE = 2
 SEARCH_ALT = -2
 SEARCH_MAX_DIST_TO_WP = 0.15
-SEARCH_SPEED = 1
+SEARCH_SPEED = 0.1
 ARUCO_HOME_ID = 101
 ARUCO_LAND_ID = 102
 ALIGN_ITERS = 6
@@ -252,7 +252,7 @@ class ERCMissionController:
         logger.info(f"Centering over landing target: ({lnd_crds[0]:.2f}, {lnd_crds[1]:.2f})")
 
         for _ in range(ALIGN_ITERS):
-            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
+            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m, vx=SEARCH_SPEED, vy=SEARCH_SPEED)
             time.sleep(ALIGN_DELAY)
 
         _, _, lands = self.cvproc.detect()
