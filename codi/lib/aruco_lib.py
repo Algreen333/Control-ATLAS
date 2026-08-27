@@ -1,9 +1,32 @@
 from cv2 import aruco
 import cv2
 import numpy as np
+from scipy.spatial.transform import Rotation, Slerp
 
-VERBOSE = True
 
+VERBOSE = False
+
+def get_euler_angles_rad(rvec):
+    """
+    Transforms a rotation vector into the equivalent euler angles.
+    Reutrns: ptich, yaw, roll
+    """
+    R, _ = cv2.Rodrigues(rvec)
+    
+    sy = np.sqrt(R[0,0] * R[0,0] +  R[1,0] * R[1,0])
+    singular = sy < 1e-6
+    
+    if not singular:
+        x = np.arctan2(R[2,1] , R[2,2])
+        y = np.arctan2(-R[2,0], sy)
+        z = np.arctan2(R[1,0], R[0,0])
+    else:
+        x = np.arctan2(-R[1,2], R[1,1])
+        y = np.arctan2(-R[2,0], sy)
+        z = 0
+
+    # Convert to degrees
+    return x, y, z
 
 def get_euler_angles(rvec):
     """
@@ -25,6 +48,96 @@ def get_euler_angles(rvec):
 
     # Convert to degrees
     return np.degrees(x), np.degrees(y), np.degrees(z)
+
+def create_homogeneous_matrix(rvec, tvec):
+    """
+    Converts OpenCV rvec and tvec into a 4x4 homogeneous transformation matrix.
+    """
+    # Convert rotation vector to 3x3 rotation matrix
+    R, _ = cv2.Rodrigues(rvec)
+    
+    # Create 4x4 matrix
+    T = np.eye(4)
+    T[0:3, 0:3] = R
+    T[0:3, 3] = tvec.flatten()
+    return T
+
+def transform_auco_poses(rvec, tvec, T_C):
+    T_M = create_homogeneous_matrix(rvec, tvec)
+    T = T_C @ T_M 
+    t = T[0:3, 3]
+    tvec = t.reshape((3, 1))
+    
+    return rvec, tvec
+
+def fuse_stereo_aruco_poses(rvec_1, tvec_1, T_C_1, rvec_2, tvec_2, T_C_2):
+    """
+    Transforms left and right camera ArUco detections to the center frame 
+    and averages them using translation mean and quaternion SLERP.
+    
+    Args:
+        rvec_L, tvec_L: Detection from Left Camera
+        T_C_L: 4x4 matrix of Left Camera relative to Center
+        rvec_R, tvec_R: Detection from Right Camera
+        T_C_R: 4x4 matrix of Right Camera relative to Center
+        
+    Returns:
+        rvec_avg, tvec_avg: The fused pose in the Center coordinate frame
+    """
+    
+    # 1. Convert local camera detections to 4x4 matrices
+    T_L_M = create_homogeneous_matrix(rvec_1, tvec_1)
+    T_R_M = create_homogeneous_matrix(rvec_2, tvec_2)
+    
+    # 2. Transform both detections to the Center frame
+    # T_Center_Marker = T_Center_Camera * T_Camera_Marker
+    T_1 = T_C_1 @ T_L_M 
+    T_2 = T_C_2 @ T_R_M
+    
+    # 3. Average Translation (Position)
+    t1 = T_1[0:3, 3]
+    t2 = T_2[0:3, 3]
+    t_avg = (t1 + t2) / 2.0
+    
+    # 4. Average Rotation using SLERP (Quaternions)
+    # Extract 3x3 rotation matrices
+    R1_mat = T_1[0:3, 0:3]
+    R2_mat = T_2[0:3, 0:3]
+    
+    # Convert to SciPy Rotation objects
+    rot1 = Rotation.from_matrix(R1_mat)
+    rot2 = Rotation.from_matrix(R2_mat)
+    
+    # Set up SLERP between the two rotations at "time" 0 and 1
+    key_rots = Rotation.concatenate([rot1, rot2])
+    key_times = [0, 1]
+    slerp = Slerp(key_times, key_rots)
+    
+    # Evaluate exactly halfway between them (t = 0.5)
+    rot_avg = slerp([0.5])[0]
+    
+    # 5. Convert fused rotation back to OpenCV rvec format
+    R_avg_mat = rot_avg.as_matrix()
+    rvec_avg, _ = cv2.Rodrigues(R_avg_mat)
+    
+    # Ensure tvec shape matches OpenCV standards (3x1)
+    tvec_avg = t_avg.reshape((3, 1))
+    
+    return rvec_avg, tvec_avg
+
+def get_gazebo_camera_matrix(width, height, horizontal_fov_rad, vertical_fov_rad):
+    fx = (width / 2.0) / np.tan(horizontal_fov_rad / 2.0)
+    fy = (height / 2.0) / np.tan(vertical_fov_rad / 2.0)
+    cx = width / 2.0
+    cy = height / 2.0
+    
+    mtx = np.array([
+        [fx, 0, cx],
+        [0, fy, cy],
+        [0,  0,  1]
+    ], dtype=np.float32)
+    
+    return mtx
 
 class ArucoDetector():
     def __init__(self, mtx, dist, dict=aruco.DICT_ARUCO_ORIGINAL):
@@ -69,7 +182,7 @@ class ArucoDetector():
             [-marker_size / 2, -marker_size / 2, 0]
         ], dtype=np.float32)
 
-        image_points = current_marker_corners.reshape((4, 2))
+        image_points = current_marker_corners.reshape(-1,2).astype(np.float32)
         
         if VERBOSE: print("solving...")
 
