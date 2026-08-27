@@ -26,6 +26,9 @@ SEARCH_ALT = -2
 SEARCH_MAX_DIST_TO_WP = 0.25
 ARUCO_HOME_ID = 101
 ARUCO_LAND_ID = 102
+ALIGN_ITERS = 6
+ALIGN_DELAY = 0.5
+ALIGN_THRSH_DIST = 0.75
 
 
 class CVProcessing:
@@ -70,13 +73,15 @@ class ERCMissionController:
                 capture_source=0, capture_resolution: tuple[int,int] = (1640, 1232), capture_fps: float = 30.0,
                 capture_config="./configs/1640x1232-v2.conf", aruco_dict=cv2.aruco.DICT_ARUCO_ORIGINAL,
                 mavlink_con: str = "/dev/ttyAMA0", mavlink_baud: int = 57600,
-                debug: bool = False
+                debug: bool = False, doGazebo: bool = False
                 ):
 
         # Initialise classes
         self.state_manager = StateManager(state_file)
         self.mav = MavlinkConnection(mavlink_con, mavlink_baud, debug)
-        self.capture = VideoCapture(capture_source=capture_source, capture_resolution=capture_resolution, fps=capture_fps)
+        if doGazebo: self.capture = GazeboVideoCapture(capture_source=capture_source, capture_resolution=capture_resolution, fps=capture_fps)
+        else: self.capture = VideoCapture(capture_source=capture_source, capture_resolution=capture_resolution, fps=capture_fps)
+
         self.state = FlightState()
         self.cvproc = CVProcessing(self.capture, capture_config, aruco_dict)
 
@@ -85,9 +90,8 @@ class ERCMissionController:
             (SEARCH_SQUARE_SIDE,  -SEARCH_SQUARE_SIDE, SEARCH_ALT),
             (SEARCH_SQUARE_SIDE,  SEARCH_SQUARE_SIDE,  SEARCH_ALT),
             (-SEARCH_SQUARE_SIDE, SEARCH_SQUARE_SIDE,  SEARCH_ALT),
-            (-SEARCH_SQUARE_SIDE, -SEARCH_SQUARE_SIDE, SEARCH_ALT),
-
-            (0, 0, SEARCH_ALT) # RTH if not found
+            (-SEARCH_SQUARE_SIDE, -SEARCH_SQUARE_SIDE, SEARCH_ALT)
+            #,(0, 0, SEARCH_ALT) # RTH if not found
         ]
 
     def on_boot(self):
@@ -142,19 +146,112 @@ class ERCMissionController:
 
             elif phase == FlightPhase.SEARCHING:
                 result = self._execute_search_step()
+                if result == True: 
+                    self.state.current_phase = FlightPhase.ALIGNING
+                    self.state_manager.save_state(self.state)
+
+            elif phase == FlightPhase.ALIGNING:
+                result = self._execute_align_step()
+                if result == True:
+                    logger.info("Approach finalised, landing...")
+                    self.state.current_phase = FlightPhase.LANDING
+                    self.state_manager.save_state(self.state)
+
+            elif phase == FlightPhase.LANDING:
+                self.mav.switch_to_land()
+                while self.mav.is_airborne(alt_threshold_m=0.2):
+                    time.sleep(1)
+                self.state.current_phase = FlightPhase.MISSION_COMPLETED
 
     def _execute_search_step(self):
         pos = np.array(self.mav.get_local_position())
+        if pos is None:
+            logger.warning("Could not retrieve local position!")
+            return False
+        logger.debug(f"Mavlink current pos: {pos}")
+
+        att_msg = self.mav.master.recv_match(type='ATTITUDE', blocking=False)
+        yaw = att_msg.yaw if att_msg else 0.0
 
         # Image search
         frame, homes, lands = self.cvproc.detect()
+        meanhomes = None
+        meanlands = None
 
         if len(homes) > 0:
             homes = np.array(homes)
             meanhomes = np.mean(homes, axis=0)
-            logger.info(f"Mavlink current pos: {pos} vs aruco predicted")
+            logger.info(f"Home ArUco (101) detected at camera offset: {meanhomes}")
+
+        if len(lands) > 0:
+            lands = np.array(lands)
+            meanlands = np.mean(lands, axis=0)
+            logger.info(f"Landing ArUco (102) detected at camera offset: {meanlands}")
+
+            cam_x, cam_y, cam_z = meanlands
+            # Map OpenCV camera frame to drone Body frame
+            body_forward = -cam_y  # Up in the image is forward for the drone
+            body_right = cam_x     # Right in the image is right for the drone
+
+            # Apply 2D rotation matrix based on drone's Yaw (heading)
+            north_offset = (body_forward * math.cos(yaw)) - (body_right * math.sin(yaw))
+            east_offset = (body_forward * math.sin(yaw)) + (body_right * math.cos(yaw))
+
+            # Add offsets to drone's current NED position
+            target_n = pos[0] + north_offset
+            target_e = pos[1] + east_offset
+            target_d = pos[2] # Keep the drone's current Z altitude as the reference
+
+            logger.info(f"Calculated Landing Pad NED: N={target_n:.2f}, E={target_e:.2f}")
+
+            self.register_landing_target((target_n, target_e, target_d))
+
 
         target_pos = np.array(self.search_path[self.state.search_wp_idx])
-        distance = np.linalg.norm(target_pos-pos)
+        distance = np.linalg.norm(target_pos[:2] - pos[:2]) # (ignoring Z/altitude)
+
+        if distance < SEARCH_MAX_DIST_TO_WP:
+            logger.info(f"Reached search waypoint {self.state.search_wp_idx}")
+            if self.state.search_wp_idx < len(self.search_path) - 1:
+                self.state.search_wp_idx += 1
+                self.state_manager.save_state(self.state)
+                return False
+            else: return True
+
+    def register_landing_target(self, coords):
+        self.state.landing_coords.append(coords)
+        self.state_manager.save_state(self.state)
+
+    def _execute_align_step(self):
+        self._execute_search_step() # Keep looking for the landing target for better position estimate
+        
+        if len(self.state.landing_coords) == 0:
+            lnd_crds = (0.0, 0.0, 0.0)
+        else:
+            coords = np.array(self.state.landing_coords)
+            lnd_crds = np.mean(coords, axis=0)
+
+        logger.info(f"Centering over landing target: ({lnd_crds[0]:.2f}, {lnd_crds[1]:.2f})")
+
+        for _ in range(ALIGN_ITERS):
+            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m)
+            time.sleep(ALIGN_ITERS)
+
+        _, _, lands = self.cvproc.detect()
+        lands = np.array(lands)
+        meanlands = np.mean(lands, axis=0)
+        dist = np.linalg.norm(meanlands[:2])
+
+        logger.info(f"Aligning complete. Distance: {dist}m")
+
+        if dist < ALIGN_THRSH_DIST: return True
+        return False
 
 
+if __name__ == "__main__":
+    SERIAL_PORT = os.getenv("MAVLINK_PORT", "/dev/ttyAMA0")
+    BAUD_RATE = int(os.getenv("MAVLINK_BAUD", "57600"))
+    STATE_FILE = os.getenv("FLIGHT_CHKP_FILE", "flight_checkpoint.json")
+
+    controller = ERCMissionController(state_file=STATE_FILE, mavlink_con=SERIAL_PORT,mavlink_baud=BAUD_RATE, debug=False, doGazebo=True)
+    controller.on_boot()

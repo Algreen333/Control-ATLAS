@@ -38,7 +38,7 @@ class VideoCapture:
             self.capture.set(cv2.CAP_PROP_FPS, self.fps)
 
     def read(self):
-        return self.capture.read()
+        return self.capture.read()   
 
 class CalibrationConfig:
     """
@@ -108,3 +108,34 @@ class CalibrationConfig:
         }
         with open(path, "w") as f:
             json.dump(config_data, f, indent=4)
+
+
+
+class GazeboVideoCapture:
+    def __init__(self, capture_source = 0, resolution=(640, 480), format="RGB888", fps=30.0):
+        """
+        :param any capture_source: Source of the capture. Irrelevant when using Picamera2
+        :param (int,int) resolution: Resolution of the capture. By default (640,480)
+        :param str format: Format of the capture. Only relevant when using Picamera2. By default "RGB888"
+        :param float fps: Fps of the capture. By default 30.0
+        """
+
+        VIDSRC_PORT_NARR = 5600
+        pipeline_narr = (
+            f"udpsrc port={VIDSRC_PORT_NARR} caps=\"application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264\" ! "
+            "rtph264depay ! "
+            "avdec_h264 ! "
+            "videoconvert ! "
+            "appsink drop=1"
+        )
+        
+        self.resolution = resolution
+        self.fps = fps
+        self.format = format
+        self.capture_source = capture_source
+        
+        self.capture = cv2.VideoCapture(pipeline_narr, cv2.CAP_GSTREAMER)
+
+
+    def read(self):
+        return self.capture.read()

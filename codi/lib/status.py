@@ -60,6 +60,7 @@ class StateManager:
                 search_waypoint_idx=data.get("search_waypoint_idx", 0),
                 search_altitude_m=data.get("search_altitude_m", 2.0),
                 liftoff_coords=tuple(data.get("liftoff_coords", (0.0, 0.0, 0.0))),
+                landing_coords=list(data.get("landing_coords", []))
             )
 
             logger.info(
