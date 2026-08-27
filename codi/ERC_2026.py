@@ -25,7 +25,8 @@ import numpy as np
 # PARAMS (to be changed)
 SEARCH_SQUARE_SIDE = 2
 SEARCH_ALT = -2
-SEARCH_MAX_DIST_TO_WP = 0.25
+SEARCH_MAX_DIST_TO_WP = 0.15
+SEARCH_SPEED = 1
 ARUCO_HOME_ID = 101
 ARUCO_LAND_ID = 102
 ALIGN_ITERS = 6
@@ -127,7 +128,7 @@ class ERCMissionController:
         pos = self.mav.get_local_position()
         if pos:
             # Hold current spot while confirming state
-            self.mav.send_target_ned(pos[0], pos[1], pos[2])
+            self.mav.send_target_ned(pos[0], pos[1], pos[2], speed_ms=SEARCH_SPEED)
             logger.info(f"Hover position hold commanded at NED: ({pos[0]:.2f}, {pos[1]:.2f}, {pos[2]:.2f})")
 
         logger.info(f"Resuming phase: {self.state.current_phase.value}")
@@ -221,7 +222,7 @@ class ERCMissionController:
             logger.info(f"Moving to first waypoint")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
-                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m)
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
@@ -230,7 +231,7 @@ class ERCMissionController:
             logger.info(f"Reached search waypoint {self.state.search_wp_idx}")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
-                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m)
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
@@ -251,7 +252,7 @@ class ERCMissionController:
         logger.info(f"Centering over landing target: ({lnd_crds[0]:.2f}, {lnd_crds[1]:.2f})")
 
         for _ in range(ALIGN_ITERS):
-            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m)
+            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
             time.sleep(ALIGN_DELAY)
 
         _, _, lands = self.cvproc.detect()
