@@ -7,7 +7,7 @@ import subprocess
 def generate_aruco_texture(marker_id, path):
     """Generates the ArUco PNG file."""
     # Use DICT_4X4_50 (Common standard)
-    aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+    aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
     
     # Generate 500x500 pixel image
     img = cv2.aruco.generateImageMarker(aruco_dict, marker_id, 500)
