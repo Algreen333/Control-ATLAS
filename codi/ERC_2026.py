@@ -222,7 +222,7 @@ class ERCMissionController:
             logger.info(f"Moving to first waypoint")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
-                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, vx=SEARCH_SPEED, vy=SEARCH_SPEED)
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
@@ -231,7 +231,7 @@ class ERCMissionController:
             logger.info(f"Reached search waypoint {self.state.search_wp_idx}")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
-                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, vx=SEARCH_SPEED, vy=SEARCH_SPEED)
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
@@ -252,7 +252,7 @@ class ERCMissionController:
         logger.info(f"Centering over landing target: ({lnd_crds[0]:.2f}, {lnd_crds[1]:.2f})")
 
         for _ in range(ALIGN_ITERS):
-            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m, vx=SEARCH_SPEED, vy=SEARCH_SPEED)
+            self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
             time.sleep(ALIGN_DELAY)
 
         _, _, lands = self.cvproc.detect()
