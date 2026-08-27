@@ -216,10 +216,20 @@ class ERCMissionController:
         target_pos = np.array(self.search_path[self.state.search_wp_idx])
         distance = np.linalg.norm(target_pos[:2] - pos[:2]) # (ignoring Z/altitude)
 
-        if distance < SEARCH_MAX_DIST_TO_WP:
+        if self.state.search_wp_idx == -1: 
+            logger.info(f"Moving to first waypoint")
+            if self.state.search_wp_idx < len(self.search_path) - 1:
+                self.state.search_wp_idx += 1
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m)
+                self.state_manager.save_state(self.state)
+                return False
+            else: return True
+
+        elif distance < SEARCH_MAX_DIST_TO_WP:
             logger.info(f"Reached search waypoint {self.state.search_wp_idx}")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True

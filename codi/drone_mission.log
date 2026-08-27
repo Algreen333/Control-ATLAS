@@ -1,0 +1,966 @@
+[2026-08-27 14:23:01,108] [lib.drone_lib] [INFO] [MAV] Connecting to /dev/ttyAMA0 ...
+[2026-08-27 14:27:28,366] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 14:27:28,406] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 14:27:28,406] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 14:27:28,658] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:05:58,007] [lib.drone_lib] [INFO] [MAV] Connecting to /dev/ttyAMA0 ...
+[2026-08-27 16:09:06,886] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:09:06,916] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:09:06,916] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:09:07,169] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:09:07,418] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:09:07,418] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:09:07,418] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:09:07,418] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-27 16:09:07,671] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:09:07,672] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:09:07,672] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:09:07,672] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:09:07,672] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:09:08,673] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:09:08,922] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:09:08,922] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:09:13,969] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-27 16:09:18,972] [lib.status] [ERROR] Error saving checkpoint: 'FlightState' object has no attribute 'search_waypoint_idx'
+[2026-08-27 16:10:04,993] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:10:05,024] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:10:05,024] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:10:05,024] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:10:05,730] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:10:05,731] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:10:05,731] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:10:05,731] [lib.status] [ERROR] Failed to load checkpoint (FlightState.__init__() got an unexpected keyword argument 'custom_platform_mode'). Falling back to fresh state.
+[2026-08-27 16:10:05,732] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:10:05,732] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:10:05,732] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:10:05,732] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:10:05,732] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:10:06,733] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:10:06,734] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:10:06,734] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:10:06,734] [lib.drone_lib] [INFO] [MAV] Reached 2.0 m.
+[2026-08-27 16:10:11,740] [lib.status] [ERROR] Error saving checkpoint: 'FlightState' object has no attribute 'search_waypoint_idx'
+[2026-08-27 16:10:36,797] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:10:36,826] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:10:36,826] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:10:36,826] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:10:36,936] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:10:36,937] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:10:36,937] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:10:36,937] [lib.status] [ERROR] Failed to load checkpoint (FlightState.__init__() got an unexpected keyword argument 'custom_platform_mode'). Falling back to fresh state.
+[2026-08-27 16:10:37,801] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:10:37,801] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:10:37,801] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:10:37,801] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:10:37,801] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:10:38,802] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:10:38,802] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:10:38,802] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:10:38,803] [lib.drone_lib] [INFO] [MAV] Reached 2.0 m.
+[2026-08-27 16:10:43,809] [lib.status] [ERROR] Error saving checkpoint: 'FlightState' object has no attribute 'search_waypoint_idx'
+[2026-08-27 16:12:16,892] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:12:16,922] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:12:16,922] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:12:16,922] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:12:17,734] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:12:17,734] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:12:17,734] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:12:17,734] [lib.status] [ERROR] Failed to load checkpoint (FlightState.__init__() got an unexpected keyword argument 'custom_platform_mode'). Falling back to fresh state.
+[2026-08-27 16:12:17,898] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:12:17,898] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:12:17,898] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:12:17,898] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:12:17,898] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:12:18,899] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:12:18,899] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:12:18,900] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:12:18,900] [lib.drone_lib] [INFO] [MAV] Reached 2.0 m.
+[2026-08-27 16:12:23,906] [lib.status] [ERROR] Error saving checkpoint: 'FlightState' object has no attribute 'search_waypoint_idx'
+[2026-08-27 16:14:44,234] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:14:44,274] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:14:44,274] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:14:44,275] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:14:45,194] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:14:45,194] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:14:45,194] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:14:45,195] [lib.status] [ERROR] Failed to load checkpoint ('FlightState' object has no attribute 'mission_attempt'). Falling back to fresh state.
+[2026-08-27 16:14:45,238] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:14:45,238] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:14:45,238] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:14:45,239] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:14:45,239] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:14:46,240] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:14:46,240] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:14:46,240] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:14:46,241] [lib.drone_lib] [INFO] [MAV] Reached 2.0 m.
+[2026-08-27 16:14:51,275] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11996322673300651, 0.04796871851299657, 2.006007310316779).
+[2026-08-27 16:14:51,275] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11996323 0.04796872 2.00600731]
+[2026-08-27 16:15:50,883] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:15:50,916] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:15:50,917] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:15:50,917] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:15:51,332] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:15:51,332] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:15:51,332] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:15:51,332] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=0
+[2026-08-27 16:15:51,637] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:15:51,637] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:15:51,910] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12305289218265267, 0.04648357743468359, 2.005429764207657).
+[2026-08-27 16:15:51,911] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12305289 0.04648358 2.00542976]
+[2026-08-27 16:15:52,154] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12280269582468092, 0.04793959735660783, 2.0096419790364926).
+[2026-08-27 16:15:52,155] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1228027  0.0479396  2.00964198]
+[2026-08-27 16:15:52,407] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12314103928735748, 0.04782811828840791, 2.013212792839594).
+[2026-08-27 16:15:52,407] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12314104 0.04782812 2.01321279]
+[2026-08-27 16:15:52,651] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12305289218265267, 0.04648357743468359, 2.005429764207657).
+[2026-08-27 16:15:52,651] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12305289 0.04648358 2.00542976]
+[2026-08-27 16:15:52,902] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12358218368464617, 0.04655550242580744, 2.003816331740096).
+[2026-08-27 16:15:52,903] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12358218 0.0465555  2.00381633]
+[2026-08-27 16:15:53,154] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12904471223908984, 0.049482162879694445, 2.010422819468216).
+[2026-08-27 16:15:53,154] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12904471 0.04948216 2.01042282]
+[2026-08-27 16:15:53,413] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12770696232424222, 0.04958502170798044, 2.0055260502056877).
+[2026-08-27 16:15:53,413] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12770696 0.04958502 2.00552605]
+[2026-08-27 16:15:53,655] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12125465761349327, 0.049490759042233594, 2.009540204888526).
+[2026-08-27 16:15:53,656] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12125466 0.04949076 2.0095402 ]
+[2026-08-27 16:15:53,915] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11814005532206423, 0.0494934939564584, 2.0091961970727876).
+[2026-08-27 16:15:53,915] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11814006 0.04949349 2.0091962 ]
+[2026-08-27 16:15:54,166] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:15:54,166] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:15:54,410] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.10753803851692603, 0.04803267797034887, 2.005128266328057).
+[2026-08-27 16:15:54,410] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.10753804 0.04803268 2.00512827]
+[2026-08-27 16:15:54,659] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1059864831965255, 0.04958299909442128, 2.0050977805880295).
+[2026-08-27 16:15:54,659] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.10598648 0.049583   2.00509778]
+[2026-08-27 16:15:54,921] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.10753798209192866, 0.04958305823554852, 2.005126766471313).
+[2026-08-27 16:15:54,921] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.10753798 0.04958306 2.00512677]
+[2026-08-27 16:15:55,163] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11064096697569756, 0.04958321967298388, 2.0051855838260355).
+[2026-08-27 16:15:55,164] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11064097 0.04958322 2.00518558]
+[2026-08-27 16:15:55,419] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11191362062369263, 0.04949797409927094, 2.008526831435969).
+[2026-08-27 16:15:55,419] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11191362 0.04949797 2.00852683]
+[2026-08-27 16:15:55,665] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219946577033744, 0.04800677981683204, 2.0084514221371004).
+[2026-08-27 16:15:55,665] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219947 0.04800678 2.00845142]
+[2026-08-27 16:15:55,921] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:15:55,921] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:15:56,164] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11035760678366816, 0.049498913542794294, 2.008363666190942).
+[2026-08-27 16:15:56,164] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11035761 0.04949891 2.00836367]
+[2026-08-27 16:15:56,422] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11064096697569756, 0.04958321967298388, 2.0051855838260355).
+[2026-08-27 16:15:56,423] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11064097 0.04958322 2.00518558]
+[2026-08-27 16:15:56,663] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1106415596832527, 0.04954770528587391, 2.00834917431622).
+[2026-08-27 16:15:56,663] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11064156 0.04954771 2.00834917]
+[2026-08-27 16:15:56,916] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11042480725540417, 0.05119402240535286, 2.0035712509061474).
+[2026-08-27 16:15:56,916] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11042481 0.05119402 2.00357125]
+[2026-08-27 16:15:57,165] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11042480725540417, 0.05119402240535286, 2.0035712509061474).
+[2026-08-27 16:15:57,165] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11042481 0.05119402 2.00357125]
+[2026-08-27 16:15:57,422] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11042480725540417, 0.05119402240535286, 2.0035712509061474).
+[2026-08-27 16:15:57,423] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11042481 0.05119402 2.00357125]
+[2026-08-27 16:15:57,665] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11064096697569756, 0.04958321967298388, 2.0051855838260355).
+[2026-08-27 16:15:57,666] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11064097 0.04958322 2.00518558]
+[2026-08-27 16:15:57,917] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11064096697569756, 0.04958321967298388, 2.0051855838260355).
+[2026-08-27 16:15:57,918] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11064097 0.04958322 2.00518558]
+[2026-08-27 16:15:58,166] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:15:58,166] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:15:58,417] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:15:58,417] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:15:58,663] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:15:58,664] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:15:58,916] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219236925399803, 0.05113369677894931, 2.005214575770396).
+[2026-08-27 16:15:58,917] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219237 0.0511337  2.00521458]
+[2026-08-27 16:15:59,167] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219220784948387, 0.054234376362158505, 2.0052141806576445).
+[2026-08-27 16:15:59,167] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219221 0.05423438 2.00521418]
+[2026-08-27 16:15:59,420] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219220784948387, 0.054234376362158505, 2.0052141806576445).
+[2026-08-27 16:15:59,420] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219221 0.05423438 2.00521418]
+[2026-08-27 16:15:59,667] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219609706898555, 0.0511054465995242, 2.0085721829743513).
+[2026-08-27 16:15:59,667] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1121961  0.05110545 2.00857218]
+[2026-08-27 16:15:59,919] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121978398428044, 0.04955614507414202, 2.0085123202899466).
+[2026-08-27 16:15:59,919] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219784 0.04955615 2.00851232]
+[2026-08-27 16:16:00,167] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:00,167] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:00,421] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:00,421] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:00,667] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219236925399803, 0.05113369677894931, 2.005214575770396).
+[2026-08-27 16:16:00,668] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219237 0.0511337  2.00521458]
+[2026-08-27 16:16:00,923] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11197253165285737, 0.05274119978442916, 2.0036021904006263).
+[2026-08-27 16:16:00,923] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11197253 0.0527412  2.00360219]
+[2026-08-27 16:16:01,172] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11197253165285737, 0.05274119978442916, 2.0036021904006263).
+[2026-08-27 16:16:01,172] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11197253 0.0527412  2.00360219]
+[2026-08-27 16:16:01,426] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11119753455517785, 0.051193972820187866, 2.00356328931062).
+[2026-08-27 16:16:01,426] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11119753 0.05119397 2.00356329]
+[2026-08-27 16:16:01,673] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:16:01,674] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:16:01,926] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:16:01,927] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:16:02,174] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274563864120234, 0.04810060466786485, 2.0035905767725803).
+[2026-08-27 16:16:02,174] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274564 0.0481006  2.00359058]
+[2026-08-27 16:16:02,430] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:02,430] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:02,676] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:02,676] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:02,930] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:02,930] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:03,178] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:03,178] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:03,431] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:03,432] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:03,677] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:03,677] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:03,930] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:03,930] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:04,177] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11375607952919878, 0.0480151681582598, 2.008614946042709).
+[2026-08-27 16:16:04,177] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11375608 0.04801517 2.00861495]
+[2026-08-27 16:16:04,432] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352063604909254, 0.049647738524302897, 2.003627282715947).
+[2026-08-27 16:16:04,432] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352064 0.04964774 2.00362728]
+[2026-08-27 16:16:04,677] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11197262666735444, 0.05119431406859622, 2.0035994022127954).
+[2026-08-27 16:16:04,678] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11197263 0.05119431 2.0035994 ]
+[2026-08-27 16:16:04,929] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11119753455517785, 0.051193972820187866, 2.00356328931062).
+[2026-08-27 16:16:04,929] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11119753 0.05119397 2.00356329]
+[2026-08-27 16:16:05,177] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1114591196282859, 0.051717244606730314, 2.0129742104463606).
+[2026-08-27 16:16:05,177] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11145912 0.05171724 2.01297421]
+[2026-08-27 16:16:05,434] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11197262666735444, 0.05119431406859622, 2.0035994022127954).
+[2026-08-27 16:16:05,434] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11197263 0.05119431 2.0035994 ]
+[2026-08-27 16:16:05,678] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:16:05,679] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:16:05,929] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:05,930] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:06,179] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219252875209505, 0.048032931552144095, 2.005216176943736).
+[2026-08-27 16:16:06,179] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219253 0.04803293 2.00521618]
+[2026-08-27 16:16:06,431] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11375446583801835, 0.049564726724127775, 2.0086772005646956).
+[2026-08-27 16:16:06,431] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11375447 0.04956473 2.0086772 ]
+[2026-08-27 16:16:06,679] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:06,679] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:06,932] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:06,932] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:07,180] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:07,180] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:07,434] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:07,435] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:07,679] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274563864120234, 0.04810060466786485, 2.0035905767725803).
+[2026-08-27 16:16:07,679] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274564 0.0481006  2.00359058]
+[2026-08-27 16:16:07,936] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:07,936] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:08,181] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:08,181] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:08,437] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1143125251982718, 0.05125307064121826, 1.9980584395660765).
+[2026-08-27 16:16:08,437] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11431253 0.05125307 1.99805844]
+[2026-08-27 16:16:08,682] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11530970105816218, 0.05112315097071804, 2.0089063589428333).
+[2026-08-27 16:16:08,682] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1153097  0.05112315 2.00890636]
+[2026-08-27 16:16:08,966] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:08,967] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:09,212] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11276889867979428, 0.04971150045449724, 1.9980306812449986).
+[2026-08-27 16:16:09,212] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1127689  0.0497115  1.99803068]
+[2026-08-27 16:16:09,465] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11191362062369263, 0.04949797409927094, 2.008526831435969).
+[2026-08-27 16:16:09,465] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11191362 0.04949797 2.00852683]
+[2026-08-27 16:16:09,712] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:09,713] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:09,965] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:09,966] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:10,215] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11375085774136866, 0.05266364503161405, 2.0087984784612933).
+[2026-08-27 16:16:10,215] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11375086 0.05266365 2.00879848]
+[2026-08-27 16:16:10,467] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274528025346081, 0.0527411427327524, 2.0035947050321083).
+[2026-08-27 16:16:10,468] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274528 0.05274114 2.00359471]
+[2026-08-27 16:16:10,714] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274536057520804, 0.05119426396516423, 2.0035918491250855).
+[2026-08-27 16:16:10,714] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274536 0.05119426 2.00359185]
+[2026-08-27 16:16:10,966] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:10,967] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:11,216] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11346987135428106, 0.0494969677584687, 2.0086916617592987).
+[2026-08-27 16:16:11,216] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11346987 0.04949697 2.00869166]
+[2026-08-27 16:16:11,467] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:11,468] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:11,716] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1142935473762296, 0.04810085876784817, 2.0036206889896966).
+[2026-08-27 16:16:11,716] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11429355 0.04810086 2.00362069]
+[2026-08-27 16:16:11,973] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:11,974] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:12,216] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:12,216] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:12,470] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352048602010062, 0.05119460349750334, 2.0036282443906424).
+[2026-08-27 16:16:12,471] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352049 0.0511946  2.00362824]
+[2026-08-27 16:16:12,724] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274547642938804, 0.049647417857411745, 2.0035904200236225).
+[2026-08-27 16:16:12,725] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274548 0.04964742 2.00359042]
+[2026-08-27 16:16:12,977] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11191362062369263, 0.04949797409927094, 2.008526831435969).
+[2026-08-27 16:16:12,977] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11191362 0.04949797 2.00852683]
+[2026-08-27 16:16:13,218] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352083063162874, 0.048100903465410606, 2.003627914150522).
+[2026-08-27 16:16:13,219] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352083 0.0481009  2.00362791]
+[2026-08-27 16:16:13,470] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11506876887301955, 0.04810116238051142, 2.003658098344139).
+[2026-08-27 16:16:13,470] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506877 0.04810116 2.0036581 ]
+[2026-08-27 16:16:13,719] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11684695877436788, 0.04803331364666515, 2.005306120018787).
+[2026-08-27 16:16:13,719] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684696 0.04803331 2.00530612]
+[2026-08-27 16:16:13,971] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11684695877436788, 0.04803331364666515, 2.005306120018787).
+[2026-08-27 16:16:13,972] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684696 0.04803331 2.00530612]
+[2026-08-27 16:16:14,218] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11502636497149042, 0.04949588825903642, 2.008858170619361).
+[2026-08-27 16:16:14,219] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11502636 0.04949589 2.00885817]
+[2026-08-27 16:16:14,478] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11531143603747684, 0.04957345618471739, 2.0088437386124247).
+[2026-08-27 16:16:14,479] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11531144 0.04957346 2.00884374]
+[2026-08-27 16:16:17,070] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11358748028963034, 0.05013393409074569, 2.005606110651673).
+[2026-08-27 16:16:17,070] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11358748 0.05013393 2.00560611]
+[2026-08-27 16:16:17,323] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274547642938804, 0.049647417857411745, 2.0035904200236225).
+[2026-08-27 16:16:17,324] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274548 0.04964742 2.00359042]
+[2026-08-27 16:16:17,570] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:16:17,570] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:16:17,823] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121924480146738, 0.04958332478610311, 2.005215203320267).
+[2026-08-27 16:16:17,823] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219245 0.04958332 2.0052152 ]
+[2026-08-27 16:16:18,071] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:18,071] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:18,326] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374401280393415, 0.04803304434587185, 2.0052459864753045).
+[2026-08-27 16:16:18,326] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374401 0.04803304 2.00524599]
+[2026-08-27 16:16:18,572] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11346987135428106, 0.0494969677584687, 2.0086916617592987).
+[2026-08-27 16:16:18,572] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11346987 0.04949697 2.00869166]
+[2026-08-27 16:16:18,826] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:18,826] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:19,071] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:19,072] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:19,324] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352063604909254, 0.049647738524302897, 2.003627282715947).
+[2026-08-27 16:16:19,325] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352064 0.04964774 2.00362728]
+[2026-08-27 16:16:19,572] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:19,572] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:19,824] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11274547642938804, 0.049647417857411745, 2.0035904200236225).
+[2026-08-27 16:16:19,825] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11274548 0.04964742 2.00359042]
+[2026-08-27 16:16:20,071] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11197262666735444, 0.05119431406859622, 2.0035994022127954).
+[2026-08-27 16:16:20,071] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11197263 0.05119431 2.0035994 ]
+[2026-08-27 16:16:20,324] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11197262666735444, 0.05119431406859622, 2.0035994022127954).
+[2026-08-27 16:16:20,324] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11197263 0.05119431 2.0035994 ]
+[2026-08-27 16:16:20,575] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219236925399803, 0.05113369677894931, 2.005214575770396).
+[2026-08-27 16:16:20,575] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219237 0.0511337  2.00521458]
+[2026-08-27 16:16:20,831] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219236925399803, 0.05113369677894931, 2.005214575770396).
+[2026-08-27 16:16:20,832] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219237 0.0511337  2.00521458]
+[2026-08-27 16:16:21,075] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11192913903069411, 0.05259658616031662, 2.0086468188196593).
+[2026-08-27 16:16:21,075] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11192914 0.05259659 2.00864682]
+[2026-08-27 16:16:21,328] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352037324689342, 0.05274150108433067, 2.003630593624041).
+[2026-08-27 16:16:21,329] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352037 0.0527415  2.00363059]
+[2026-08-27 16:16:21,578] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11520589020589704, 0.051350040242862924, 2.0018400410865644).
+[2026-08-27 16:16:21,578] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11520589 0.05135004 2.00184004]
+[2026-08-27 16:16:21,831] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11702097811497784, 0.05066070763070698, 2.013115818906544).
+[2026-08-27 16:16:21,831] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11702098 0.05066071 2.01311582]
+[2026-08-27 16:16:22,076] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11839832205734116, 0.0495838642127482, 2.0053364472977178).
+[2026-08-27 16:16:22,077] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11839832 0.04958386 2.00533645]
+[2026-08-27 16:16:22,330] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11738925860888065, 0.04964823408327466, 2.003680990140223).
+[2026-08-27 16:16:22,330] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11738926 0.04964823 2.00368099]
+[2026-08-27 16:16:22,577] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11584129394737742, 0.049647960651884315, 2.0036502739068345).
+[2026-08-27 16:16:22,577] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11584129 0.04964796 2.00365027]
+[2026-08-27 16:16:22,829] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:22,830] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:23,077] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150683800795399, 0.0511948938245754, 2.003657498044047).
+[2026-08-27 16:16:23,077] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506838 0.05119489 2.0036575 ]
+[2026-08-27 16:16:23,331] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:23,331] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:23,577] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1137527256882717, 0.05111422213651866, 2.008738419172031).
+[2026-08-27 16:16:23,577] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11375273 0.05111422 2.00873842]
+[2026-08-27 16:16:23,830] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219228783140325, 0.052684046893070414, 2.005214171713418).
+[2026-08-27 16:16:23,831] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219229 0.05268405 2.00521417]
+[2026-08-27 16:16:24,077] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11119747303613102, 0.05274084083540852, 2.003566555549797).
+[2026-08-27 16:16:24,078] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11119747 0.05274084 2.00356656]
+[2026-08-27 16:16:24,334] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11219236925399803, 0.05113369677894931, 2.005214575770396).
+[2026-08-27 16:16:24,334] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219237 0.0511337  2.00521458]
+[2026-08-27 16:16:24,580] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121978398428044, 0.04955614507414202, 2.0085123202899466).
+[2026-08-27 16:16:24,581] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219784 0.04955615 2.00851232]
+[2026-08-27 16:16:24,834] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1121978398428044, 0.04955614507414202, 2.0085123202899466).
+[2026-08-27 16:16:24,834] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11219784 0.04955615 2.00851232]
+[2026-08-27 16:16:25,082] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352048602010062, 0.05119460349750334, 2.0036282443906424).
+[2026-08-27 16:16:25,083] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352049 0.0511946  2.00362824]
+[2026-08-27 16:16:25,335] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:25,335] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:25,582] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529521018129216, 0.05268430317036986, 2.0052750312444854).
+[2026-08-27 16:16:25,582] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529521 0.0526843  2.00527503]
+[2026-08-27 16:16:25,836] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529521018129216, 0.05268430317036986, 2.0052750312444854).
+[2026-08-27 16:16:25,837] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529521 0.0526843  2.00527503]
+[2026-08-27 16:16:26,083] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11530970105816218, 0.05112315097071804, 2.0089063589428333).
+[2026-08-27 16:16:26,083] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1153097  0.05112315 2.00890636]
+[2026-08-27 16:16:26,343] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:26,343] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:26,586] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:26,586] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:26,840] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150685535202271, 0.04964801430015505, 2.003657017830099).
+[2026-08-27 16:16:26,841] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506855 0.04964801 2.00365702]
+[2026-08-27 16:16:27,089] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150685535202271, 0.04964801430015505, 2.003657017830099).
+[2026-08-27 16:16:27,089] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506855 0.04964801 2.00365702]
+[2026-08-27 16:16:27,345] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150685535202271, 0.04964801430015505, 2.003657017830099).
+[2026-08-27 16:16:27,346] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506855 0.04964801 2.00365702]
+[2026-08-27 16:16:27,594] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:27,595] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:27,843] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11348584316835053, 0.05259577061440882, 2.0088143085557193).
+[2026-08-27 16:16:27,843] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11348584 0.05259577 2.00881431]
+[2026-08-27 16:16:28,091] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:28,091] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:28,342] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374383933308718, 0.0511338138913706, 2.005244745676822).
+[2026-08-27 16:16:28,343] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374384 0.05113381 2.00524475]
+[2026-08-27 16:16:28,589] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11352063604909254, 0.049647738524302897, 2.003627282715947).
+[2026-08-27 16:16:28,590] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11352064 0.04964774 2.00362728]
+[2026-08-27 16:16:28,840] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11375607952919878, 0.0480151681582598, 2.008614946042709).
+[2026-08-27 16:16:28,841] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11375608 0.04801517 2.00861495]
+[2026-08-27 16:16:29,092] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:29,093] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:29,343] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11686875710953261, 0.04958234393948597, 2.009012030349596).
+[2026-08-27 16:16:29,343] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11686876 0.04958234 2.00901203]
+[2026-08-27 16:16:29,592] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11669026991201996, 0.051689228041185635, 2.005766559485893).
+[2026-08-27 16:16:29,592] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11669027 0.05168923 2.00576656]
+[2026-08-27 16:16:29,846] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529521018129216, 0.05268430317036986, 2.0052750312444854).
+[2026-08-27 16:16:29,846] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529521 0.0526843  2.00527503]
+[2026-08-27 16:16:30,092] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529521018129216, 0.05268430317036986, 2.0052750312444854).
+[2026-08-27 16:16:30,093] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529521 0.0526843  2.00527503]
+[2026-08-27 16:16:30,344] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:30,345] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:30,592] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:30,593] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:30,849] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11502636497149042, 0.04949588825903642, 2.008858170619361).
+[2026-08-27 16:16:30,849] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11502636 0.04949589 2.00885817]
+[2026-08-27 16:16:31,093] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11502636497149042, 0.04949588825903642, 2.008858170619361).
+[2026-08-27 16:16:31,093] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11502636 0.04949589 2.00885817]
+[2026-08-27 16:16:31,346] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:31,347] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:31,597] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529521018129216, 0.05268430317036986, 2.0052750312444854).
+[2026-08-27 16:16:31,597] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529521 0.0526843  2.00527503]
+[2026-08-27 16:16:31,850] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11584101304893668, 0.05274174520034908, 2.0036527891247364).
+[2026-08-27 16:16:31,851] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11584101 0.05274175 2.00365279]
+[2026-08-27 16:16:32,099] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150428147552984, 0.0525948819925792, 2.008983643042737).
+[2026-08-27 16:16:32,099] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11504281 0.05259488 2.00898364]
+[2026-08-27 16:16:32,352] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:32,352] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:32,598] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11531143603747684, 0.04957345618471739, 2.0088437386124247).
+[2026-08-27 16:16:32,598] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11531144 0.04957346 2.00884374]
+[2026-08-27 16:16:32,851] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:32,852] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:33,097] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529549004499784, 0.04803317082756569, 2.005275992747595).
+[2026-08-27 16:16:33,098] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529549 0.04803317 2.00527599]
+[2026-08-27 16:16:33,352] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529549004499784, 0.04803317082756569, 2.005275992747595).
+[2026-08-27 16:16:33,353] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529549 0.04803317 2.00527599]
+[2026-08-27 16:16:33,598] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11839842491253762, 0.04803346504019377, 2.0053366991604062).
+[2026-08-27 16:16:33,598] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11839842 0.04803347 2.0053367 ]
+[2026-08-27 16:16:33,853] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11842800275468815, 0.04804122372655984, 2.009115160338521).
+[2026-08-27 16:16:33,853] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.118428   0.04804122 2.00911516]
+[2026-08-27 16:16:34,100] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1165830961434381, 0.049494731319319606, 2.0090264279281116).
+[2026-08-27 16:16:34,100] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1165831  0.04949473 2.00902643]
+[2026-08-27 16:16:34,350] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1165830961434381, 0.049494731319319606, 2.0090264279281116).
+[2026-08-27 16:16:34,351] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1165831  0.04949473 2.00902643]
+[2026-08-27 16:16:34,600] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11684686274205112, 0.04958370981602831, 2.005305824467844).
+[2026-08-27 16:16:34,601] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684686 0.04958371 2.00530582]
+[2026-08-27 16:16:34,857] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:34,858] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:35,102] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11346987135428106, 0.0494969677584687, 2.0086916617592987).
+[2026-08-27 16:16:35,103] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11346987 0.04949697 2.00869166]
+[2026-08-27 16:16:35,356] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150685535202271, 0.04964801430015505, 2.003657017830099).
+[2026-08-27 16:16:35,356] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506855 0.04964801 2.00365702]
+[2026-08-27 16:16:35,603] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11684686274205112, 0.04958370981602831, 2.005305824467844).
+[2026-08-27 16:16:35,603] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684686 0.04958371 2.00530582]
+[2026-08-27 16:16:35,856] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11684686274205112, 0.04958370981602831, 2.005305824467844).
+[2026-08-27 16:16:35,857] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684686 0.04958371 2.00530582]
+[2026-08-27 16:16:36,103] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11691086010706599, 0.05094031569933948, 2.0130924218252617).
+[2026-08-27 16:16:36,103] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11691086 0.05094032 2.01309242]
+[2026-08-27 16:16:36,355] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11503460059793852, 0.051045298481885326, 2.0089214529360464).
+[2026-08-27 16:16:36,355] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1150346  0.0510453  2.00892145]
+[2026-08-27 16:16:36,602] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:36,602] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:36,857] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:36,857] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:37,105] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11503460059793852, 0.051045298481885326, 2.0089214529360464).
+[2026-08-27 16:16:37,105] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1150346  0.0510453  2.00892145]
+[2026-08-27 16:16:37,355] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529539851690183, 0.049583569578444925, 2.0052753899165885).
+[2026-08-27 16:16:37,355] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152954  0.04958357 2.00527539]
+[2026-08-27 16:16:37,606] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11502636497149042, 0.04949588825903642, 2.008858170619361).
+[2026-08-27 16:16:37,606] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11502636 0.04949589 2.00885817]
+[2026-08-27 16:16:37,859] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11502636497149042, 0.04949588825903642, 2.008858170619361).
+[2026-08-27 16:16:37,859] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11502636 0.04949589 2.00885817]
+[2026-08-27 16:16:38,106] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11584129394737742, 0.049647960651884315, 2.0036502739068345).
+[2026-08-27 16:16:38,106] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11584129 0.04964796 2.00365027]
+[2026-08-27 16:16:38,358] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11503460059793852, 0.051045298481885326, 2.0089214529360464).
+[2026-08-27 16:16:38,359] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1150346  0.0510453  2.00892145]
+[2026-08-27 16:16:38,606] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:38,606] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:38,858] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:38,858] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:39,105] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11429336576439834, 0.0496476900273541, 2.0036201001731544).
+[2026-08-27 16:16:39,106] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11429337 0.04964769 2.0036201 ]
+[2026-08-27 16:16:39,361] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374392625684991, 0.049583440474340636, 2.005245195053328).
+[2026-08-27 16:16:39,361] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374393 0.04958344 2.0052452 ]
+[2026-08-27 16:16:39,605] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1150683800795399, 0.0511948938245754, 2.003657498044047).
+[2026-08-27 16:16:39,605] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11506838 0.05119489 2.0036575 ]
+[2026-08-27 16:16:39,859] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11503460059793852, 0.051045298481885326, 2.0089214529360464).
+[2026-08-27 16:16:39,860] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1150346  0.0510453  2.00892145]
+[2026-08-27 16:16:40,108] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1152953037675079, 0.05113394488461694, 2.005275063274952).
+[2026-08-27 16:16:40,109] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1152953  0.05113394 2.00527506]
+[2026-08-27 16:16:40,359] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11584113062878514, 0.05119483686944076, 2.003650779610553).
+[2026-08-27 16:16:40,360] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11584113 0.05119484 2.00365078]
+[2026-08-27 16:16:40,606] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11429312814998493, 0.052741442275653035, 2.0036235040707493).
+[2026-08-27 16:16:40,607] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11429313 0.05274144 2.0036235 ]
+[2026-08-27 16:16:40,864] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11374366415323346, 0.05423450654378154, 2.0052446042381438).
+[2026-08-27 16:16:40,864] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11374366 0.05423451 2.0052446 ]
+[2026-08-27 16:16:41,109] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529502052490659, 0.05578496351316379, 2.0052758356816978).
+[2026-08-27 16:16:41,109] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529502 0.05578496 2.00527584]
+[2026-08-27 16:16:41,364] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11584095126996195, 0.05892975373550371, 2.003675406325751).
+[2026-08-27 16:16:41,365] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11584095 0.05892975 2.00367541]
+[2026-08-27 16:16:41,614] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1168466643762469, 0.05268445030895887, 2.0053057915330155).
+[2026-08-27 16:16:41,614] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684666 0.05268445 2.00530579]
+[2026-08-27 16:16:41,868] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11661651270595523, 0.04964828774610305, 2.003687349788409).
+[2026-08-27 16:16:41,868] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11661651 0.04964829 2.00368735]
+[2026-08-27 16:16:42,115] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11684686274205112, 0.04958370981602831, 2.005305824467844).
+[2026-08-27 16:16:42,115] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11684686 0.04958371 2.00530582]
+[2026-08-27 16:16:42,370] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11675241544179797, 0.04980799005902632, 2.00183235641974).
+[2026-08-27 16:16:42,370] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11675242 0.04980799 2.00183236]
+[2026-08-27 16:16:42,615] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11842471526269598, 0.05114147892209468, 2.0092473994564295).
+[2026-08-27 16:16:42,616] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11842472 0.05114148 2.0092474 ]
+[2026-08-27 16:19:21,571] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:19:21,599] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:19:21,599] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:19:21,599] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:19:21,781] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:19:21,781] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:19:21,781] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:19:21,781] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=-1
+[2026-08-27 16:19:22,076] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:19:22,076] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:19:22,347] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12126257827106583, 0.04191476005741263, 2.003809331164627).
+[2026-08-27 16:19:22,347] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12126258 0.04191476 2.00380933]
+[2026-08-27 16:19:22,347] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-27 16:19:22,593] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12221120635289487, 0.042004121633377335, 1.9986346632565792).
+[2026-08-27 16:19:22,593] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12221121 0.04200412 1.99863466]
+[2026-08-27 16:19:22,838] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1230531061311354, 0.043382701649693746, 2.005430392766092).
+[2026-08-27 16:19:22,838] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12305311 0.0433827  2.00543039]
+[2026-08-27 16:19:23,087] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12278353249039001, 0.04484089657263835, 2.0094941387422143).
+[2026-08-27 16:19:23,088] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12278353 0.0448409  2.00949414]
+[2026-08-27 16:19:23,341] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12310657190176655, 0.04341579911067946, 2.0094069377548838).
+[2026-08-27 16:19:23,341] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12310657 0.0434158  2.00940694]
+[2026-08-27 16:19:31,387] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:19:31,413] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:19:31,413] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:19:31,414] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:19:31,821] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:19:31,821] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:19:31,821] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:19:31,821] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=-1
+[2026-08-27 16:19:32,140] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:19:32,141] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:19:32,410] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12126257827106583, 0.04191476005741263, 2.003809331164627).
+[2026-08-27 16:19:32,410] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12126258 0.04191476 2.00380933]
+[2026-08-27 16:19:32,411] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-27 16:19:32,655] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12154965360154486, 0.04030569504479565, 2.0090923650205768).
+[2026-08-27 16:19:32,656] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12154965 0.0403057  2.00909237]
+[2026-08-27 16:19:32,906] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150184670236842, 0.0402815683201176, 2.005401454984146).
+[2026-08-27 16:19:32,906] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150185 0.04028157 2.00540145]
+[2026-08-27 16:19:33,156] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12119898403035116, 0.04019625687770804, 2.0091041730945918).
+[2026-08-27 16:19:33,156] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12119898 0.04019626 2.00910417]
+[2026-08-27 16:19:33,404] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150184670236842, 0.0402815683201176, 2.005401454984146).
+[2026-08-27 16:19:33,405] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150185 0.04028157 2.00540145]
+[2026-08-27 16:19:33,656] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12310810312459584, 0.04031380197994934, 2.009255468461945).
+[2026-08-27 16:19:33,656] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1231081  0.0403138  2.00925547]
+[2026-08-27 16:19:33,906] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1228108132785859, 0.04191494690843761, 2.0038435650163477).
+[2026-08-27 16:19:33,907] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12281081 0.04191495 2.00384357]
+[2026-08-27 16:19:34,157] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12305320947156895, 0.041832240114247576, 2.0054310935840465).
+[2026-08-27 16:19:34,157] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12305321 0.04183224 2.00543109]
+[2026-08-27 16:19:34,408] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12310741104538508, 0.041864805783442684, 2.0093314988139337).
+[2026-08-27 16:19:34,408] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12310741 0.04186481 2.0093315 ]
+[2026-08-27 16:19:34,660] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12310741104538508, 0.041864805783442684, 2.0093314988139337).
+[2026-08-27 16:19:34,660] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12310741 0.04186481 2.0093315 ]
+[2026-08-27 16:19:34,910] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1231387608325544, 0.04238613468656199, 2.013123822108393).
+[2026-08-27 16:19:34,910] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12313876 0.04238613 2.01312382]
+[2026-08-27 16:19:35,155] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12138136414307649, 0.04054125062834237, 2.001495811665143).
+[2026-08-27 16:19:35,155] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12138136 0.04054125 2.00149581]
+[2026-08-27 16:19:35,409] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150184670236842, 0.0402815683201176, 2.005401454984146).
+[2026-08-27 16:19:35,409] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150185 0.04028157 2.00540145]
+[2026-08-27 16:19:35,662] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12126257827106583, 0.04191476005741263, 2.003809331164627).
+[2026-08-27 16:19:35,663] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12126258 0.04191476 2.00380933]
+[2026-08-27 16:19:35,910] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150174997471123, 0.04183204944179407, 2.0054004068249487).
+[2026-08-27 16:19:35,911] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150175 0.04183205 2.00540041]
+[2026-08-27 16:19:36,159] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12210163710528822, 0.042396574558434034, 2.005472388141523).
+[2026-08-27 16:19:36,159] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12210164 0.04239657 2.00547239]
+[2026-08-27 16:19:36,412] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12229585201334343, 0.043326646215458814, 2.006305914169179).
+[2026-08-27 16:19:36,413] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12229585 0.04332665 2.00630591]
+[2026-08-27 16:19:36,662] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1230531061311354, 0.043382701649693746, 2.005430392766092).
+[2026-08-27 16:19:36,662] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12305311 0.0433827  2.00543039]
+[2026-08-27 16:19:36,919] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12466550414684247, 0.043424496685229304, 2.0095748382166594).
+[2026-08-27 16:19:36,920] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1246655  0.0434245  2.00957484]
+[2026-08-27 16:19:37,163] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12460455642561852, 0.04338290016893137, 2.005461578852527).
+[2026-08-27 16:19:37,163] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12460456 0.0433829  2.00546158]
+[2026-08-27 16:22:04,911] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:22:04,945] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:22:04,945] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:22:04,945] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:22:08,438] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:22:08,438] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:22:08,438] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:22:08,438] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=0
+[2026-08-27 16:22:08,439] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.20m
+[2026-08-27 16:22:08,439] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:22:08,704] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11839890095734253, 0.04028121408526222, 2.005341270334747).
+[2026-08-27 16:22:08,705] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1183989  0.04028121 2.00534127]
+[2026-08-27 16:22:08,943] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11971489007435106, 0.04036777190954474, 2.0037853408719557).
+[2026-08-27 16:22:08,943] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11971489 0.04036777 2.00378534]
+[2026-08-27 16:22:09,195] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1199503781383468, 0.04028138697753448, 2.00537121096577).
+[2026-08-27 16:22:09,196] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11995038 0.04028139 2.00537121]
+[2026-08-27 16:22:09,446] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1196431791839683, 0.04019809273870803, 2.008942015986702).
+[2026-08-27 16:22:09,446] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11964318 0.04019809 2.00894202]
+[2026-08-27 16:22:09,694] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12048813384617557, 0.03882095134437937, 2.0037906900240925).
+[2026-08-27 16:22:09,694] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12048813 0.03882095 2.00379069]
+[2026-08-27 16:22:09,947] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12118980225954026, 0.0386478581389203, 2.0090294432833535).
+[2026-08-27 16:22:09,948] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1211898  0.03864786 2.00902944]
+[2026-08-27 16:22:10,202] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12203701001266185, 0.0372742942751055, 2.0038386694017754).
+[2026-08-27 16:22:10,203] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12203701 0.03727429 2.00383867]
+[2026-08-27 16:22:10,443] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150202909463052, 0.03718057350310741, 2.0054040453295334).
+[2026-08-27 16:22:10,444] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150203 0.03718057 2.00540405]
+[2026-08-27 16:22:10,697] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150194036146672, 0.03873107494766501, 2.0054026531493).
+[2026-08-27 16:22:10,697] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150194 0.03873107 2.00540265]
+[2026-08-27 16:22:10,953] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12150194036146672, 0.03873107494766501, 2.0054026531493).
+[2026-08-27 16:22:10,953] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150194 0.03873107 2.00540265]
+[2026-08-27 16:22:11,196] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12155028369663524, 0.03875492163573188, 2.009017796889018).
+[2026-08-27 16:22:11,197] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12155028 0.03875492 2.0090178 ]
+[2026-08-27 16:22:11,445] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1212631107133853, 0.04036793672259514, 2.0038195082068158).
+[2026-08-27 16:22:11,445] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12126311 0.04036794 2.00381951]
+[2026-08-27 16:22:11,698] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11989367348322381, 0.04046359253422895, 1.9985818965316717).
+[2026-08-27 16:22:11,699] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11989367 0.04046359 1.9985819 ]
+[2026-08-27 16:22:11,948] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1196431791839683, 0.04019809273870803, 2.008942015986702).
+[2026-08-27 16:22:11,948] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11964318 0.04019809 2.00894202]
+[2026-08-27 16:22:12,207] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1199503781383468, 0.04028138697753448, 2.00537121096577).
+[2026-08-27 16:22:12,208] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11995038 0.04028139 2.00537121]
+[2026-08-27 16:22:12,457] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1196431791839683, 0.04019809273870803, 2.008942015986702).
+[2026-08-27 16:22:12,458] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11964318 0.04019809 2.00894202]
+[2026-08-27 16:22:12,702] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11995046608804931, 0.038730890581185784, 2.005372540775739).
+[2026-08-27 16:22:12,702] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11995047 0.03873089 2.00537254]
+[2026-08-27 16:22:12,951] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1199922345577317, 0.038747150426741976, 2.008857420143131).
+[2026-08-27 16:22:12,951] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11999223 0.03874715 2.00885742]
+[2026-08-27 16:22:13,204] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11815448713697663, 0.03952595857056323, 1.9975760051380118).
+[2026-08-27 16:22:13,205] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11815449 0.03952596 1.99757601]
+[2026-08-27 16:22:13,451] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11661857139508217, 0.04036744018250147, 2.003718601181565).
+[2026-08-27 16:22:13,452] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11661857 0.04036744 2.0037186 ]
+[2026-08-27 16:22:13,705] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529592084322814, 0.040280914526142464, 2.0052822560484604).
+[2026-08-27 16:22:13,706] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529592 0.04028091 2.00528226]
+[2026-08-27 16:22:13,949] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11687629619351059, 0.04028204172464177, 2.008608924534307).
+[2026-08-27 16:22:13,949] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1168763  0.04028204 2.00860892]
+[2026-08-27 16:22:19,949] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:22:19,978] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:22:19,978] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:22:19,978] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-27 16:22:20,487] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:22:20,488] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:22:20,488] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:22:20,488] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-27 16:22:20,705] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.19m
+[2026-08-27 16:22:20,705] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:22:20,706] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:22:20,706] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:22:20,706] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:22:21,707] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:22:21,707] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:22:21,707] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:22:21,708] [lib.drone_lib] [INFO] [MAV] Reached 2.0 m.
+[2026-08-27 16:22:26,729] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.12358304576734153, 0.0434617544328537, 2.003829592584308).
+[2026-08-27 16:22:26,729] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12358305 0.04346175 2.00382959]
+[2026-08-27 16:22:26,730] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-27 16:22:26,807] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1230531061311354, 0.043382701649693746, 2.005430392766092).
+[2026-08-27 16:22:26,807] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12305311 0.0433827  2.00543039]
+[2026-08-27 16:22:26,906] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11608315645377944, 0.03713748741057114, 2.0060871092158123).
+[2026-08-27 16:22:26,907] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11608316 0.03713749 2.00608711]
+[2026-08-27 16:22:27,005] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.07805284853007664, 0.0015033419753402108, 2.0048009136989866).
+[2026-08-27 16:22:27,005] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [7.80528485e-02 1.50334198e-03 2.00480091e+00]
+[2026-08-27 16:22:27,727] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.009905132133720414, -0.06615766412535706, 1.9844406702384587).
+[2026-08-27 16:22:27,727] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.00990513 -0.06615766  1.98444067]
+[2026-08-27 16:22:27,761] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.07202846513740643, -0.15247247417899573, 1.9647135543491239).
+[2026-08-27 16:22:27,762] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.07202847 -0.15247247  1.96471355]
+[2026-08-27 16:22:27,851] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.15573624357123506, -0.23833571039444135, 1.9314909386443173).
+[2026-08-27 16:22:27,851] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.15573624 -0.23833571  1.93149094]
+[2026-08-27 16:22:27,951] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.2071349739980943, -0.3083311463502589, 1.8803084737340787).
+[2026-08-27 16:22:27,951] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.20713497 -0.30833115  1.88030847]
+[2026-08-27 16:22:28,052] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.19259089036591476, -0.3401556693572747, 1.8516354047483221).
+[2026-08-27 16:22:28,052] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.19259089 -0.34015567  1.8516354 ]
+[2026-08-27 16:22:28,157] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.11863252881045326, -0.3126444115320171, 1.8450037857397832).
+[2026-08-27 16:22:28,157] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.11863253 -0.31264441  1.84500379]
+[2026-08-27 16:22:28,259] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.015827753407555628, -0.213032037524383, 1.8562634249463685).
+[2026-08-27 16:22:28,260] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.01582775 -0.21303204  1.85626342]
+[2026-08-27 16:22:28,358] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.10178413233412294, -0.018246876105307154, 1.903679027534327).
+[2026-08-27 16:22:28,358] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.10178413 -0.01824688  1.90367903]
+[2026-08-27 16:22:28,458] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.2069755657636684, 0.2808800764504373, 1.9462315943857629).
+[2026-08-27 16:22:28,458] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.20697557 0.28088008 1.94623159]
+[2026-08-27 16:22:28,558] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.26232996542269305, 0.6633165052214649, 1.977416213031787).
+[2026-08-27 16:22:28,558] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.26232997 0.66331651 1.97741621]
+[2026-08-27 16:22:30,273] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-27 16:22:32,325] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (1.09570046956865, 0.12136325598040487, 2.2318644306800888).
+[2026-08-27 16:22:32,325] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.09570047 0.12136326 2.23186443]
+[2026-08-27 16:22:32,325] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.86, E=2.22
+[2026-08-27 16:22:32,578] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.43853104713851326, 0.4651119855725638, 1.9553477043805916).
+[2026-08-27 16:22:32,578] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.43853105 0.46511199 1.9553477 ]
+[2026-08-27 16:22:32,578] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.55, E=2.14
+[2026-08-27 16:22:32,828] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-27 16:22:33,335] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.8334343786032589, 0.6803662259740274, 1.7259737330490652).
+[2026-08-27 16:22:33,335] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.83343438 0.68036623 1.72597373]
+[2026-08-27 16:22:33,335] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.35, E=2.95
+[2026-08-27 16:22:33,838] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.8024431656894423, -0.4016574079893497, 1.7168962845965994).
+[2026-08-27 16:22:33,838] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.80244317 -0.40165741  1.71689628]
+[2026-08-27 16:22:33,838] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=2.03, E=2.55
+[2026-08-27 16:22:34,339] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.5007695052246193, -0.45228016239666863, 1.8958630437881805).
+[2026-08-27 16:22:34,340] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.50076951 -0.45228016  1.89586304]
+[2026-08-27 16:22:34,340] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.98, E=1.07
+[2026-08-27 16:22:35,353] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-27 16:22:37,881] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:22:38,128] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:22:38,129] [lib.aruco_lib] [INFO] Centering over landing target: (1.55, 2.18)
+[2026-08-27 16:22:42,837] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-27 16:22:42,852] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:22:42,853] [lib.aruco_lib] [INFO] Centering over landing target: (1.55, 2.18)
+[2026-08-27 16:22:45,866] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.028618991353552326, 0.28774957184423144, 1.8316757540571362).
+[2026-08-27 16:22:45,867] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.2891692631706095m
+[2026-08-27 16:22:45,867] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-27 16:22:45,869] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-27 16:22:45,870] [lib.drone_lib] [INFO] Telemetry Status: Armed=True, Estimated Alt=1.99m
+[2026-08-27 16:22:46,871] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.98m
+[2026-08-27 16:24:12,800] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:24:12,835] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:24:12,835] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:24:12,835] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:24:13,058] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:24:13,058] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:24:13,058] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:24:13,058] [lib.status] [INFO] Checkpoint loaded: Phase=LANDING, SearchWP=3
+[2026-08-27 16:24:13,059] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:24:13,059] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:24:13,059] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-27 16:24:14,055] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:27:08,961] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:27:08,987] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:27:08,988] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:27:09,240] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:27:09,992] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:27:09,992] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:27:09,992] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:27:09,992] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-27 16:27:09,993] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:27:09,993] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:27:09,993] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:27:09,993] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:27:09,993] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:27:10,994] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:27:11,992] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:27:11,992] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:27:16,280] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-27 16:27:24,465] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11661734573706728, 0.04500776631012533, 2.0036961303291396).
+[2026-08-27 16:27:24,466] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11661735 0.04500777 2.00369613]
+[2026-08-27 16:27:24,466] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-27 16:27:24,486] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11661734573706728, 0.04500776631012533, 2.0036961303291396).
+[2026-08-27 16:27:24,486] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11661735 0.04500777 2.00369613]
+[2026-08-27 16:27:24,587] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11529566750340146, 0.044932324902117834, 2.0052777593724964).
+[2026-08-27 16:27:24,588] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11529567 0.04493232 2.00527776]
+[2026-08-27 16:27:24,684] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.09667705520317929, 0.02942590303791068, 2.004983646544937).
+[2026-08-27 16:27:24,684] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.09667706 0.0294259  2.00498365]
+[2026-08-27 16:27:24,783] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.045869007872052434, -0.02052191639001416, 1.98836478161804).
+[2026-08-27 16:27:24,783] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.04586901 -0.02052192  1.98836478]
+[2026-08-27 16:27:25,495] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.029771134177922886, -0.0990625691101347, 1.9743119002658869).
+[2026-08-27 16:27:25,496] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.02977113 -0.09906257  1.9743119 ]
+[2026-08-27 16:27:25,523] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.11491216979399224, -0.18427386042816174, 1.9390751344606598).
+[2026-08-27 16:27:25,524] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.11491217 -0.18427386  1.93907513]
+[2026-08-27 16:27:25,624] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.19113552442881881, -0.2643188016673569, 1.9051485033930944).
+[2026-08-27 16:27:25,624] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.19113552 -0.2643188   1.9051485 ]
+[2026-08-27 16:27:25,723] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.2165189970410562, -0.3180014565092215, 1.8619282031219524).
+[2026-08-27 16:27:25,723] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.216519   -0.31800146  1.8619282 ]
+[2026-08-27 16:27:25,824] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.17532632074765067, -0.3297202752065671, 1.8394599476966396).
+[2026-08-27 16:27:25,825] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.17532632 -0.32972028  1.83945995]
+[2026-08-27 16:27:25,926] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.08632931067940967, -0.27428754013431905, 1.8448764757396854).
+[2026-08-27 16:27:25,926] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.08632931 -0.27428754  1.84487648]
+[2026-08-27 16:27:26,029] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.02539277225271127, -0.14037924046983719, 1.8696965543526012).
+[2026-08-27 16:27:26,030] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.02539277 -0.14037924  1.86969655]
+[2026-08-27 16:27:26,133] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1450344505244719, 0.09713571466216586, 1.9122060972601285).
+[2026-08-27 16:27:26,133] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.14503445 0.09713571 1.9122061 ]
+[2026-08-27 16:27:26,233] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.23649063847635676, 0.43376794261565255, 1.9657831446294498).
+[2026-08-27 16:27:26,233] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.23649064 0.43376794 1.96578314]
+[2026-08-27 16:27:26,334] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.2904911449598045, 0.9205982897721797, 2.167568821594472).
+[2026-08-27 16:27:26,334] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.29049114 0.92059829 2.16756882]
+[2026-08-27 16:27:27,749] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-27 16:27:29,776] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (1.1510004367738826, 0.024246559245769125, 2.217760674142297).
+[2026-08-27 16:27:29,777] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.15100044 0.02424656 2.21776067]
+[2026-08-27 16:27:29,777] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.92, E=2.19
+[2026-08-27 16:27:30,030] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.5313007774806152, 0.42952607033076334, 2.1569034052225553).
+[2026-08-27 16:27:30,030] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.53130078 0.42952607 2.15690341]
+[2026-08-27 16:27:30,031] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.57, E=2.17
+[2026-08-27 16:27:30,279] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-27 16:27:30,785] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.860707857780856, 0.6560383875404534, 1.691746906570212).
+[2026-08-27 16:27:30,786] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.86070786 0.65603839 1.69174691]
+[2026-08-27 16:27:30,786] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.38, E=2.99
+[2026-08-27 16:27:31,287] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.785936822504727, -0.3953770512958863, 1.723012984103664).
+[2026-08-27 16:27:31,287] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.78593682 -0.39537705  1.72301298]
+[2026-08-27 16:27:31,288] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=2.02, E=2.56
+[2026-08-27 16:27:31,790] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.5790134684491762, -0.38033853141912083, 1.8983029424129296).
+[2026-08-27 16:27:31,790] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.57901347 -0.38033853  1.89830294]
+[2026-08-27 16:27:31,790] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.90, E=0.99
+[2026-08-27 16:27:32,803] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-27 16:27:35,336] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:27:35,590] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:27:35,591] [lib.aruco_lib] [INFO] Centering over landing target: (1.56, 2.18)
+[2026-08-27 16:27:38,608] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-27 16:27:38,640] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:27:38,641] [lib.aruco_lib] [INFO] Centering over landing target: (1.56, 2.18)
+[2026-08-27 16:27:41,655] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.03396602932153562, 0.2860662244404826, 1.8257299523016317).
+[2026-08-27 16:27:41,656] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.28807564269390074m
+[2026-08-27 16:27:41,656] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-27 16:27:41,658] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-27 16:27:41,659] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.99m
+[2026-08-27 16:29:26,821] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:29:26,853] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:29:26,853] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:29:27,104] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:29:27,606] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:29:27,607] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:29:27,607] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:29:27,607] [lib.status] [INFO] Checkpoint loaded: Phase=LANDING, SearchWP=3
+[2026-08-27 16:29:27,608] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:29:27,608] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:29:27,608] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-27 16:29:27,858] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:29:40,025] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:29:40,057] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:29:40,058] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:29:40,058] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:29:43,509] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:29:43,509] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:29:43,509] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:29:43,510] [lib.status] [INFO] Checkpoint loaded: Phase=LANDING, SearchWP=3
+[2026-08-27 16:29:43,524] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:29:43,524] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:29:43,524] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-27 16:29:44,024] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:30:03,206] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:30:03,233] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:30:03,234] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:30:03,234] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:30:03,601] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:30:03,601] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:30:03,601] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:30:03,601] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-27 16:30:03,711] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:30:03,711] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:30:03,711] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:30:03,711] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:30:03,711] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:30:04,712] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:30:05,242] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:30:05,242] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:30:10,025] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-27 16:30:15,050] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.1183985230569301, 0.046483048890614685, 2.0053371255221486).
+[2026-08-27 16:30:15,051] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11839852 0.04648305 2.00533713]
+[2026-08-27 16:30:15,051] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-27 16:30:15,082] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11816506203125511, 0.04655482554551495, 2.0037232679795403).
+[2026-08-27 16:30:15,082] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11816506 0.04655483 2.00372327]
+[2026-08-27 16:30:15,183] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.11661702434980098, 0.04655458399443805, 2.003691664699851).
+[2026-08-27 16:30:15,183] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11661702 0.04655458 2.00369166]
+[2026-08-27 16:30:15,282] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.09649870138065585, 0.029540469075101022, 2.003404685086602).
+[2026-08-27 16:30:15,282] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.0964987  0.02954047 2.00340469]
+[2026-08-27 16:30:15,385] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.04397084217769776, -0.02179344034897635, 1.9964175394151407).
+[2026-08-27 16:30:15,385] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.04397084 -0.02179344  1.99641754]
+[2026-08-27 16:30:18,852] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.031240478602166614, -0.09905673768529172, 1.9724215795407165).
+[2026-08-27 16:30:18,852] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.03124048 -0.09905674  1.97242158]
+[2026-08-27 16:30:18,886] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.11638829503084802, -0.18516200063031607, 1.9360093316252205).
+[2026-08-27 16:30:18,886] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.1163883  -0.185162    1.93600933]
+[2026-08-27 16:30:18,979] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.19170551739932737, -0.26419140580545414, 1.898281553953256).
+[2026-08-27 16:30:18,979] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.19170552 -0.26419141  1.89828155]
+[2026-08-27 16:30:19,082] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.2145169182837629, -0.3164503201974844, 1.861076516996995).
+[2026-08-27 16:30:19,083] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.21451692 -0.31645032  1.86107652]
+[2026-08-27 16:30:19,183] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.17094400721391528, -0.3257759499180788, 1.8458004722692445).
+[2026-08-27 16:30:19,183] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.17094401 -0.32577595  1.84580047]
+[2026-08-27 16:30:19,284] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (-0.08195493390881828, -0.27022596744792154, 1.849557623202447).
+[2026-08-27 16:30:19,284] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.08195493 -0.27022597  1.84955762]
+[2026-08-27 16:30:19,386] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.031584097691486325, -0.13170617037312332, 1.873782414232602).
+[2026-08-27 16:30:19,387] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.0315841  -0.13170617  1.87378241]
+[2026-08-27 16:30:19,487] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.14967416783496426, 0.10915821455460062, 1.9244229983260792).
+[2026-08-27 16:30:19,487] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.14967417 0.10915821 1.924423  ]
+[2026-08-27 16:30:19,586] [lib.aruco_lib] [INFO] Detected ArUCO [101] with offset (0.2394194579069963, 0.44856353295094814, 1.9688814652516091).
+[2026-08-27 16:30:19,586] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.23941946 0.44856353 1.96888147]
+[2026-08-27 16:30:21,102] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-27 16:30:23,152] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (1.062146227538878, 0.019652407016818276, 2.0134483891269244).
+[2026-08-27 16:30:23,153] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.06214623 0.01965241 2.01344839]
+[2026-08-27 16:30:23,153] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.93, E=2.13
+[2026-08-27 16:30:23,407] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.4935163120503457, 0.38537950811098814, 1.9759124703319584).
+[2026-08-27 16:30:23,408] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.49351631 0.38537951 1.97591247]
+[2026-08-27 16:30:23,408] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.62, E=2.15
+[2026-08-27 16:30:23,652] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-27 16:30:24,158] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.8408824543977327, 0.6769846135656686, 1.690531012921781).
+[2026-08-27 16:30:24,159] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.84088245 0.67698461 1.69053101]
+[2026-08-27 16:30:24,159] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.35, E=2.97
+[2026-08-27 16:30:24,667] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.8088513588325871, -0.3758602624596684, 1.7171293297597987).
+[2026-08-27 16:30:24,668] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.80885136 -0.37586026  1.71712933]
+[2026-08-27 16:30:24,668] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=2.00, E=2.56
+[2026-08-27 16:30:25,167] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.5195334171838889, -0.43392073306777723, 1.8950677346598845).
+[2026-08-27 16:30:25,167] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.51953342 -0.43392073  1.89506773]
+[2026-08-27 16:30:25,167] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.96, E=1.05
+[2026-08-27 16:30:26,176] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-27 16:30:28,712] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:30:28,963] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:30:28,964] [lib.aruco_lib] [INFO] Centering over landing target: (1.57, 2.17)
+[2026-08-27 16:30:31,981] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-27 16:30:32,014] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-27 16:30:32,015] [lib.aruco_lib] [INFO] Centering over landing target: (1.57, 2.17)
+[2026-08-27 16:30:35,033] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.04581505550481549, 0.28802891867781566, 1.8347617121673598).
+[2026-08-27 16:30:35,034] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.2916499225194841m
+[2026-08-27 16:30:35,034] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-27 16:30:35,040] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-27 16:30:35,041] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.99m
+[2026-08-27 16:31:40,866] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-27 16:31:40,907] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-27 16:31:40,907] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-27 16:31:40,908] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-27 16:31:41,009] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:31:41,009] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-27 16:31:41,009] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-27 16:31:41,009] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-27 16:31:41,622] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-27 16:31:41,622] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-27 16:31:41,622] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-27 16:31:41,622] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-27 16:31:41,622] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-27 16:31:42,623] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-27 16:31:42,932] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-27 16:31:42,932] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-27 16:31:47,955] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-27 16:31:52,983] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.053149200253320754, 0.21685439931046724, 2.016491362534547).
+[2026-08-27 16:31:52,983] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.0531492  0.2168544  2.01649136]
+[2026-08-27 16:31:52,983] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.39, E=2.04
+[2026-08-27 16:31:52,986] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-27 16:31:53,032] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.05336165912143523, 0.2158777889404414, 2.016599953417709).
+[2026-08-27 16:31:53,033] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.05336166 0.21587779 2.01659995]
+[2026-08-27 16:31:53,033] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.39, E=2.03
+[2026-08-27 16:31:53,126] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.05237094094678843, 0.2168551686305735, 2.0165003747211685).
+[2026-08-27 16:31:53,126] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.05237094 0.21685517 2.01650037]
+[2026-08-27 16:31:53,126] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.39, E=2.03
+[2026-08-27 16:31:53,225] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.02768542779517929, 0.23774797222342223, 2.0060811390481508).
+[2026-08-27 16:31:53,225] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.02768543 0.23774797 2.00608114]
+[2026-08-27 16:31:53,225] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.39, E=2.00
+[2026-08-27 16:31:53,329] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.031444018783037084, 0.2912883033010755, 1.9966843920640294).
+[2026-08-27 16:31:53,329] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.03144402  0.2912883   1.99668439]
+[2026-08-27 16:31:53,329] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.40, E=1.92
+[2026-08-27 16:31:53,431] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.1131870873840053, 0.3655829311850543, 1.9740451178513878).
+[2026-08-27 16:31:53,432] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.11318709  0.36558293  1.97404512]
+[2026-08-27 16:31:53,432] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=1.81
+[2026-08-27 16:31:53,537] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.20187333777572664, 0.4426780430013331, 1.9300329408960109).
+[2026-08-27 16:31:53,537] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.20187334  0.44267804  1.93003294]
+[2026-08-27 16:31:53,537] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=1.69
+[2026-08-27 16:31:53,638] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.28730899320324044, 0.49977867999128256, 1.884089301392993).
+[2026-08-27 16:31:53,638] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.28730899  0.49977868  1.8840893 ]
+[2026-08-27 16:31:53,639] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=1.60
+[2026-08-27 16:31:53,742] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.3486128067696875, 0.5005350897817894, 1.8438332835972027).
+[2026-08-27 16:31:53,742] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.34861281  0.50053509  1.84383328]
+[2026-08-27 16:31:53,742] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.56
+[2026-08-27 16:31:53,846] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.3538988603344558, 0.43772434919438696, 1.8172692464350735).
+[2026-08-27 16:31:53,846] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.35389886  0.43772435  1.81726925]
+[2026-08-27 16:31:53,846] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.56, E=1.61
+[2026-08-27 16:31:53,944] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.291116039037118, 0.34258870589393386, 1.8239093234081147).
+[2026-08-27 16:31:53,945] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.29111604  0.34258871  1.82390932]
+[2026-08-27 16:31:53,945] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.57, E=1.73
+[2026-08-27 16:31:54,042] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.16464066162999794, 0.24052478828035168, 1.8557413920010613).
+[2026-08-27 16:31:54,043] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.16464066  0.24052479  1.85574139]
+[2026-08-27 16:31:54,043] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.55, E=1.89
+[2026-08-27 16:31:54,146] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.020237470584403578, 0.1489345504743983, 1.8926483259795994).
+[2026-08-27 16:31:54,146] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.02023747 0.14893455 1.89264833]
+[2026-08-27 16:31:54,146] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.08
+[2026-08-27 16:31:54,246] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.2899128359857021, 0.09938451715831048, 2.143649620184581).
+[2026-08-27 16:31:54,246] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.28991284 0.09938452 2.14364962]
+[2026-08-27 16:31:54,246] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.29, E=2.30
+[2026-08-27 16:31:54,346] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.5832438547628613, 0.08541256256188316, 2.0060970594495413).
+[2026-08-27 16:31:54,346] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.58324385 0.08541256 2.00609706]
+[2026-08-27 16:31:54,346] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.07, E=2.50
+[2026-08-27 16:31:54,446] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (1.0681190881467721, 0.17233491080881325, 2.252410519312015).
+[2026-08-27 16:31:54,446] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.06811909 0.17233491 2.25241052]
+[2026-08-27 16:31:54,446] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.65, E=2.75
+[2026-08-27 16:31:55,862] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-27 16:31:57,836] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.6374928771632211, 0.6076451979190556, 2.1978976524625002).
+[2026-08-27 16:31:57,836] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.63749288 0.6076452  2.19789765]
+[2026-08-27 16:31:57,836] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.35, E=1.93
+[2026-08-27 16:31:58,091] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (-0.01821648702792418, 0.5009105838215205, 1.9290850508685073).
+[2026-08-27 16:31:58,091] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.01821649  0.50091058  1.92908505]
+[2026-08-27 16:31:58,091] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=1.77
+[2026-08-27 16:31:58,094] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-27 16:31:59,359] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.5580990835260826, 0.02429897792568446, 1.812002492761351).
+[2026-08-27 16:31:59,360] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.55809908 0.02429898 1.81200249]
+[2026-08-27 16:31:59,360] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.18, E=2.41
+[2026-08-27 16:31:59,617] [lib.aruco_lib] [INFO] Detected ArUCO [102] with offset (0.1702812858442007, -0.43811555681125186, 1.8932928285896604).
+[2026-08-27 16:31:59,617] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17028129 -0.43811556  1.89329283]
+[2026-08-27 16:31:59,617] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.04, E=1.88
+[2026-08-27 16:32:00,632] [lib.aruco_lib] [INFO] Reached search waypoint 2
