@@ -18,6 +18,8 @@ from lib.drone_lib import *
 from lib.camera_lib_light import *
 from lib.aruco_lib import *
 
+import time
+import math
 import numpy as np
 
 # PARAMS (to be changed)
@@ -46,9 +48,15 @@ class CVProcessing:
 
     def detect(self, do_draw = False):
         ret, frame = self.capture.read()
-        if ret:
+        if not ret:
             logger.warning("Capture read returned error")
             return None
+
+        prediction = self.detector.full_prediction(frame, do_draw) # pass 'frame' here too!
+        if prediction is None:
+            return frame, [], []
+            
+        frame, detections = prediction
         
         frame, detections = self.detector.full_prediction(do_draw)
 
@@ -235,9 +243,12 @@ class ERCMissionController:
 
         for _ in range(ALIGN_ITERS):
             self.mav.send_target_ned(lnd_crds[0], lnd_crds[1], -self.state.search_altitude_m)
-            time.sleep(ALIGN_ITERS)
+            time.sleep(ALIGN_DELAY)
 
         _, _, lands = self.cvproc.detect()
+        if len(lands) == 0:
+            logger.warning("Target lost during alignment!")
+            return False
         lands = np.array(lands)
         meanlands = np.mean(lands, axis=0)
         dist = np.linalg.norm(meanlands[:2])

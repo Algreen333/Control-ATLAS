@@ -380,10 +380,10 @@ class MavlinkConnection:
         """Sends position target in local NED coordinates (z is negative upward)."""
         # MASK: ignore velocity and accel, use position only (type_mask: 0b0000111111111000 -> 0x0DF8)
         type_mask = 0b0000111111111000
-        self.master.mav.set_position_target_local_ned_send(
+        self.mav.mav.set_position_target_local_ned_send(
             0,  # boot time ms
-            self.master.target_system,
-            self.master.target_component,
+            self.mav.target_system,
+            self.mav.target_component,
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,
             type_mask,
             x, y, z,

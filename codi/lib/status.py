@@ -31,7 +31,7 @@ class FlightState:
     search_wp_idx: int = 0
 
     liftoff_coords: Tuple[float, float, float] = (0.0, 0.0, 0.0)
-    landing_coords: List[Tuple[float, float, float]] = []
+    landing_coords: List[Tuple[float, float, float]] = field(default_factory=list)
 
     last_update_time: float = time.time()
 
