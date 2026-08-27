@@ -284,6 +284,17 @@ class MavlinkConnection:
         logger.info("[MAV] Timeout waiting for disarm.")
         return False
 
+    def set_attitude_speed(self, speed_ms):
+        self.mav.mav.command_long_send(
+            self.mav.target_system,
+            self.mav.target_component,
+            mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,
+            0,            # confirmation
+            1,            # Speed type (1 = Ground Speed)
+            speed_ms,     # Target speed in m/s
+            -1,           # Throttle (-1 indicates no change)
+            0, 0, 0, 0
+        )
 
     # ---------------------------------------------------------------------------
     # Flight movement commands
@@ -387,7 +398,6 @@ class MavlinkConnection:
         :param float yaw: Optional yaw target
         :param float yaw_rate: Optional yaw rate
         """
-        # 1. Update ground speed if requested
         if speed_ms is not None:
             self.mav.mav.command_long_send(
                 self.mav.target_system,
@@ -400,7 +410,6 @@ class MavlinkConnection:
                 0, 0, 0, 0
             )
 
-        # 2. Prepare bitmask (Ignore velocities and accelerations, use Position)
         type_mask = 0b010111111000 # Default: Use pos and yaw rate
 
         if yaw is not None: 
@@ -409,9 +418,7 @@ class MavlinkConnection:
             yaw = 0
             yaw_rate = 0
 
-        logger.info(type_mask)
 
-        # 3. Send the position command
         self.mav.mav.set_position_target_local_ned_send(
             0,  
             self.mav.target_system,

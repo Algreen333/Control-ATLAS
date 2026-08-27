@@ -149,6 +149,7 @@ class ERCMissionController:
                 self.mav.arm_and_takeoff(self.state.search_altitude_m)
                 time.sleep(5)
                 self.state.current_phase = FlightPhase.SEARCHING
+                self.mav.set_attitude_speed(SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
 
             elif phase == FlightPhase.SEARCHING:
