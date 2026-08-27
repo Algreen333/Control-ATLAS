@@ -376,20 +376,75 @@ class MavlinkConnection:
             0, 0, 0,                # Acceleration targets (ignored)
             0, 0))                  # Yaw and Yaw rate (ignored)
 
-    def send_target_ned(self, x: float, y: float, z: float):
-        """Sends position target in local NED coordinates (z is negative upward)."""
-        # MASK: ignore velocity and accel, use position only (type_mask: 0b0000111111111000 -> 0x0DF8)
-        type_mask = 0b0000111111111000
+    def send_target_ned(self, x: float, y: float, z: float, speed_ms: float = None, face_dest: bool = False):
+        """
+        Sends position target in local NED coordinates (z is negative upward).
+        
+        :param float x: North target in meters
+        :param float y: East target in meters
+        :param float z: Down target in meters (negative for altitude)
+        :param float speed_ms: Optional speed limit in m/s (feed-forward velocity)
+        :param bool face_dest: If True, yaws to face the target. If False, holds current heading.
+        """
+        import math
+        
+        # Base mask: ignore velocity, accel, force, yaw, and yaw_rate (0x0FF8 -> 4088)
+        # Bits: 0,1,2 (Pos) are 0. Bits 3-11 are 1 (Ignored).
+        type_mask = 0b0000111111111000 
+        
+        vx, vy, vz = 0.0, 0.0, 0.0
+        yaw = 0.0
+        
+        # Use non-blocking reads to get current state without stuttering the mission loop
+        pos_msg = self.mav.recv_match(type="LOCAL_POSITION_NED", blocking=False)
+        att_msg = self.mav.recv_match(type="ATTITUDE", blocking=False)
+        
+        # Handle Speed (Velocity Feed-Forward)
+        if speed_ms is not None and pos_msg:
+            dx = x - pos_msg.x
+            dy = y - pos_msg.y
+            dz = z - pos_msg.z
+            dist = math.sqrt(dx**2 + dy**2 + dz**2)
+            
+            if dist > 0.05: # Avoid division by zero
+                # Calculate velocity vector pointing exactly to the target
+                vx = (dx / dist) * speed_ms
+                vy = (dy / dist) * speed_ms
+                vz = (dz / dist) * speed_ms
+                
+                # Enable velocity bits by clearing bits 3, 4, and 5
+                type_mask &= ~0b0000000000111000
+
+        # Handle Yaw (Heading)
+        if face_dest and pos_msg:
+            dx = x - pos_msg.x
+            dy = y - pos_msg.y
+            
+            # Calculate angle in radians towards the target
+            yaw = math.atan2(dy, dx)
+            
+            # Enable yaw bit by clearing bit 10
+            type_mask &= ~0b0000010000000000
+            
+        elif not face_dest and att_msg:
+            # Explicitly force the drone to hold its current yaw.
+            # (Prevents ArduPilot's WP_YAW_BEHAVIOR from taking over and auto-rotating)
+            yaw = att_msg.yaw
+            
+            # Enable yaw bit by clearing bit 10
+            type_mask &= ~0b0000010000000000
+
+        # Send the command
         self.mav.mav.set_position_target_local_ned_send(
-            0,  # boot time ms
+            0,  
             self.mav.target_system,
             self.mav.target_component,
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,
             type_mask,
             x, y, z,
-            0, 0, 0,  # vx, vy, vz
-            0, 0, 0,  # afx, afy, afz
-            0, 0      # yaw, yaw_rate
+            vx, vy, vz,  # Velocities 
+            0, 0, 0,     # Accelerations
+            yaw, 0       # Yaw, Yaw_rate
         )
         
 

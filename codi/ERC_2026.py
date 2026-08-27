@@ -170,10 +170,11 @@ class ERCMissionController:
                 self.state.current_phase = FlightPhase.MISSION_COMPLETED
 
     def _execute_search_step(self):
-        pos = np.array(self.mav.get_local_position())
+        pos = self.mav.get_local_position()
         if pos is None:
             logger.warning("Could not retrieve local position!")
             return False
+        pos = np.array(pos)
         logger.debug(f"Mavlink current pos: {pos}")
 
         att_msg = self.mav.mav.recv_match(type='ATTITUDE', blocking=False)
