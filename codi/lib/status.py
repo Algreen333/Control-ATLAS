@@ -28,7 +28,7 @@ class FlightState:
     current_phase: FlightPhase = FlightPhase.INIT
 
     search_altitude_m: float = 2.0
-    search_waypoint_idx: int = 0
+    search_wp_idx: int = 0
 
     liftoff_coords: Tuple[float, float, float] = (0.0, 0.0, 0.0)
     landing_coords: List[Tuple[float, float, float]] = field(default_factory=list)
@@ -56,7 +56,7 @@ class StateManager:
 
             state = FlightState(
                 current_phase=phase,
-                search_waypoint_idx=data.get("search_waypoint_idx", 0),
+                search_wp_idx=data.get("search_wp_idx", 0),
                 search_altitude_m=data.get("search_altitude_m", 2.0),
                 liftoff_coords=tuple(data.get("liftoff_coords", (0.0, 0.0, 0.0))),
                 landing_coords=list(data.get("landing_coords", []))
@@ -64,7 +64,7 @@ class StateManager:
 
             logger.info(
                 f"Checkpoint loaded: Phase={state.current_phase}, "
-                f"Attempt={state.mission_attempt}, SearchWP={state.search_waypoint_idx}"
+                f"SearchWP={state.search_wp_idx}"
             )
             return state
 
@@ -84,7 +84,7 @@ class StateManager:
                 os.fsync(f.fileno())
 
             os.replace(self.temp_filepath, self.filepath)
-            logger.debug(f"Checkpoint saved: Phase={state.current_phase.value}, WP={state.search_waypoint_idx}")
+            logger.debug(f"Checkpoint saved: Phase={state.current_phase.value}, WP={state.search_wp_idx}")
         except Exception as e:
             logger.error(f"Error saving checkpoint: {e}")
 
