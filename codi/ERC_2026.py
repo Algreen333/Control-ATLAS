@@ -222,7 +222,7 @@ class ERCMissionController:
             logger.info(f"Moving to first waypoint")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
-                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, vx=SEARCH_SPEED, vy=SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
@@ -231,7 +231,7 @@ class ERCMissionController:
             logger.info(f"Reached search waypoint {self.state.search_wp_idx}")
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
-                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
+                self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, vx=SEARCH_SPEED, vy=SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
