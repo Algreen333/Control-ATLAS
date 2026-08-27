@@ -7,6 +7,8 @@ import json
 
 from typing import Optional, Tuple
 
+import logging
+logger = logging.getLogger(__name__)
 
 from lib.aruco_lib import *
 
@@ -104,7 +106,7 @@ class VideoCapture:
 
         time.sleep(1) 
 
-        print("[*] Video capture started")
+        logger.info("[*] Video capture started")
         return self
 
     def _update(self):
@@ -282,7 +284,7 @@ class VideoServer:
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
             except Exception as e:
-                print("'_generate_frames' exception:", e)
+                logger.info("'_generate_frames' exception:", e)
 
                 if prev_frame is not None:
                     yield (b'--frame\r\n'
@@ -298,7 +300,7 @@ class VideoServer:
             daemon=True
         )
         server_thread.start()
-        print(f"[*] Web server live at http://{self.host}:{self.port}")
+        logger.info(f"[*] Web server live at http://{self.host}:{self.port}")
 
     def create_route(self, rule, endpoint_name, generator):
         """
@@ -560,12 +562,12 @@ class TelemetryServer:
 
     def start(self):
         """Starts the Flask server. This is a blocking call."""
-        print(f"[TELEMETRY] Starting web server on {self.host}:{self.port}...")
+        logger.info(f"[TELEMETRY] Starting web server on {self.host}:{self.port}...")
         self.app.run(host=self.host, port=self.port, threaded=True)
 
     def start_background(self):
         """Starts the Flask server in a non-blocking background thread."""
-        print(f"[TELEMETRY] Starting background web server on {self.host}:{self.port}...")
+        logger.info(f"[TELEMETRY] Starting background web server on {self.host}:{self.port}...")
         
         # We wrap app.run in a thread. 
         # use_reloader=False is REQUIRED when running Flask outside the main thread.
@@ -625,10 +627,10 @@ class StereoCapture:
         
         if sync_mode == "server":
             picam.set_controls({"SyncMode": controls.rpi.SyncModeEnum.Server})
-            print(f"Hardware node {cam_index} initialized as IPA SYNC SERVER.")
+            logger.info(f"Hardware node {cam_index} initialized as IPA SYNC SERVER.")
         elif sync_mode == "client":
             picam.set_controls({"SyncMode": controls.rpi.SyncModeEnum.Client})
-            print(f"Hardware node {cam_index} initialized as IPA SYNC CLIENT.")
+            logger.info(f"Hardware node {cam_index} initialized as IPA SYNC CLIENT.")
 
         picam.set_controls({
             "NoiseReductionMode": 2,
@@ -694,7 +696,7 @@ class StereoCapture:
         self.running = True
         self.thread = Thread(target=self._update_loop, daemon=True)
         self.thread.start()
-        print("[SYNC-CAP] Sync camera thread started.")
+        logger.info("[SYNC-CAP] Sync camera thread started.")
         return self
     
     def read(self):
@@ -784,10 +786,10 @@ class GazeboStereoCapture:
         dst_narr):
         
         self.cap_wide = cv2.VideoCapture(pipeline_wide, cv2.CAP_GSTREAMER)
-        print("[SYSTEM] Capture 'wide' open?", self.cap_wide.isOpened())
+        logger.info("[SYSTEM] Capture 'wide' open?", self.cap_wide.isOpened())
 
         self.cap_narr = cv2.VideoCapture(pipeline_narr, cv2.CAP_GSTREAMER)
-        print("[SYSTEM] Capture 'narrow' open?", self.cap_narr.isOpened())
+        logger.info("[SYSTEM] Capture 'narrow' open?", self.cap_narr.isOpened())
 
         self.mtx_wide = mtx_wide
         self.dst_wide = dst_wide
@@ -818,7 +820,7 @@ class GazeboStereoCapture:
         self.running = True
         self.thread = Thread(target=self._update_loop, daemon=True)
         self.thread.start()
-        print("[SYSTEM] Camera processing thread started.")
+        logger.info("[SYSTEM] Camera processing thread started.")
         return self
 
     def stop(self):

@@ -4,6 +4,11 @@ os.environ["MAVLINK20"] = "1" # MUST be set before importing mavutil
 from pymavlink import mavutil
 import time
 import numpy as np
+from enum import Enum
+from typing import List, Optional, Tuple
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Coses a mirar:
@@ -26,10 +31,10 @@ class MavlinkConnection:
         baud              : serial baud rate (ignored for UDP/TCP connections)
         debug             : if set, action commands will not be executed
         """
-        print(f"[MAV] Connecting to {connection_string} ...")
+        logger.info(f"[MAV] Connecting to {connection_string} ...")
         self.mav = mavutil.mavlink_connection(connection_string, baud=baud)
         self.mav.wait_heartbeat()
-        print(f"[MAV] Heartbeat from system {self.mav.target_system}, "
+        logger.info(f"[MAV] Heartbeat from system {self.mav.target_system}, "
             f"component {self.mav.target_component}")
         self.request_data_streams(rate_hz=4.0)
 
@@ -96,15 +101,15 @@ class MavlinkConnection:
         }.items():
             self.request_message_interval(msg_id, hz)
 
-        print(f"[MAV] Telemetry streams requested @ {rate_hz} Hz. "
+        logger.info(f"[MAV] Telemetry streams requested @ {rate_hz} Hz. "
             "Waiting for GLOBAL_POSITION_INT ...")
 
         msg = self.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=True, timeout=5)
         if msg is None:
-            print("[MAV] WARNING: no GLOBAL_POSITION_INT after 5 s. "
+            logger.info("[MAV] WARNING: no GLOBAL_POSITION_INT after 5 s. "
                 "Check SR*_POSITION params on the flight controller.")
         else:
-            print(f"[MAV] Position streaming OK. Alt={msg.relative_alt / 1000:.1f} m")
+            logger.info(f"[MAV] Position streaming OK. Alt={msg.relative_alt / 1000:.1f} m")
     
     def is_armed(self) -> bool | None:
         """
@@ -118,74 +123,99 @@ class MavlinkConnection:
         
         else: return None
 
+
+    # ---------------------------------------------------------------------------
+    # Status commands
+    # ---------------------------------------------------------------------------
+
+    def get_local_position(self) -> Optional[Tuple[float, float, float]]:
+        """Returns (x, y, z) in NED frame (meters) where Z is negative upward."""
+        msg = self.mav.recv_match(type="LOCAL_POSITION_NED", blocking=True, timeout=2.0)
+        if msg:
+            return (msg.x, msg.y, msg.z)
+        return None
+    
+    def is_airborne(self, alt_threshold_m: float = 0.5) -> bool:
+        """Determines if the drone is in flight by checking arm status and altitude."""
+        msg_hb = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2.0)
+        is_armed = False
+        if msg_hb:
+            is_armed = bool(msg_hb.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
+
+        pos = self.get_local_position()
+        curr_alt = -pos[2] if pos else 0.0
+
+        logger.info(f"Telemetry Status: Armed={is_armed}, Estimated Alt={curr_alt:.2f}m")
+        return is_armed and (curr_alt > alt_threshold_m)
+
     
     # ---------------------------------------------------------------------------
     # Flight control commands
     # ---------------------------------------------------------------------------
 
     def arm(self) -> None:
-        print("[MAV] Arming ...")
+        logger.info("[MAV] Arming ...")
         self.mav.arducopter_arm()
         self.mav.motors_armed_wait()
-        print("[MAV] Armed")
+        logger.info("[MAV] Armed")
     
     def waitArmed(self) -> None:
-        print("[MAV] Waiting for Arm ...")
+        logger.info("[MAV] Waiting for Arm ...")
         self.mav.motors_armed_wait()
-        print("[MAV] Armed")
+        logger.info("[MAV] Armed")
 
     def setGuided(self) -> None:
-        print("[MAV] Switching to GUIDED ...")
+        logger.info("[MAV] Switching to GUIDED ...")
 
         self.mav.set_mode("GUIDED")
         # Wait for guided
         msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
             if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
-                print("[MAV] Retrying to switch to GUIDED ...")
+                logger.info("[MAV] Retrying to switch to GUIDED ...")
                 self.mav.set_mode("GUIDED")
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
 
-        print("[MAV] GUIDED mode set")
+        logger.info("[MAV] GUIDED mode set")
 
     def waitGuided(self) -> None:
-        print("[MAV] Waiting for GUIDED mode ...")
+        logger.info("[MAV] Waiting for GUIDED mode ...")
 
         msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         
-        print("[MAV] GUIDED mode set")
+        logger.info("[MAV] GUIDED mode set")
     
     def setStabilize(self) -> None:
-        print("[MAV] Switching to STABILIZE ...")
+        logger.info("[MAV] Switching to STABILIZE ...")
 
         self.mav.set_mode("STABILIZE")
         # Wait for guided
         msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED)):
             if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED)):
-                print("[MAV] Retrying to switch to STABILIZE ...")
+                logger.info("[MAV] Retrying to switch to STABILIZE ...")
                 self.mav.set_mode("STABILIZE")
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
 
-        print("[MAV] STABILIZE mode set")
+        logger.info("[MAV] STABILIZE mode set")
 
     def waitStabilize(self) -> None:
-        print("[MAV] Waiting for STABILIZE mode ...")
+        logger.info("[MAV] Waiting for STABILIZE mode ...")
 
         msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_STABILIZE_ENABLED) or not (msg.custom_mode & 4)):
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         
-        print("[MAV] STABILIZE mode set")
+        logger.info("[MAV] STABILIZE mode set")
 
     def takeoff(self, altitude_m: float):
         if self.debug: 
-            print(f"<DEBUG> [MAV] Taking off to {altitude_m} m ...")
+            logger.info(f"<DEBUG> [MAV] Taking off to {altitude_m} m ...")
             return
         
-        print(f"[MAV] Taking off to {altitude_m} m ...")
+        logger.info(f"[MAV] Taking off to {altitude_m} m ...")
         self.mav.mav.command_long_send(
             self.mav.target_system,
             self.mav.target_component,
@@ -198,25 +228,25 @@ class MavlinkConnection:
         while True:
             msg = self.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=True, timeout=2)
             if msg and msg.relative_alt / 1000.0 >= altitude_m * 0.92:
-                print(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
+                logger.info(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
                 break
 
     def arm_and_takeoff(self, altitude_m: float) -> None:
         """Switch to GUIDED, arm, and climb to altitude_m metres."""
         if self.debug: 
-            print(f"<DEBUG> [MAV] Arm and takeoff")
+            logger.info(f"<DEBUG> [MAV] Arm and takeoff")
             return
 
-        print("[MAV] Switching to GUIDED ...")
+        logger.info("[MAV] Switching to GUIDED ...")
         self.mav.set_mode("GUIDED")
         time.sleep(1)
 
-        print("[MAV] Arming ...")
+        logger.info("[MAV] Arming ...")
         self.mav.arducopter_arm()
         self.mav.motors_armed_wait()
-        print("[MAV] Armed.")
+        logger.info("[MAV] Armed.")
 
-        print(f"[MAV] Taking off to {altitude_m} m ...")
+        logger.info(f"[MAV] Taking off to {altitude_m} m ...")
         self.mav.mav.command_long_send(
             self.mav.target_system,
             self.mav.target_component,
@@ -229,12 +259,12 @@ class MavlinkConnection:
         while True:
             msg = self.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=True, timeout=2)
             if msg and msg.relative_alt / 1000.0 >= altitude_m * 0.92:
-                print(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
+                logger.info(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
                 break
 
     def switch_to_land(self) -> None:
         """Command LAND mode (activates ArduPilot's PLND controller)."""
-        print("[MAV] Switching to LAND mode – PLND active.")
+        logger.info("[MAV] Switching to LAND mode – PLND active.")
         self.mav.set_mode("LAND")
 
     def wait_for_disarm(self, timeout_s: float = 120.0) -> bool:
@@ -249,9 +279,9 @@ class MavlinkConnection:
             if msg:
                 armed = bool(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
                 if not armed:
-                    print("[MAV] Disarmed – landing complete.")
+                    logger.info("[MAV] Disarmed – landing complete.")
                     return True
-        print("[MAV] Timeout waiting for disarm.")
+        logger.info("[MAV] Timeout waiting for disarm.")
         return False
 
 
@@ -269,7 +299,7 @@ class MavlinkConnection:
         """
 
         if self.debug: 
-            print(f"<DEBUG> [MAV] Moving ({vertical, horizontal, updown}) m ...")
+            logger.info(f"<DEBUG> [MAV] Moving ({vertical, horizontal, updown}) m ...")
             return
 
         self.mav.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
@@ -296,7 +326,7 @@ class MavlinkConnection:
         """
 
         if self.debug: 
-            print(f"<DEBUG> [MAV] Moving ({vertical}, {horizontal}, {updown}) m at ({speedv}, {speedh}, {speedz}) m/s ...")
+            logger.info(f"<DEBUG> [MAV] Moving ({vertical}, {horizontal}, {updown}) m at ({speedv}, {speedh}, {speedz}) m/s ...")
             return
 
         self.mav.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
@@ -327,7 +357,7 @@ class MavlinkConnection:
         """
 
         if self.debug: 
-            print(f"<DEBUG> [MAV] Moving ({v_fwd}, {v_right}, {v_down}) m/s ...")
+            logger.info(f"<DEBUG> [MAV] Moving ({v_fwd}, {v_right}, {v_down}) m/s ...")
             return
 
         self.mav.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
@@ -345,6 +375,23 @@ class MavlinkConnection:
             v_fwd, v_right, v_down, # Velocity targets (m/s)
             0, 0, 0,                # Acceleration targets (ignored)
             0, 0))                  # Yaw and Yaw rate (ignored)
+
+    def send_target_ned(self, x: float, y: float, z: float):
+        """Sends position target in local NED coordinates (z is negative upward)."""
+        # MASK: ignore velocity and accel, use position only (type_mask: 0b0000111111111000 -> 0x0DF8)
+        type_mask = 0b0000111111111000
+        self.master.mav.set_position_target_local_ned_send(
+            0,  # boot time ms
+            self.master.target_system,
+            self.master.target_component,
+            mavutil.mavlink.MAV_FRAME_LOCAL_NED,
+            type_mask,
+            x, y, z,
+            0, 0, 0,  # vx, vy, vz
+            0, 0, 0,  # afx, afy, afz
+            0, 0      # yaw, yaw_rate
+        )
+        
 
     # ---------------------------------------------------------------------------
     # PRLND commands

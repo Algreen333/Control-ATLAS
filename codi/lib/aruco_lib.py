@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 from scipy.spatial.transform import Rotation, Slerp
 
+import logging
+logger = logging.getLogger(__name__)
 
 VERBOSE = False
 
@@ -184,7 +186,7 @@ class ArucoDetector():
 
         image_points = current_marker_corners.reshape(-1,2).astype(np.float32)
         
-        if VERBOSE: print("solving...")
+        if VERBOSE: logger.info("solving...")
 
         _, rvec, tvec = cv2.solvePnP(
             marker_points,
@@ -202,39 +204,44 @@ class ArucoDetector():
         :param MatLike frame: frame to be processed
         :param bool (optional) do_draw: Activate or deactivate function to draw detections onto the frame
         :return frame (MatLike): Original frame or frame with detections
-        :return position ((float, float, float)): Position of the detected aruco from the camera
-        :return rotation ((float, float, float)): Rotation of the detected aruco with respect to the camera
+        :return list(position ((float, float, float), rotation ((float, float, float)), id): Position of the detected aruco from the camera, rotation of the detected aruco with respect to the camera and id of the detected aruco
         """
         try:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             corners, ids, rejected = self.detectMarkers(gray)
 
             if ids is not None:
-                if VERBOSE: print(f"Found {len(ids)} markers.")
+                results = []
+
+                if VERBOSE: logger.info(f"Found {len(ids)} markers.")
                 
                 for i in range(len(ids)):
 
-                    if VERBOSE: print("--------------------------------------------",
+                    if VERBOSE: logger.info("--------------------------------------------",
                                     "\nShape:", corners[i].shape)
 
                     rvec, tvec = self.estimate_pose(corners[i], 0.2)
 
                     distance = np.linalg.norm(tvec)
-                    if VERBOSE: print(f"Distance: {distance:.3f} meters")
+                    if VERBOSE: logger.info(f"Distance: {distance:.3f} meters")
 
                     x_offset = tvec[0][0]
                     y_offset = tvec[1][0]
                     z_depth  = tvec[2][0]
 
-                    if VERBOSE: print(f"Position: x={x_offset:.2f}, y={y_offset:.2f}, z={z_depth:.2f}")
+                    if VERBOSE: logger.info(f"Position: x={x_offset:.2f}, y={y_offset:.2f}, z={z_depth:.2f}")
 
                     pitch, yaw, roll = get_euler_angles(rvec)
-                    if VERBOSE: print(f"Orientation: Pitch={pitch:.1f}, Yaw={yaw:.1f}, Roll={roll:.1f}", 
+                    if VERBOSE: logger.info(f"Orientation: Pitch={pitch:.1f}, Yaw={yaw:.1f}, Roll={roll:.1f}", 
                                     "\n--------------------------------------------")
 
-                    if do_draw: aruco.drawDetectedMarkers(frame, corners, ids)
+                    results.append(((x_offset, y_offset, z_depth), (pitch, yaw, roll), ids[i]))
 
-                    return (frame, (x_offset, y_offset, z_depth), (pitch, yaw, roll))
-        except Exception as e: print("'ArucoDetector:full_detection' error:", e)
+                if do_draw: aruco.drawDetectedMarkers(frame, corners, ids)
+
+
+                return frame, results
+                
+        except Exception as e: logger.info("'ArucoDetector:full_detection' error:", e)
         
         return None

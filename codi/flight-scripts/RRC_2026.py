@@ -1,5 +1,12 @@
 ##### TO WATCH!!!!! https://landmarklanding.com/blogs/landmark-lab-notes/ardupilot-precision-landing?srsltid=AfmBOopRb_8qfYKOU5efXQ0mQedGTP3hKf4MeQ8MP-QD6iZekGplSPor
 
+#
+#       NOTA IMPORTANT!!!!!!!!!
+#
+#   HI HA HAGUT CANVIS A LES LIBS QUE FAN AQUEST PROGRAMA INSERVIBLE:
+#   - aruco_lib -> ArucoDetector.full_prediction(): el que ara retorna és molt diferent
+#
+
 import cv2
 import numpy as np
 import argparse
