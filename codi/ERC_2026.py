@@ -178,7 +178,7 @@ class ERCMissionController:
             return False
         logger.debug(f"Mavlink current pos: {pos}")
 
-        att_msg = self.mav.master.recv_match(type='ATTITUDE', blocking=False)
+        att_msg = self.mav.mav.recv_match(type='ATTITUDE', blocking=False)
         yaw = att_msg.yaw if att_msg else 0.0
 
         # Image search
