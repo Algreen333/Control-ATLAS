@@ -52,13 +52,11 @@ class CVProcessing:
             logger.warning("Capture read returned error")
             return None
 
-        prediction = self.detector.full_prediction(frame, do_draw) # pass 'frame' here too!
+        prediction = self.detector.full_prediction(frame, do_draw)
         if prediction is None:
             return frame, [], []
             
         frame, detections = prediction
-        
-        frame, detections = self.detector.full_prediction(do_draw)
 
         home_detections = []
         land_detections = []
