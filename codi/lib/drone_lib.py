@@ -401,6 +401,8 @@ class MavlinkConnection:
             yaw = 0
             yaw_rate = 0
 
+        logger.info(type_mask)
+
         # Send the command
         self.mav.mav.set_position_target_local_ned_send(
             0,  
