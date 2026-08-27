@@ -28,7 +28,7 @@ class FlightState:
     current_phase: FlightPhase = FlightPhase.INIT
 
     search_altitude_m: float = 2.0
-    search_wp_idx: int = 0
+    search_waypoint_idx: int = 0
 
     liftoff_coords: Tuple[float, float, float] = (0.0, 0.0, 0.0)
     landing_coords: List[Tuple[float, float, float]] = field(default_factory=list)
@@ -56,7 +56,6 @@ class StateManager:
 
             state = FlightState(
                 current_phase=phase,
-                custom_platform_mode=data.get("custom_platform_mode", False),
                 search_waypoint_idx=data.get("search_waypoint_idx", 0),
                 search_altitude_m=data.get("search_altitude_m", 2.0),
                 liftoff_coords=tuple(data.get("liftoff_coords", (0.0, 0.0, 0.0))),
