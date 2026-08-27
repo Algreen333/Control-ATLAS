@@ -376,34 +376,42 @@ class MavlinkConnection:
             0, 0, 0,                # Acceleration targets (ignored)
             0, 0))                  # Yaw and Yaw rate (ignored)
 
-    def send_target_ned(self, x: float, y: float, z: float, vx: float=None, vy: float=None, vz: float = None, yaw: float = None, yaw_rate: float = 0.5):
+    def send_target_ned(self, x: float, y: float, z: float, speed_ms: float = None, yaw: float = None, yaw_rate: float = 0.5):
         """
         Sends position target in local NED coordinates (z is negative upward).
         
         :param float x: North target in meters
         :param float y: East target in meters
         :param float z: Down target in meters (negative for altitude)
-        :param float speed_ms: Optional speed limit in m/s (feed-forward velocity)
-        :param bool face_dest: If True, yaws to face the target. If False, holds current heading.
+        :param float speed_ms: Optional ground speed limit in m/s
+        :param float yaw: Optional yaw target
+        :param float yaw_rate: Optional yaw rate
         """
-        type_mask = 0b010111111000 # Use pos and yaw rate
+        # 1. Update ground speed if requested
+        if speed_ms is not None:
+            self.mav.mav.command_long_send(
+                self.mav.target_system,
+                self.mav.target_component,
+                mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,
+                0,            # confirmation
+                1,            # Speed type (1 = Ground Speed)
+                speed_ms,     # Target speed in m/s
+                -1,           # Throttle (-1 indicates no change)
+                0, 0, 0, 0
+            )
 
-        if vx is not None: type_mask &= 0b111111110111
-        else: vx = 0
-        if vy is not None: type_mask &= 0b111111101111
-        else: vy = 0
-        if vz is not None: type_mask &= 0b111111011111
-        else: vz = 0
+        # 2. Prepare bitmask (Ignore velocities and accelerations, use Position)
+        type_mask = 0b010111111000 # Default: Use pos and yaw rate
 
         if yaw is not None: 
-            type_mask &= 0b101111111111
+            type_mask &= 0b101111111111 # Enable yaw
         else: 
             yaw = 0
             yaw_rate = 0
 
         logger.info(type_mask)
 
-        # Send the command
+        # 3. Send the position command
         self.mav.mav.set_position_target_local_ned_send(
             0,  
             self.mav.target_system,
@@ -411,9 +419,9 @@ class MavlinkConnection:
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,
             type_mask,
             x, y, z,
-            vx, vy, vz,  # Velocities 
+            0, 0, 0,     # Velocities (now 0, ignored by mask)
             0, 0, 0,     # Accelerations
-            yaw, yaw_rate       # Yaw, Yaw_rate
+            yaw, yaw_rate # Yaw, Yaw_rate
         )
         
 
