@@ -87,8 +87,8 @@ class ERCMissionController:
         # Initialise classes
         self.state_manager = StateManager(state_file)
         self.mav = MavlinkConnection(mavlink_con, mavlink_baud, debug)
-        if doGazebo: self.capture = GazeboVideoCapture(capture_source=capture_source, capture_resolution=capture_resolution, fps=capture_fps)
-        else: self.capture = VideoCapture(capture_source=capture_source, capture_resolution=capture_resolution, fps=capture_fps)
+        if doGazebo: self.capture = GazeboVideoCapture(capture_source=capture_source, resolution=capture_resolution, fps=capture_fps)
+        else: self.capture = VideoCapture(capture_source=capture_source, resolution=capture_resolution, fps=capture_fps)
 
         self.state = FlightState()
         self.cvproc = CVProcessing(self.capture, capture_config, aruco_dict)
