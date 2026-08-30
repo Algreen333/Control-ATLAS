@@ -306,6 +306,18 @@ class MavlinkConnection:
         logger.info("[MAV] Timeout waiting for disarm.")
         return False
 
+    def set_attitude_speed(self, speed_ms):
+        self.mav.mav.command_long_send(
+            self.mav.target_system,
+            self.mav.target_component,
+            mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,
+            0,            # confirmation
+            1,            # Speed type (1 = Ground Speed)
+            speed_ms,     # Target speed in m/s
+            -1,           # Throttle (-1 indicates no change)
+            0, 0, 0, 0
+        )
+
 
     # ---------------------------------------------------------------------------
     # Flight movement commands
@@ -398,7 +410,7 @@ class MavlinkConnection:
             0, 0, 0,                # Acceleration targets (ignored)
             0, 0))                  # Yaw and Yaw rate (ignored)
 
-    def send_target_ned(self, x: float, y: float, z: float, speed_ms: float = None, face_dest: bool = False):
+    def send_target_ned(self, x: float, y: float, z: float, speed_ms: float = None, yaw: float = None, yaw_rate: float = 0.5):
         """
         Sends position target in local NED coordinates (z is negative upward).
         
@@ -408,53 +420,16 @@ class MavlinkConnection:
         :param float speed_ms: Optional speed limit in m/s (feed-forward velocity)
         :param bool face_dest: If True, yaws to face the target. If False, holds current heading.
         """
-        import math
-        
-        # Base mask: ignore velocity, accel, force, yaw, and yaw_rate (0x0FF8 -> 4088)
-        # Bits: 0,1,2 (Pos) are 0. Bits 3-11 are 1 (Ignored).
-        type_mask = 0b0000111111111000 
-        
-        vx, vy, vz = 0.0, 0.0, 0.0
-        yaw = 0.0
-        
-        # Use non-blocking reads to get current state without stuttering the mission loop
-        pos_msg = self.mav.recv_match(type="LOCAL_POSITION_NED", blocking=False)
-        att_msg = self.mav.recv_match(type="ATTITUDE", blocking=False)
-        
-        # Handle Speed (Velocity Feed-Forward)
-        if speed_ms is not None and pos_msg:
-            dx = x - pos_msg.x
-            dy = y - pos_msg.y
-            dz = z - pos_msg.z
-            dist = math.sqrt(dx**2 + dy**2 + dz**2)
-            
-            if dist > 0.05: # Avoid division by zero
-                # Calculate velocity vector pointing exactly to the target
-                vx = (dx / dist) * speed_ms
-                vy = (dy / dist) * speed_ms
-                vz = (dz / dist) * speed_ms
-                
-                # Enable velocity bits by clearing bits 3, 4, and 5
-                type_mask &= ~0b0000000000111000
+        if speed_ms is not None:
+            self.set_attitude_speed(speed_ms)
 
-        # Handle Yaw (Heading)
-        if face_dest and pos_msg:
-            dx = x - pos_msg.x
-            dy = y - pos_msg.y
-            
-            # Calculate angle in radians towards the target
-            yaw = math.atan2(dy, dx)
-            
-            # Enable yaw bit by clearing bit 10
-            type_mask &= ~0b0000010000000000
-            
-        elif not face_dest and att_msg:
-            # Explicitly force the drone to hold its current yaw.
-            # (Prevents ArduPilot's WP_YAW_BEHAVIOR from taking over and auto-rotating)
-            yaw = att_msg.yaw
-            
-            # Enable yaw bit by clearing bit 10
-            type_mask &= ~0b0000010000000000
+        type_mask = 0b010111111000 # Default: Use pos and yaw rate
+
+        if yaw is not None: 
+            type_mask &= 0b101111111111 # Enable yaw
+        else: 
+            yaw = 0
+            yaw_rate = 0
 
         # Send the command
         self.mav.mav.set_position_target_local_ned_send(
@@ -464,9 +439,9 @@ class MavlinkConnection:
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,
             type_mask,
             x, y, z,
-            vx, vy, vz,  # Velocities 
+            0, 0, 0,  # Velocities 
             0, 0, 0,     # Accelerations
-            yaw, 0       # Yaw, Yaw_rate
+            yaw, yaw_rate       # Yaw, Yaw_rate
         )
         
 

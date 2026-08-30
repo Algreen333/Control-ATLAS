@@ -26,7 +26,7 @@ import numpy as np
 SEARCH_SQUARE_SIDE = 2
 SEARCH_ALT = -2
 SEARCH_MAX_DIST_TO_WP = 0.15
-SEARCH_SPEED = 1
+SEARCH_SPEED = 0.1
 ARUCO_HOME_ID = 101
 ARUCO_LAND_ID = 102
 ALIGN_ITERS = 6
@@ -147,6 +147,7 @@ class ERCMissionController:
             if phase == FlightPhase.INIT:
                 # Step 1: Liftoff
                 logger.info(f"--- Starting Mission ---")
+                self.mav.set_attitude_speed(SEARCH_SPEED)
                 self.mav.arm_and_takeoff(self.state.search_altitude_m)
                 time.sleep(5)
                 self.state.current_phase = FlightPhase.SEARCHING
