@@ -26,12 +26,13 @@ import numpy as np
 SEARCH_SQUARE_SIDE = 2
 SEARCH_ALT = -2
 SEARCH_MAX_DIST_TO_WP = 0.15
-SEARCH_SPEED = 0.1
+SEARCH_SPEED = 1
 ARUCO_HOME_ID = 101
 ARUCO_LAND_ID = 102
 ALIGN_ITERS = 6
 ALIGN_DELAY = 0.5
 ALIGN_THRSH_DIST = 0.75
+WINDOW_SIZE = 30
 
 
 class CVProcessing:
@@ -149,7 +150,6 @@ class ERCMissionController:
                 self.mav.arm_and_takeoff(self.state.search_altitude_m)
                 time.sleep(5)
                 self.state.current_phase = FlightPhase.SEARCHING
-                self.mav.set_attitude_speed(SEARCH_SPEED)
                 self.state_manager.save_state(self.state)
 
             elif phase == FlightPhase.SEARCHING:
@@ -239,7 +239,14 @@ class ERCMissionController:
 
     def register_landing_target(self, coords):
         self.state.landing_coords.append(coords)
+
+        if len(self.state.landing_coords) > WINDOW_SIZE:
+            self.state.landing_coords.pop(0)
         self.state_manager.save_state(self.state)
+
+            
+
+        
 
     def _execute_align_step(self):
         self._execute_search_step() # Keep looking for the landing target for better position estimate
@@ -248,7 +255,20 @@ class ERCMissionController:
             lnd_crds = (0.0, 0.0, 0.0)
         else:
             coords = np.array(self.state.landing_coords)
-            lnd_crds = np.mean(coords, axis=0)
+            median = np.median(coords, axis=0)
+            mad = np.median(np.abs(coords-median), axis=0)
+            mad = np.where(mad == 0, 1e-6, mad)
+
+            threshold = 2.5
+            deviations = np.abs(coords - median) / mad
+            mask = np.all(deviations < threshold, axis=1)
+
+            clean_coords = coords[mask]
+
+            if len(clean_coords) == 0:
+                lnd_crds = median
+            else:
+                lnd_crds = np.mean(clean_coords, axis=0)
 
         logger.info(f"Centering over landing target: ({lnd_crds[0]:.2f}, {lnd_crds[1]:.2f})")
 
