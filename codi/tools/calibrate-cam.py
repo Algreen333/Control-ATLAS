@@ -1,82 +1,127 @@
-import cv2
-from picamera2 import Picamera2
+import io
+import time
+from flask import Flask, Response, request, render_template_string
+import picamera
 
-# 1. Initialize PiCamera2
-picam2 = Picamera2()
+app = Flask(__name__)
 
-# Configure the camera for a fast video stream
-# You can change the size to (1280, 720) or higher, but 640x480 is very responsive for tuning.
-config = picam2.create_video_configuration(main={"size": (640, 480), "format": "RGB888"})
-picam2.configure(config)
-picam2.start()
+# Initialize PiCamera with default settings
+camera = picamera.PiCamera()
+camera.resolution = (640, 480)
+camera.framerate = 24
+time.sleep(2) # Allow sensor to warm up
 
-# 2. Setup OpenCV Window and Trackbars
-window_name = "PiCamera2 Calibration"
-cv2.namedWindow(window_name)
+# HTML/JS UI embedded as a string
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PiCamera Calibration</title>
+    <style>
+        body { font-family: system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; background: #1a1a1a; color: #fff; margin: 0; padding: 20px; }
+        .container { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .controls { display: flex; flex-direction: column; gap: 20px; background: #2d2d2d; padding: 25px; border-radius: 12px; min-width: 300px; }
+        img { border: 2px solid #444; border-radius: 12px; background: #000; }
+        label { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        input[type="range"] { width: 150px; }
+        select { width: 150px; padding: 4px; background: #444; color: white; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h2>Live PiCamera Calibration</h2>
+    <div class="container">
+        <div>
+            <img src="/video_feed" width="640" height="480" alt="Live Stream" />
+        </div>
+        <div class="controls">
+            <label>Brightness (0-100): 
+                <input type="range" min="0" max="100" value="50" oninput="update('brightness', this.value)">
+            </label>
+            <label>Contrast (-100-100): 
+                <input type="range" min="-100" max="100" value="0" oninput="update('contrast', this.value)">
+            </label>
+            <label>Exposure Compensation (-25-25): 
+                <input type="range" min="-25" max="25" value="0" oninput="update('exposure_compensation', this.value)">
+            </label>
+            <label>ISO:
+                <select onchange="update('iso', this.value)">
+                    <option value="0">Auto</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="400">400</option>
+                    <option value="800">800</option>
+                </select>
+            </label>
+            <label>Exposure Mode:
+                <select onchange="update('exposure_mode', this.value)">
+                    <option value="auto">Auto</option>
+                    <option value="night">Night</option>
+                    <option value="sports">Sports</option>
+                    <option value="snow">Snow</option>
+                </select>
+            </label>
+            <label>AWB (White Balance):
+                <select onchange="update('awb_mode', this.value)">
+                    <option value="auto">Auto</option>
+                    <option value="sunlight">Sunlight</option>
+                    <option value="cloudy">Cloudy</option>
+                    <option value="tungsten">Tungsten</option>
+                    <option value="fluorescent">Fluorescent</option>
+                </select>
+            </label>
+        </div>
+    </div>
 
-# Dummy callback function required by OpenCV trackbars
-def on_trackbar(val):
-    pass
-
-# OpenCV trackbars only support positive integers (0 to max).
-# We set ranges here and map them to the float limits libcamera expects later.
-cv2.createTrackbar("Brightness", window_name, 100, 200, on_trackbar)  # Maps to: -1.0 to 1.0 (Default 0.0 = 100)
-cv2.createTrackbar("Contrast", window_name, 10, 50, on_trackbar)      # Maps to: 0.0 to 5.0 (Default 1.0 = 10)
-cv2.createTrackbar("Saturation", window_name, 10, 50, on_trackbar)    # Maps to: 0.0 to 5.0 (Default 1.0 = 10)
-cv2.createTrackbar("Sharpness", window_name, 10, 50, on_trackbar)     # Maps to: 0.0 to 5.0 (Default 1.0 = 10)
-cv2.createTrackbar("Exposure(EV)", window_name, 80, 160, on_trackbar) # Maps to: -8.0 to 8.0 (Default 0.0 = 80)
-
-print("Starting live preview. Press 'q' or 'ESC' on the video window to quit.")
-
-try:
-    while True:
-        # Capture the current frame from the camera stream
-        frame = picam2.capture_array()
-        
-        # Picamera2 returns RGB by default; OpenCV requires BGR for display
-        frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        
-        # Read the current values from the sliders
-        tb_brightness = cv2.getTrackbarPos("Brightness", window_name)
-        tb_contrast = cv2.getTrackbarPos("Contrast", window_name)
-        tb_saturation = cv2.getTrackbarPos("Saturation", window_name)
-        tb_sharpness = cv2.getTrackbarPos("Sharpness", window_name)
-        tb_ev = cv2.getTrackbarPos("Exposure(EV)", window_name)
-        
-        # Convert integers back to the correct float values for libcamera
-        brightness_val = (tb_brightness - 100) / 100.0
-        contrast_val = tb_contrast / 10.0
-        saturation_val = tb_saturation / 10.0
-        sharpness_val = tb_sharpness / 10.0
-        ev_val = (tb_ev - 80) / 10.0
-        
-        # Apply the parameters to the hardware in real-time
-        controls = {
-            "Brightness": brightness_val,
-            "Contrast": contrast_val,
-            "Saturation": saturation_val,
-            "Sharpness": sharpness_val,
-            "ExposureValue": ev_val
+    <script>
+        function update(param, value) {
+            fetch('/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [param]: value })
+            }).catch(err => console.error("Update failed:", err));
         }
-        picam2.set_controls(controls)
-        
-        # Overlay the parameter values directly onto the video feed
-        text = f"Brt:{brightness_val:.2f} Cnt:{contrast_val:.1f} Sat:{saturation_val:.1f} Shp:{sharpness_val:.1f} EV:{ev_val:.1f}"
-        cv2.putText(frame_bgr, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-        
-        # Display the live window
-        cv2.imshow(window_name, frame_bgr)
-        
-        # Check for 'q' or 'ESC' key press to exit safely
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q') or key == 27:
-            break
+    </script>
+</body>
+</html>
+"""
 
-except Exception as e:
-    print(f"An error occurred: {e}")
+def generate_frames():
+    """Generator that continuously captures frames from the camera into a byte stream."""
+    stream = io.BytesIO()
+    for _ in camera.capture_continuous(stream, format='jpeg', use_video_port=True):
+        stream.seek(0)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + stream.read() + b'\r\n')
+        stream.seek(0)
+        stream.truncate()
 
-finally:
-    # Always clean up camera and window resources when done
-    picam2.stop()
-    cv2.destroyAllWindows()
-    print("Camera safely shut down.")
+@app.route('/')
+def index():
+    """Serve the main calibration UI."""
+    return render_template_string(HTML_TEMPLATE)
+
+@app.route('/video_feed')
+def video_feed():
+    """Serve the MJPEG video stream."""
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/update', methods=['POST'])
+def update_params():
+    """Receive JSON from the UI and update camera hardware parameters instantly."""
+    data = request.json
+    for key, value in data.items():
+        try:
+            # Numeric values need to be cast to integers
+            if key in ['brightness', 'contrast', 'exposure_compensation', 'iso']:
+                setattr(camera, key, int(value))
+            else:
+                setattr(camera, key, value)
+            print(f"Updated {key} to {value}")
+        except Exception as e:
+            print(f"Failed to update {key}: {e}")
+            
+    return {"status": "ok"}
+
+if __name__ == '__main__':
+    # Listen on all network interfaces so you can access it from another computer
+    app.run(host='0.0.0.0', port=5000, threaded=True)
