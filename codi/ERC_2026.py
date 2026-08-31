@@ -315,5 +315,5 @@ if __name__ == "__main__":
     BAUD_RATE = int(os.getenv("MAVLINK_BAUD", "57600"))
     STATE_FILE = os.getenv("FLIGHT_CHKP_FILE", "flight_checkpoint.json")
 
-    controller = ERCMissionController(state_file=STATE_FILE, mavlink_con=SERIAL_PORT,mavlink_baud=BAUD_RATE, debug=False, doGazebo=True)
+    controller = ERCMissionController(state_file=STATE_FILE, mavlink_con=SERIAL_PORT,mavlink_baud=BAUD_RATE, debug=False, doGazebo=False)
     controller.on_boot()

@@ -1229,3 +1229,1330 @@
 [2026-08-27 16:52:23,151] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=1
 [2026-08-27 16:52:23,152] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.12m
 [2026-08-27 16:52:23,152] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 13:48:06,510] [lib.drone_lib] [INFO] [MAV] Connecting to /dev/ttyAMA0 ...
+[2026-08-31 13:49:03,246] [lib.drone_lib] [INFO] [MAV] Connecting to localhost:5762 ...
+[2026-08-31 13:54:54,810] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 13:58:44,700] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 13:58:44,724] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 13:58:44,725] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 13:58:44,990] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 13:59:53,736] [lib.drone_lib] [INFO] [MAV] Connecting to /dev/ttyAMA0 ...
+[2026-08-31 14:00:28,941] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:00:28,963] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:00:28,963] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:00:28,964] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:03:07,587] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:03:07,622] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:03:07,622] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:03:07,623] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:03:37,747] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:03:37,747] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:03:37,747] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:03:37,747] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 14:03:37,748] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:03:37,748] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:03:37,748] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 14:03:37,748] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 14:03:37,748] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 14:03:38,750] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 14:03:38,877] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 14:03:38,878] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 14:03:44,765] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 14:04:54,778] [lib.aruco_lib] [WARNING] Capture read returned error
+[2026-08-31 14:07:11,463] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:07:11,697] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 0, component 0
+[2026-08-31 14:07:11,697] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:07:11,754] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=2.0 m
+[2026-08-31 14:07:12,239] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:07:12,239] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:07:12,239] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:07:12,239] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=-1
+[2026-08-31 14:07:12,819] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.19m
+[2026-08-31 14:07:12,819] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:07:13,092] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.10434746555433684), np.float64(0.04817121339359327), np.float64(1.9929945038870438)).
+[2026-08-31 14:07:13,099] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.10434747 0.04817121 1.9929945 ]
+[2026-08-31 14:07:13,099] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 14:07:13,372] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.1120510676416766), np.float64(0.03279957008883857), np.float64(1.9938652668861363)).
+[2026-08-31 14:07:13,386] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11205107 0.03279957 1.99386527]
+[2026-08-31 14:07:13,742] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.10623585101414147), np.float64(-0.17790373783383087), np.float64(1.955612007452572)).
+[2026-08-31 14:07:13,749] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.10623585 -0.17790374  1.95561201]
+[2026-08-31 14:07:14,017] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.2081707723874137), np.float64(-0.283812144020312), np.float64(1.89148191188923)).
+[2026-08-31 14:07:14,034] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.20817077 -0.28381214  1.89148191]
+[2026-08-31 14:07:14,301] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.08991367789278501), np.float64(0.00660112114219822), np.float64(1.895161492502703)).
+[2026-08-31 14:07:14,309] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.08991368 0.00660112 1.89516149]
+[2026-08-31 14:07:14,576] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.4800927378041341), np.float64(0.432928876953691), np.float64(1.9323627493141697)).
+[2026-08-31 14:07:14,593] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.48009274 0.43292888 1.93236275]
+[2026-08-31 14:07:16,113] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 14:07:54,919] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.1849630985547386), np.float64(0.6142130507987552), np.float64(2.0405104420252997)).
+[2026-08-31 14:07:54,942] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.1849631  0.61421305 2.04051044]
+[2026-08-31 14:07:54,942] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.21
+[2026-08-31 14:07:55,842] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.1528135398846098), np.float64(0.6183273119987217), np.float64(2.0492971309340144)).
+[2026-08-31 14:07:55,850] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.15281354 0.61832731 2.04929713]
+[2026-08-31 14:07:55,850] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.22
+[2026-08-31 14:07:56,150] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.015843618686897), np.float64(0.5639466486424288), np.float64(1.8803705836661415)).
+[2026-08-31 14:07:56,158] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.01584362 0.56394665 1.88037058]
+[2026-08-31 14:07:56,159] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:07:56,419] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.0057705246578321), np.float64(0.5634911093198882), np.float64(1.867563090910534)).
+[2026-08-31 14:07:56,426] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.00577052 0.56349111 1.86756309]
+[2026-08-31 14:07:56,426] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 14:07:56,683] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.9614958397872587), np.float64(0.5643581862383837), np.float64(1.8848357911776643)).
+[2026-08-31 14:07:56,690] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.96149584 0.56435819 1.88483579]
+[2026-08-31 14:07:56,690] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:07:57,189] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.0391553572584626), np.float64(0.6187099981165314), np.float64(2.0575007566049455)).
+[2026-08-31 14:07:57,201] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.03915536 0.61871    2.05750076]
+[2026-08-31 14:07:57,201] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.21
+[2026-08-31 14:07:57,653] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.0002158162154582), np.float64(0.6138427929677291), np.float64(2.048679336129135)).
+[2026-08-31 14:07:57,677] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.00021582 0.61384279 2.04867934]
+[2026-08-31 14:07:57,677] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.20
+[2026-08-31 14:07:58,002] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.9688785959334154), np.float64(0.6160822013222363), np.float64(2.059280893284697)).
+[2026-08-31 14:07:58,009] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.9688786  0.6160822  2.05928089]
+[2026-08-31 14:07:58,009] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.19
+[2026-08-31 14:07:58,267] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8786275922807548), np.float64(0.5594748235435617), np.float64(1.871199753999759)).
+[2026-08-31 14:07:58,275] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.87862759 0.55947482 1.87119975]
+[2026-08-31 14:07:58,275] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.12
+[2026-08-31 14:07:58,609] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8300425867621107), np.float64(0.5573904905509384), np.float64(1.874270083858359)).
+[2026-08-31 14:07:58,615] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.83004259 0.55739049 1.87427008]
+[2026-08-31 14:07:58,615] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.10
+[2026-08-31 14:07:58,890] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8353797410342727), np.float64(0.5571018952617786), np.float64(1.8697452538997315)).
+[2026-08-31 14:07:58,908] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.83537974 0.5571019  1.86974525]
+[2026-08-31 14:07:58,908] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.13
+[2026-08-31 14:07:59,175] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.7854547389257779), np.float64(0.550840211174919), np.float64(1.858229160689079)).
+[2026-08-31 14:07:59,181] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.78545474 0.55084021 1.85822916]
+[2026-08-31 14:07:59,181] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.09
+[2026-08-31 14:07:59,658] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.7784672965896374), np.float64(0.5489797266660639), np.float64(1.8694852117039837)).
+[2026-08-31 14:07:59,668] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.7784673  0.54897973 1.86948521]
+[2026-08-31 14:07:59,668] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.12
+[2026-08-31 14:08:00,187] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.7517480396109881), np.float64(0.5488653478835019), np.float64(1.8677959694844268)).
+[2026-08-31 14:08:00,196] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.75174804 0.54886535 1.86779597]
+[2026-08-31 14:08:00,196] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:00,601] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.7850766742676133), np.float64(0.6044971908839294), np.float64(2.0562149431910774)).
+[2026-08-31 14:08:00,611] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.78507667 0.60449719 2.05621494]
+[2026-08-31 14:08:00,611] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.18
+[2026-08-31 14:08:00,942] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.7079714523033427), np.float64(0.5526146004072067), np.float64(1.8748363446624412)).
+[2026-08-31 14:08:00,952] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.70797145 0.5526146  1.87483634]
+[2026-08-31 14:08:00,952] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 14:08:01,249] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6621000885317808), np.float64(0.5531693197937707), np.float64(1.8772524859534567)).
+[2026-08-31 14:08:01,255] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.66210009 0.55316932 1.87725249]
+[2026-08-31 14:08:01,255] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:01,510] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6410066994947886), np.float64(0.5515925712886373), np.float64(1.8702385622383344)).
+[2026-08-31 14:08:01,515] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.6410067  0.55159257 1.87023856]
+[2026-08-31 14:08:01,515] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:01,771] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6181029467204817), np.float64(0.5480150979602989), np.float64(1.8572346566999625)).
+[2026-08-31 14:08:01,776] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.61810295 0.5480151  1.85723466]
+[2026-08-31 14:08:01,776] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:02,042] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6089458580637463), np.float64(0.5515264715613305), np.float64(1.8701552185124266)).
+[2026-08-31 14:08:02,050] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.60894586 0.55152647 1.87015522]
+[2026-08-31 14:08:02,050] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 14:08:02,402] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.5793125697600464), np.float64(0.5462681415962304), np.float64(1.8490886638234378)).
+[2026-08-31 14:08:02,411] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.57931257 0.54626814 1.84908866]
+[2026-08-31 14:08:02,412] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:02,855] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.5323971475238795), np.float64(0.5486946496807011), np.float64(1.8604894157811498)).
+[2026-08-31 14:08:02,866] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.53239715 0.54869465 1.86048942]
+[2026-08-31 14:08:02,867] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.10
+[2026-08-31 14:08:03,130] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.5304684427232208), np.float64(0.5478867003789021), np.float64(1.8600521168515316)).
+[2026-08-31 14:08:03,137] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.53046844 0.5478867  1.86005212]
+[2026-08-31 14:08:03,137] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.13
+[2026-08-31 14:08:03,396] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.49590154234262696), np.float64(0.5445136928961609), np.float64(1.852096435015823)).
+[2026-08-31 14:08:03,403] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.49590154 0.54451369 1.85209644]
+[2026-08-31 14:08:03,403] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:03,667] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.4646572117772548), np.float64(0.5417695635693868), np.float64(1.8453669370912074)).
+[2026-08-31 14:08:03,675] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.46465721 0.54176956 1.84536694]
+[2026-08-31 14:08:03,675] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:03,927] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.4989315019464399), np.float64(0.5988954264533471), np.float64(2.045027438753914)).
+[2026-08-31 14:08:03,934] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.4989315  0.59889543 2.04502744]
+[2026-08-31 14:08:03,934] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.16
+[2026-08-31 14:08:04,181] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.4084652344704359), np.float64(0.5397560131654887), np.float64(1.8472238119208269)).
+[2026-08-31 14:08:04,187] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.40846523 0.53975601 1.84722381]
+[2026-08-31 14:08:04,187] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.11
+[2026-08-31 14:08:04,442] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.399338002673773), np.float64(0.5380236909484047), np.float64(1.849593153689541)).
+[2026-08-31 14:08:04,447] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.399338   0.53802369 1.84959315]
+[2026-08-31 14:08:04,447] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.11
+[2026-08-31 14:08:04,702] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.36907851258091817), np.float64(0.5399850493575558), np.float64(1.8629675544306765)).
+[2026-08-31 14:08:04,710] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.36907851 0.53998505 1.86296755]
+[2026-08-31 14:08:04,710] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:05,014] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.3342502967311089), np.float64(0.5313121942992999), np.float64(1.8385791573500525)).
+[2026-08-31 14:08:05,021] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.3342503  0.53131219 1.83857916]
+[2026-08-31 14:08:05,022] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.10
+[2026-08-31 14:08:05,271] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.33135877441713063), np.float64(0.5344152780617956), np.float64(1.8579944638705694)).
+[2026-08-31 14:08:05,277] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.33135877 0.53441528 1.85799446]
+[2026-08-31 14:08:05,277] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.12
+[2026-08-31 14:08:05,525] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.2844941453334994), np.float64(0.5277085831072791), np.float64(1.8440921606250757)).
+[2026-08-31 14:08:05,529] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.28449415 0.52770858 1.84409216]
+[2026-08-31 14:08:05,530] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.11
+[2026-08-31 14:08:05,839] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.282109138713863), np.float64(0.5200416992333248), np.float64(1.8399515079465754)).
+[2026-08-31 14:08:05,855] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.28210914 0.5200417  1.83995151]
+[2026-08-31 14:08:05,855] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.12
+[2026-08-31 14:08:06,146] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.24219983196576952), np.float64(0.5205962315513092), np.float64(1.8424040989677186)).
+[2026-08-31 14:08:06,151] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.24219983 0.52059623 1.8424041 ]
+[2026-08-31 14:08:06,151] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.11
+[2026-08-31 14:08:06,152] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 14:08:06,406] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.210680768048739), np.float64(0.5324507918269108), np.float64(1.8345410165085954)).
+[2026-08-31 14:08:06,413] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.21068077 0.53245079 1.83454102]
+[2026-08-31 14:08:06,413] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:06,678] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18236421443330234), np.float64(0.5456124631735649), np.float64(1.8455377402065973)).
+[2026-08-31 14:08:06,686] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18236421 0.54561246 1.84553774]
+[2026-08-31 14:08:06,686] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.09
+[2026-08-31 14:08:06,961] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16020533059517564), np.float64(0.5189745006985024), np.float64(1.8392673707438063)).
+[2026-08-31 14:08:06,969] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.16020533 0.5189745  1.83926737]
+[2026-08-31 14:08:06,969] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.08
+[2026-08-31 14:08:07,222] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18882100396351398), np.float64(0.4908448991293218), np.float64(1.8580626285867117)).
+[2026-08-31 14:08:07,228] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.188821   0.4908449  1.85806263]
+[2026-08-31 14:08:07,228] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:08:07,477] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17397109100442731), np.float64(0.4691023964431489), np.float64(1.8424164310456346)).
+[2026-08-31 14:08:07,484] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17397109 0.4691024  1.84241643]
+[2026-08-31 14:08:07,484] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.09
+[2026-08-31 14:08:07,789] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18368134791993082), np.float64(0.43242739811858005), np.float64(1.8359670419609844)).
+[2026-08-31 14:08:07,800] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18368135 0.4324274  1.83596704]
+[2026-08-31 14:08:07,800] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:08:08,059] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18942974247192995), np.float64(0.4138353704371746), np.float64(1.8390742657542551)).
+[2026-08-31 14:08:08,066] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18942974 0.41383537 1.83907427]
+[2026-08-31 14:08:08,066] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.10
+[2026-08-31 14:08:08,313] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1738067459783604), np.float64(0.38873658017325974), np.float64(1.8334487497009553)).
+[2026-08-31 14:08:08,318] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17380675 0.38873658 1.83344875]
+[2026-08-31 14:08:08,318] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.09
+[2026-08-31 14:08:08,572] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.19494009366505188), np.float64(0.3648073794495978), np.float64(1.8328787961216868)).
+[2026-08-31 14:08:08,578] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.19494009 0.36480738 1.8328788 ]
+[2026-08-31 14:08:08,578] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:08,835] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1931820653695439), np.float64(0.3717613877283277), np.float64(2.019648317311583)).
+[2026-08-31 14:08:08,841] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.19318207 0.37176139 2.01964832]
+[2026-08-31 14:08:08,841] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.12
+[2026-08-31 14:08:09,113] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18163441191369314), np.float64(0.32227811716308896), np.float64(1.831749812568792)).
+[2026-08-31 14:08:09,126] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18163441 0.32227812 1.83174981]
+[2026-08-31 14:08:09,127] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:09,386] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1794254141423909), np.float64(0.28871779825512456), np.float64(1.829083066536153)).
+[2026-08-31 14:08:09,391] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17942541 0.2887178  1.82908307]
+[2026-08-31 14:08:09,391] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:08:09,644] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16522686074701104), np.float64(0.27198468048252766), np.float64(1.8293906590846152)).
+[2026-08-31 14:08:09,649] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.16522686 0.27198468 1.82939066]
+[2026-08-31 14:08:09,649] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.09
+[2026-08-31 14:08:09,898] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.180129411796824), np.float64(0.24435407531895817), np.float64(1.8275160510089876)).
+[2026-08-31 14:08:09,902] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18012941 0.24435408 1.82751605]
+[2026-08-31 14:08:09,902] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.12
+[2026-08-31 14:08:10,153] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.15040169353473165), np.float64(0.22188875772428093), np.float64(1.8268359580155729)).
+[2026-08-31 14:08:10,159] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.15040169 0.22188876 1.82683596]
+[2026-08-31 14:08:10,159] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.09
+[2026-08-31 14:08:10,414] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17026146450825688), np.float64(0.19786730051060214), np.float64(1.825798178784795)).
+[2026-08-31 14:08:10,422] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17026146 0.1978673  1.82579818]
+[2026-08-31 14:08:10,422] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:10,714] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16106635432760627), np.float64(0.17297167345193196), np.float64(1.8243645484430113)).
+[2026-08-31 14:08:10,720] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.16106635 0.17297167 1.82436455]
+[2026-08-31 14:08:10,721] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.10
+[2026-08-31 14:08:10,969] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1654631213778308), np.float64(0.14242593919475044), np.float64(1.829326012273303)).
+[2026-08-31 14:08:10,974] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.16546312 0.14242594 1.82932601]
+[2026-08-31 14:08:10,974] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:11,229] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1794185824866836), np.float64(0.1281550554882387), np.float64(1.8245421215079407)).
+[2026-08-31 14:08:11,234] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17941858 0.12815506 1.82454212]
+[2026-08-31 14:08:11,234] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.12
+[2026-08-31 14:08:11,481] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17246343457739963), np.float64(0.09426346792042228), np.float64(1.825207729438204)).
+[2026-08-31 14:08:11,486] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17246343 0.09426347 1.82520773]
+[2026-08-31 14:08:11,486] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:08:11,733] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.19986209594097365), np.float64(0.07394336704825372), np.float64(1.8246257030891526)).
+[2026-08-31 14:08:11,738] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.1998621  0.07394337 1.8246257 ]
+[2026-08-31 14:08:11,738] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.12
+[2026-08-31 14:08:11,990] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18224270452340768), np.float64(0.045062701297456355), np.float64(1.8238710271704293)).
+[2026-08-31 14:08:11,995] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.1822427  0.0450627  1.82387103]
+[2026-08-31 14:08:11,995] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:12,249] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18966035267996748), np.float64(0.021723897869794957), np.float64(1.8288118939442433)).
+[2026-08-31 14:08:12,253] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18966035 0.0217239  1.82881189]
+[2026-08-31 14:08:12,254] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:12,520] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17450234306009546), np.float64(0.003859388813458845), np.float64(1.8172693018508426)).
+[2026-08-31 14:08:12,527] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.17450234 0.00385939 1.8172693 ]
+[2026-08-31 14:08:12,527] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.10
+[2026-08-31 14:08:12,881] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18717950652260612), np.float64(-0.011974226161658434), np.float64(1.8241306477191808)).
+[2026-08-31 14:08:12,888] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18717951 -0.01197423  1.82413065]
+[2026-08-31 14:08:12,888] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.11
+[2026-08-31 14:08:13,175] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18435725444844878), np.float64(-0.0570368300897634), np.float64(1.8244191978509863)).
+[2026-08-31 14:08:13,181] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18435725 -0.05703683  1.8244192 ]
+[2026-08-31 14:08:13,181] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:13,431] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16180671770800711), np.float64(-0.0711250611854127), np.float64(1.8239224920711352)).
+[2026-08-31 14:08:13,436] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16180672 -0.07112506  1.82392249]
+[2026-08-31 14:08:13,436] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.10
+[2026-08-31 14:08:13,685] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.15999769551973594), np.float64(-0.1054414923532434), np.float64(1.8181902467292788)).
+[2026-08-31 14:08:13,690] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.1599977  -0.10544149  1.81819025]
+[2026-08-31 14:08:13,690] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:08:13,942] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16321165792899242), np.float64(-0.12461631876093424), np.float64(1.8249298428207392)).
+[2026-08-31 14:08:13,947] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16321166 -0.12461632  1.82492984]
+[2026-08-31 14:08:13,947] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:14,194] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1533461685080333), np.float64(-0.15135881425419936), np.float64(1.8253140624940358)).
+[2026-08-31 14:08:14,199] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.15334617 -0.15135881  1.82531406]
+[2026-08-31 14:08:14,199] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.10
+[2026-08-31 14:08:14,450] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17783164652502143), np.float64(-0.17213568391823963), np.float64(1.8299565176292159)).
+[2026-08-31 14:08:14,455] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17783165 -0.17213568  1.82995652]
+[2026-08-31 14:08:14,455] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.12
+[2026-08-31 14:08:14,705] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1618027380296305), np.float64(-0.20061222389015407), np.float64(1.8271015272146525)).
+[2026-08-31 14:08:14,710] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16180274 -0.20061222  1.82710153]
+[2026-08-31 14:08:14,710] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.10
+[2026-08-31 14:08:14,960] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17723987879021652), np.float64(-0.21997979867678688), np.float64(1.8273721463574928)).
+[2026-08-31 14:08:14,964] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17723988 -0.2199798   1.82737215]
+[2026-08-31 14:08:14,965] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.12
+[2026-08-31 14:08:15,213] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17840163570127165), np.float64(-0.2519517497209194), np.float64(1.8352374356754082)).
+[2026-08-31 14:08:15,218] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17840164 -0.25195175  1.83523744]
+[2026-08-31 14:08:15,218] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.12
+[2026-08-31 14:08:15,468] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16532769571588862), np.float64(-0.268849245594575), np.float64(1.8299038578456732)).
+[2026-08-31 14:08:15,473] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.1653277  -0.26884925  1.82990386]
+[2026-08-31 14:08:15,473] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:15,724] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18399138030479473), np.float64(-0.2993648780148399), np.float64(1.8272496240299538)).
+[2026-08-31 14:08:15,728] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18399138 -0.29936488  1.82724962]
+[2026-08-31 14:08:15,728] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 14:08:15,985] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16289005194382455), np.float64(-0.32262226940512034), np.float64(1.8414097648701189)).
+[2026-08-31 14:08:15,990] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16289005 -0.32262227  1.84140976]
+[2026-08-31 14:08:15,990] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:16,241] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17589028088372902), np.float64(-0.34666769320458796), np.float64(1.8365047682058284)).
+[2026-08-31 14:08:16,246] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17589028 -0.34666769  1.83650477]
+[2026-08-31 14:08:16,246] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.12
+[2026-08-31 14:08:16,498] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17318890343970736), np.float64(-0.3743205605050475), np.float64(1.8527060992837185)).
+[2026-08-31 14:08:16,503] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.1731889  -0.37432056  1.8527061 ]
+[2026-08-31 14:08:16,503] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.12
+[2026-08-31 14:08:16,751] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16670132129730778), np.float64(-0.39963587927083005), np.float64(1.8332348642681073)).
+[2026-08-31 14:08:16,755] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16670132 -0.39963588  1.83323486]
+[2026-08-31 14:08:16,755] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:08:17,008] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18450748232529232), np.float64(-0.4163633795814339), np.float64(1.8424457244272545)).
+[2026-08-31 14:08:17,014] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18450748 -0.41636338  1.84244572]
+[2026-08-31 14:08:17,014] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.13
+[2026-08-31 14:08:17,265] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16761434029101574), np.float64(-0.4531673038523822), np.float64(1.844855692267619)).
+[2026-08-31 14:08:17,270] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16761434 -0.4531673   1.84485569]
+[2026-08-31 14:08:17,270] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:17,520] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18942798848977657), np.float64(-0.4685282530667592), np.float64(1.8428554957627614)).
+[2026-08-31 14:08:17,525] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18942799 -0.46852825  1.8428555 ]
+[2026-08-31 14:08:17,525] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 14:08:17,781] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1785894007928877), np.float64(-0.5024829986857757), np.float64(1.8559363058962752)).
+[2026-08-31 14:08:17,786] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.1785894  -0.502483    1.85593631]
+[2026-08-31 14:08:17,786] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.12
+[2026-08-31 14:08:18,040] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17860281100998196), np.float64(-0.5237593430572154), np.float64(1.8573891685098736)).
+[2026-08-31 14:08:18,048] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17860281 -0.52375934  1.85738917]
+[2026-08-31 14:08:18,048] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.12
+[2026-08-31 14:08:18,300] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18925607240788714), np.float64(-0.5485688138428789), np.float64(1.8592633164982058)).
+[2026-08-31 14:08:18,305] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18925607 -0.54856881  1.85926332]
+[2026-08-31 14:08:18,305] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.13
+[2026-08-31 14:08:18,560] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1660433476739778), np.float64(-0.5746927649666691), np.float64(1.8661992098203792)).
+[2026-08-31 14:08:18,565] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16604335 -0.57469276  1.86619921]
+[2026-08-31 14:08:18,565] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.11
+[2026-08-31 14:08:18,857] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18211386502996033), np.float64(-0.6012727268064096), np.float64(1.8615390806987904)).
+[2026-08-31 14:08:18,864] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.18211387 -0.60127273  1.86153908]
+[2026-08-31 14:08:18,865] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.12
+[2026-08-31 14:08:19,202] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16599430888744993), np.float64(-0.6123893671779024), np.float64(1.848191551696723)).
+[2026-08-31 14:08:19,209] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16599431 -0.61238937  1.84819155]
+[2026-08-31 14:08:19,209] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.11
+[2026-08-31 14:08:19,455] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.16821976550656148), np.float64(-0.6550753403892813), np.float64(1.87162713612332)).
+[2026-08-31 14:08:19,460] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16821977 -0.65507534  1.87162714]
+[2026-08-31 14:08:19,460] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.11
+[2026-08-31 14:08:19,716] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.17472392084995267), np.float64(-0.6670836438803249), np.float64(1.858196009661642)).
+[2026-08-31 14:08:19,721] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.17472392 -0.66708364  1.85819601]
+[2026-08-31 14:08:19,721] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.12
+[2026-08-31 14:08:19,969] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1612443582227191), np.float64(-0.7037998138941526), np.float64(1.879369982585398)).
+[2026-08-31 14:08:19,974] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.16124436 -0.70379981  1.87936998]
+[2026-08-31 14:08:19,974] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.10
+[2026-08-31 14:08:52,671] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 14:09:33,389] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:33,650] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:33,653] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:36,686] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:36,798] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:36,799] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:39,829] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:39,862] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:39,862] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:42,888] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:42,905] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:42,905] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:45,936] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:46,021] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:46,023] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:49,058] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:49,179] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:49,180] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:52,215] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:52,241] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:09:52,242] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:55,271] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.6079235035502722), np.float64(-0.7133848403643853), np.float64(1.8805199934604482)).
+[2026-08-31 14:09:55,272] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:55,394] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.5951786266313468), np.float64(-0.7077867330857235), np.float64(1.8803734717306184)).
+[2026-08-31 14:09:55,405] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.59517863 -0.70778673  1.88037347]
+[2026-08-31 14:09:55,406] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:09:58,431] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.4066375292625042), np.float64(-0.5363681397968662), np.float64(1.8523514085221977)).
+[2026-08-31 14:09:58,432] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:09:58,441] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.39832944883460575), np.float64(-0.5339631631345088), np.float64(1.8682544706826445)).
+[2026-08-31 14:09:58,448] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.39832945 -0.53396316  1.86825447]
+[2026-08-31 14:09:58,448] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:01,486] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.17943201115239116), np.float64(-0.3504506003143876), np.float64(1.8343571307127093)).
+[2026-08-31 14:10:01,486] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:10:01,583] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.18263914314780463), np.float64(-0.3436704411241069), np.float64(1.8300268773954673)).
+[2026-08-31 14:10:01,591] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.18263914 -0.34367044  1.83002688]
+[2026-08-31 14:10:01,592] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:04,624] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.04172688919614163), np.float64(-0.16894100524273578), np.float64(1.823770395569841)).
+[2026-08-31 14:10:04,625] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:10:04,708] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.05092569794624231), np.float64(-0.16576768912609924), np.float64(1.8185921304907229)).
+[2026-08-31 14:10:04,715] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.0509257  -0.16576769  1.81859213]
+[2026-08-31 14:10:04,716] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:07,742] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.25364931652491046), np.float64(0.017632622091064674), np.float64(1.8395926874933903)).
+[2026-08-31 14:10:07,742] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:10:07,786] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.27150798468740783), np.float64(0.024086871643816673), np.float64(1.826879176189683)).
+[2026-08-31 14:10:07,791] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.27150798  0.02408687  1.82687918]
+[2026-08-31 14:10:07,791] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:10,821] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.4709526361765283), np.float64(0.19850666456765217), np.float64(1.8633207677931563)).
+[2026-08-31 14:10:10,821] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:10:10,845] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.49461789807356715), np.float64(0.20281972693752098), np.float64(1.8521594048994248)).
+[2026-08-31 14:10:10,852] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.4946179   0.20281973  1.8521594 ]
+[2026-08-31 14:10:10,853] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:13,872] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.7078014022907192), np.float64(0.39124254932303193), np.float64(1.876313553572423)).
+[2026-08-31 14:10:13,872] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:10:13,969] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.7256740109517713), np.float64(0.3987438365442808), np.float64(1.8692652133031151)).
+[2026-08-31 14:10:13,973] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.72567401  0.39874384  1.86926521]
+[2026-08-31 14:10:13,974] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:16,992] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-1.035905424535512), np.float64(0.6454295266058384), np.float64(2.051204737926389)).
+[2026-08-31 14:10:16,993] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:10:17,072] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-1.0431359343583966), np.float64(0.6511866348675146), np.float64(2.052959265367667)).
+[2026-08-31 14:10:17,079] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-1.04313593  0.65118663  2.05295927]
+[2026-08-31 14:10:17,080] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:20,104] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8392448389060726), np.float64(-0.7146473039482203), np.float64(1.8834563304223069)).
+[2026-08-31 14:10:20,105] [lib.aruco_lib] [INFO] Aligning complete. Distance: 1.102294274987827m
+[2026-08-31 14:10:20,136] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8231184705852141), np.float64(-0.7117058804733073), np.float64(1.8834765952101993)).
+[2026-08-31 14:10:20,142] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.82311847 -0.71170588  1.8834766 ]
+[2026-08-31 14:10:20,142] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=-1.07, E=-0.89
+[2026-08-31 14:10:20,144] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:23,163] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6256948604636652), np.float64(-0.5244572555698269), np.float64(1.8678825496510871)).
+[2026-08-31 14:10:23,164] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.8164248105799334m
+[2026-08-31 14:10:23,201] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6063377213338783), np.float64(-0.5182158509185534), np.float64(1.872511459501624)).
+[2026-08-31 14:10:23,207] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.60633772 -0.51821585  1.87251146]
+[2026-08-31 14:10:23,207] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=-1.25, E=-1.08
+[2026-08-31 14:10:23,208] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.11)
+[2026-08-31 14:10:26,223] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.3926465791158152), np.float64(-0.3312384144793524), np.float64(1.8423345114667353)).
+[2026-08-31 14:10:26,223] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.5137024657505036m
+[2026-08-31 14:10:26,223] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 14:10:26,225] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 14:10:26,226] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.00m
+[2026-08-31 14:11:36,138] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:11:36,180] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:11:36,180] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:11:36,180] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:11:36,497] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:11:36,497] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:11:36,498] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:11:36,498] [lib.status] [INFO] Checkpoint loaded: Phase=LANDING, SearchWP=3
+[2026-08-31 14:11:36,729] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:11:36,729] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:11:36,729] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 14:11:37,620] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:15:02,217] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:15:02,241] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:15:02,242] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:15:02,242] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:15:03,409] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:15:03,409] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:15:03,409] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:15:03,410] [lib.status] [INFO] Checkpoint loaded: Phase=LANDING, SearchWP=3
+[2026-08-31 14:15:03,411] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:15:03,411] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:15:03,411] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 14:15:03,535] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:15:07,853] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:15:07,883] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:15:07,884] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:15:07,884] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:15:08,956] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:15:08,956] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:15:08,956] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:15:08,956] [lib.status] [INFO] Checkpoint loaded: Phase=MISSION_COMPLETED, SearchWP=3
+[2026-08-31 14:15:08,957] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:15:08,957] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:15:13,166] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:15:13,189] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:15:13,189] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:15:13,190] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:15:13,350] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:15:13,350] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:15:13,350] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:15:13,350] [lib.status] [INFO] Checkpoint loaded: Phase=MISSION_COMPLETED, SearchWP=3
+[2026-08-31 14:15:14,205] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:15:14,205] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:20:09,357] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:20:09,382] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:20:09,382] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:20:09,382] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:20:09,926] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:09,926] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:20:09,926] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:09,927] [lib.status] [INFO] Checkpoint loaded: Phase=MISSION_COMPLETED, SearchWP=3
+[2026-08-31 14:20:09,928] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:20:09,928] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:20:12,074] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:20:12,126] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:20:12,127] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:20:12,128] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:20:13,203] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:13,203] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:20:13,204] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:13,204] [lib.status] [INFO] Checkpoint loaded: Phase=MISSION_COMPLETED, SearchWP=3
+[2026-08-31 14:20:13,206] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:20:13,206] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:20:37,895] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:20:37,924] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:20:37,925] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:20:37,925] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:20:38,965] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:38,965] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:20:38,965] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:38,966] [lib.status] [INFO] Checkpoint loaded: Phase=MISSION_COMPLETED, SearchWP=3
+[2026-08-31 14:20:38,966] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:20:38,966] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:20:38,967] [lib.status] [INFO] Checkpoint file cleared.
+[2026-08-31 14:20:40,980] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:20:41,010] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:20:41,011] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:20:41,011] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:20:41,363] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:41,363] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:20:41,363] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:20:41,363] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 14:20:42,039] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:20:42,039] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:20:42,039] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 14:20:42,039] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 14:20:42,039] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 14:20:43,039] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 14:20:43,091] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 14:20:43,091] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 14:20:49,343] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 14:20:54,357] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.3393448027944617), np.float64(-0.28371314140236753), np.float64(2.018631354272952)).
+[2026-08-31 14:20:54,363] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.3393448  -0.28371314  2.01863135]
+[2026-08-31 14:20:54,363] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.09
+[2026-08-31 14:20:54,363] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 14:20:54,451] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.34322961404834285), np.float64(-0.28335214777190426), np.float64(2.0121815451351397)).
+[2026-08-31 14:20:54,457] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.34322961 -0.28335215  2.01218155]
+[2026-08-31 14:20:54,457] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.09
+[2026-08-31 14:20:54,570] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.3192081227938754), np.float64(-0.29102071657275896), np.float64(2.0110195916690348)).
+[2026-08-31 14:20:54,575] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.31920812 -0.29102072  2.01101959]
+[2026-08-31 14:20:54,575] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.09
+[2026-08-31 14:20:54,705] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.2353961200412132), np.float64(-0.31008645825127695), np.float64(2.0103264806155408)).
+[2026-08-31 14:20:54,711] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.23539612 -0.31008646  2.01032648]
+[2026-08-31 14:20:54,711] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.00
+[2026-08-31 14:20:54,830] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.11433214238842078), np.float64(-0.330887567394411), np.float64(1.9943096981076338)).
+[2026-08-31 14:20:54,837] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.11433214 -0.33088757  1.9943097 ]
+[2026-08-31 14:20:54,837] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=1.88
+[2026-08-31 14:20:54,925] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.004720842675729982), np.float64(-0.3589168563360476), np.float64(1.9878686169711772)).
+[2026-08-31 14:20:54,934] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.00472084 -0.35891686  1.98786862]
+[2026-08-31 14:20:54,934] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.52, E=1.78
+[2026-08-31 14:20:55,030] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.06790031668019653), np.float64(-0.3832009886158106), np.float64(1.9604564402244715)).
+[2026-08-31 14:20:55,038] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.06790032 -0.38320099  1.96045644]
+[2026-08-31 14:20:55,038] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.54, E=1.71
+[2026-08-31 14:20:55,134] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.09411174386767716), np.float64(-0.38971149549460926), np.float64(1.9422439924022636)).
+[2026-08-31 14:20:55,142] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.09411174 -0.3897115   1.94224399]
+[2026-08-31 14:20:55,142] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.55, E=1.68
+[2026-08-31 14:20:55,220] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.06807415691292185), np.float64(-0.3806332861450413), np.float64(1.9351887209996612)).
+[2026-08-31 14:20:55,227] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.06807416 -0.38063329  1.93518872]
+[2026-08-31 14:20:55,227] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.54, E=1.71
+[2026-08-31 14:20:55,315] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.03830787891997912), np.float64(-0.3582321666075282), np.float64(1.9330808224066467)).
+[2026-08-31 14:20:55,323] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.03830788 -0.35823217  1.93308082]
+[2026-08-31 14:20:55,323] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.52, E=1.82
+[2026-08-31 14:20:55,429] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.23176564622634893), np.float64(-0.3210268623295452), np.float64(1.9699122687981403)).
+[2026-08-31 14:20:55,437] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.23176565 -0.32102686  1.96991227]
+[2026-08-31 14:20:55,437] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.00
+[2026-08-31 14:20:55,578] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.48591261999273183), np.float64(-0.2568071882237743), np.float64(1.970131058700109)).
+[2026-08-31 14:20:55,586] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.48591262 -0.25680719  1.97013106]
+[2026-08-31 14:20:55,586] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.26
+[2026-08-31 14:20:55,677] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8711036015472075), np.float64(-0.20154408730584739), np.float64(2.2034750434540102)).
+[2026-08-31 14:20:55,683] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.8711036  -0.20154409  2.20347504]
+[2026-08-31 14:20:55,684] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.36, E=2.64
+[2026-08-31 14:20:55,762] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.2434106091314758), np.float64(-0.11517887880036087), np.float64(2.1798932586155413)).
+[2026-08-31 14:20:55,769] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 1.24341061 -0.11517888  2.17989326]
+[2026-08-31 14:20:55,769] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.28, E=3.01
+[2026-08-31 14:20:57,711] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 14:21:07,822] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.9854407698492471), np.float64(0.5432788854753262), np.float64(1.8527748160582127)).
+[2026-08-31 14:21:07,831] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.98544077 0.54327889 1.85277482]
+[2026-08-31 14:21:07,831] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.17
+[2026-08-31 14:21:08,124] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8387085941767984), np.float64(0.5445102899521279), np.float64(1.8764367632997077)).
+[2026-08-31 14:21:08,136] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.83870859 0.54451029 1.87643676]
+[2026-08-31 14:21:08,136] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.15
+[2026-08-31 14:21:08,477] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8058641536585441), np.float64(0.592589921711586), np.float64(2.0490225263375765)).
+[2026-08-31 14:21:08,484] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.80586415 0.59258992 2.04902253]
+[2026-08-31 14:21:08,485] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.23
+[2026-08-31 14:21:08,863] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.5980531951193384), np.float64(0.5362766307903601), np.float64(1.8632439811381367)).
+[2026-08-31 14:21:08,874] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.5980532  0.53627663 1.86324398]
+[2026-08-31 14:21:08,874] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.15
+[2026-08-31 14:21:09,159] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.45166109523412), np.float64(0.5307156802862819), np.float64(1.8571904850180871)).
+[2026-08-31 14:21:09,185] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.4516611  0.53071568 1.85719049]
+[2026-08-31 14:21:09,187] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 14:21:09,477] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.3514746494131141), np.float64(0.5211896548973968), np.float64(1.8491161286133202)).
+[2026-08-31 14:21:09,483] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.35147465 0.52118965 1.84911613]
+[2026-08-31 14:21:09,483] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.14
+[2026-08-31 14:21:09,808] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.18633963936760525), np.float64(0.5188088645830029), np.float64(1.843762888667857)).
+[2026-08-31 14:21:09,833] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.18633964 0.51880886 1.84376289]
+[2026-08-31 14:21:09,833] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.06
+[2026-08-31 14:21:10,117] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.10121214599374066), np.float64(0.5234136211648927), np.float64(1.860455804758471)).
+[2026-08-31 14:21:10,125] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.10121215 0.52341362 1.8604558 ]
+[2026-08-31 14:21:10,125] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.04
+[2026-08-31 14:21:10,127] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 14:21:10,466] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.0729600142120959), np.float64(0.5477528401453989), np.float64(1.8502028517303)).
+[2026-08-31 14:21:10,476] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.07296001 0.54775284 1.85020285]
+[2026-08-31 14:21:10,476] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.06
+[2026-08-31 14:21:10,732] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.03740523537367304), np.float64(0.6461169216726199), np.float64(1.8026360315681145)).
+[2026-08-31 14:21:10,740] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.03740524 0.64611692 1.80263603]
+[2026-08-31 14:21:10,740] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.30, E=2.04
+[2026-08-31 14:21:11,103] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07292024561434059), np.float64(0.5633217006570662), np.float64(1.8098568108470492)).
+[2026-08-31 14:21:11,115] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.07292025 0.5633217  1.80985681]
+[2026-08-31 14:21:11,115] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.32, E=2.08
+[2026-08-31 14:21:11,515] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07879469614023431), np.float64(0.3814166345642898), np.float64(1.820431247066499)).
+[2026-08-31 14:21:11,524] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.0787947  0.38141663 1.82043125]
+[2026-08-31 14:21:11,524] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.39, E=2.10
+[2026-08-31 14:21:11,784] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.0864333122940121), np.float64(0.2647025643003797), np.float64(1.8259839553957102)).
+[2026-08-31 14:21:11,790] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.08643331 0.26470256 1.82598396]
+[2026-08-31 14:21:11,791] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.38, E=2.11
+[2026-08-31 14:21:12,129] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.09909313282911332), np.float64(0.09433019505717126), np.float64(1.8220294559052586)).
+[2026-08-31 14:21:12,141] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.09909313 0.0943302  1.82202946]
+[2026-08-31 14:21:12,141] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.12
+[2026-08-31 14:21:12,442] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.08165165381036067), np.float64(-0.01182911564957968), np.float64(1.821743383185959)).
+[2026-08-31 14:21:12,451] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.08165165 -0.01182912  1.82174338]
+[2026-08-31 14:21:12,451] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.11
+[2026-08-31 14:21:12,721] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.10051204045417202), np.float64(-0.16214137142171142), np.float64(1.8254442625310425)).
+[2026-08-31 14:21:12,730] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.10051204 -0.16214137  1.82544426]
+[2026-08-31 14:21:12,730] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.12
+[2026-08-31 14:21:13,072] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07798135763720138), np.float64(-0.25898587618124974), np.float64(1.8275886053306938)).
+[2026-08-31 14:21:13,080] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.07798136 -0.25898588  1.82758861]
+[2026-08-31 14:21:13,080] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.10
+[2026-08-31 14:21:13,370] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.08364526643677202), np.float64(-0.3996569347490005), np.float64(1.8352122281293983)).
+[2026-08-31 14:21:13,387] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.08364527 -0.39965693  1.83521223]
+[2026-08-31 14:21:13,387] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.12
+[2026-08-31 14:21:13,687] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07662821797584705), np.float64(-0.4896690194866828), np.float64(1.8408503389867974)).
+[2026-08-31 14:21:13,695] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.07662822 -0.48966902  1.84085034]
+[2026-08-31 14:21:13,695] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=2.11
+[2026-08-31 14:21:13,946] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.06717312114496295), np.float64(-0.6334556908645225), np.float64(1.8691697182620135)).
+[2026-08-31 14:21:13,952] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.06717312 -0.63345569  1.86916972]
+[2026-08-31 14:21:13,952] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.10
+[2026-08-31 14:21:20,763] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 14:21:30,851] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:21:31,189] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:21:31,190] [lib.aruco_lib] [INFO] Centering over landing target: (1.44, 2.11)
+[2026-08-31 14:21:34,228] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:21:34,319] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:21:34,321] [lib.aruco_lib] [INFO] Centering over landing target: (1.44, 2.11)
+[2026-08-31 14:21:37,350] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.49141940792056565), np.float64(-0.5557857664987554), np.float64(1.85662682558529)).
+[2026-08-31 14:21:37,351] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:21:37,363] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.4493804086796955), np.float64(-0.5291648833740145), np.float64(1.8681063407859384)).
+[2026-08-31 14:21:37,372] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.44938041 -0.52916488  1.86810634]
+[2026-08-31 14:21:37,373] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:21:37,373] [lib.aruco_lib] [INFO] Centering over landing target: (1.44, 2.11)
+[2026-08-31 14:21:40,417] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.5256580593642571), np.float64(0.2566135594554726), np.float64(1.852806262440169)).
+[2026-08-31 14:21:40,431] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 14:21:40,460] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.5749585501125078), np.float64(0.28966409448036373), np.float64(1.8528833062909524)).
+[2026-08-31 14:21:40,473] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.57495855  0.28966409  1.85288331]
+[2026-08-31 14:21:40,473] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 14:21:40,474] [lib.aruco_lib] [INFO] Centering over landing target: (1.44, 2.11)
+[2026-08-31 14:21:43,521] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6155024044192844), np.float64(-0.5245266885366282), np.float64(1.8728530809614135)).
+[2026-08-31 14:21:43,522] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.8086850170697619m
+[2026-08-31 14:21:43,553] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.5828364141062531), np.float64(-0.49118565013243787), np.float64(1.8635992369981271)).
+[2026-08-31 14:21:43,568] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.58283641 -0.49118565  1.86359924]
+[2026-08-31 14:21:43,568] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=-1.35, E=-1.28
+[2026-08-31 14:21:43,571] [lib.aruco_lib] [INFO] Centering over landing target: (1.44, 2.11)
+[2026-08-31 14:21:46,602] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.04768619383394615), np.float64(0.020466123536960312), np.float64(1.820487111402279)).
+[2026-08-31 14:21:46,605] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.051892536023967886m
+[2026-08-31 14:21:46,605] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 14:21:46,608] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 14:21:46,610] [lib.drone_lib] [INFO] Telemetry Status: Armed=True, Estimated Alt=2.00m
+[2026-08-31 14:21:47,619] [lib.drone_lib] [INFO] Telemetry Status: Armed=True, Estimated Alt=2.00m
+[2026-08-31 14:21:48,625] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.00m
+[2026-08-31 14:21:48,625] [lib.status] [INFO] Checkpoint file cleared.
+[2026-08-31 14:35:08,827] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:35:08,858] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:35:08,858] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:35:08,859] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:35:09,687] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:35:09,687] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:35:09,687] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:35:09,687] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 14:35:09,688] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-31 14:35:09,688] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:35:09,688] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 14:35:09,688] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 14:35:09,688] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 14:35:10,688] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 14:35:10,987] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 14:35:10,987] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 14:35:16,948] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 14:35:21,976] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.024228764433699534), np.float64(0.0001827400682191604), np.float64(2.0027125967579136)).
+[2026-08-31 14:35:21,989] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-2.42287644e-02  1.82740068e-04  2.00271260e+00]
+[2026-08-31 14:35:21,990] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.12
+[2026-08-31 14:35:21,993] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 14:35:22,028] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.03968544235814871), np.float64(0.00017708967178559217), np.float64(2.0029162625281764)).
+[2026-08-31 14:35:22,037] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-3.96854424e-02  1.77089672e-04  2.00291626e+00]
+[2026-08-31 14:35:22,037] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.10
+[2026-08-31 14:35:22,125] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.0575315212954905), np.float64(-0.0008315081740314572), np.float64(2.0046467506770003)).
+[2026-08-31 14:35:22,134] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-5.75315213e-02 -8.31508174e-04  2.00464675e+00]
+[2026-08-31 14:35:22,134] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.08
+[2026-08-31 14:35:22,232] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.10020830118783543), np.float64(-0.007323420151937267), np.float64(1.9993342800470428)).
+[2026-08-31 14:35:22,241] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.1002083  -0.00732342  1.99933428]
+[2026-08-31 14:35:22,242] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.04
+[2026-08-31 14:35:22,345] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.18241805282551507), np.float64(-0.021647645062243003), np.float64(1.984371529799529)).
+[2026-08-31 14:35:22,354] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.18241805 -0.02164765  1.98437153]
+[2026-08-31 14:35:22,354] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=1.96
+[2026-08-31 14:35:22,455] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.3010975253143478), np.float64(-0.03823753630633373), np.float64(1.9525099256619682)).
+[2026-08-31 14:35:22,468] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.30109753 -0.03823754  1.95250993]
+[2026-08-31 14:35:22,469] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.86
+[2026-08-31 14:35:22,591] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.4157096887258209), np.float64(-0.05436338273125432), np.float64(1.9097218654974748)).
+[2026-08-31 14:35:22,600] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.41570969 -0.05436338  1.90972187]
+[2026-08-31 14:35:22,600] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.52, E=1.74
+[2026-08-31 14:35:22,700] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.4737518961259064), np.float64(-0.06677016710558667), np.float64(1.8674677770630996)).
+[2026-08-31 14:35:22,706] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.4737519  -0.06677017  1.86746778]
+[2026-08-31 14:35:22,706] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.53, E=1.70
+[2026-08-31 14:35:22,797] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.4639683257556141), np.float64(-0.06660290813276423), np.float64(1.8356754566152163)).
+[2026-08-31 14:35:22,804] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.46396833 -0.06660291  1.83567546]
+[2026-08-31 14:35:22,804] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.53, E=1.70
+[2026-08-31 14:35:22,891] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.41133052821389227), np.float64(-0.058340619996306284), np.float64(1.825389449838713)).
+[2026-08-31 14:35:22,899] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.41133053 -0.05834062  1.82538945]
+[2026-08-31 14:35:22,899] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.52, E=1.76
+[2026-08-31 14:35:23,011] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.29850864645495123), np.float64(-0.04232645857309511), np.float64(1.8178326187553062)).
+[2026-08-31 14:35:23,019] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.29850865 -0.04232646  1.81783262]
+[2026-08-31 14:35:23,019] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.87
+[2026-08-31 14:35:23,132] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.12878934897757363), np.float64(-0.017729419600027767), np.float64(1.8493065570774072)).
+[2026-08-31 14:35:23,143] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.12878935 -0.01772942  1.84930656]
+[2026-08-31 14:35:23,144] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=2.04
+[2026-08-31 14:35:23,258] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07990140019743219), np.float64(0.016931625498676668), np.float64(1.9012141261270998)).
+[2026-08-31 14:35:23,265] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.0799014  0.01693163 1.90121413]
+[2026-08-31 14:35:23,265] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.25
+[2026-08-31 14:35:23,361] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.31321344759742087), np.float64(0.051258330597496425), np.float64(1.9492590892995858)).
+[2026-08-31 14:35:23,368] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.31321345 0.05125833 1.94925909]
+[2026-08-31 14:35:23,368] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.48
+[2026-08-31 14:35:23,461] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6772564566079562), np.float64(0.10784364726603891), np.float64(2.188814269534407)).
+[2026-08-31 14:35:23,469] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.67725646 0.10784365 2.18881427]
+[2026-08-31 14:35:23,469] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.37, E=2.85
+[2026-08-31 14:35:23,578] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.9866755953433218), np.float64(0.15183793337733864), np.float64(2.013689804606466)).
+[2026-08-31 14:35:23,589] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.9866756  0.15183793 2.0136898 ]
+[2026-08-31 14:35:23,590] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.33, E=3.15
+[2026-08-31 14:35:25,039] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 14:35:28,243] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.2339336739187918), np.float64(0.677518162149634), np.float64(2.1786685360794937)).
+[2026-08-31 14:35:28,263] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.23393367 0.67751816 2.17866854]
+[2026-08-31 14:35:28,263] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.39, E=2.49
+[2026-08-31 14:35:28,560] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.11511102159227508), np.float64(0.5730752601138401), np.float64(1.92047289447422)).
+[2026-08-31 14:35:28,568] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.11511102 0.57307526 1.92047289]
+[2026-08-31 14:35:28,568] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.09
+[2026-08-31 14:35:28,569] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 14:36:13,210] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:36:13,240] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:36:13,242] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:36:13,243] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.8 m
+[2026-08-31 14:36:14,384] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:36:14,385] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:36:14,385] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:36:14,385] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=2
+[2026-08-31 14:36:14,386] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.99m
+[2026-08-31 14:36:14,386] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:36:43,733] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:36:43,758] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:36:43,758] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:36:43,759] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.8 m
+[2026-08-31 14:36:43,907] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:36:43,908] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:36:43,908] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:36:43,908] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=2
+[2026-08-31 14:36:44,380] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.99m
+[2026-08-31 14:36:44,380] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:47:38,494] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:47:38,513] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:47:38,513] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:47:38,764] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:47:39,029] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:47:39,029] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:47:39,029] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:47:39,029] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=2
+[2026-08-31 14:47:39,284] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:47:39,284] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:49:10,264] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:49:10,274] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:49:10,274] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:49:10,274] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:49:10,688] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:49:10,689] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:49:10,689] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:49:10,689] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=2
+[2026-08-31 14:49:10,689] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:49:10,689] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:49:46,492] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:49:46,503] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:49:46,504] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:49:46,504] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 14:49:47,027] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:49:47,027] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:49:47,027] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:49:47,027] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 14:49:47,249] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 14:49:47,249] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:49:47,249] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 14:49:47,249] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 14:49:47,249] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 14:49:48,254] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 14:49:48,512] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 14:49:48,512] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 14:49:54,042] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 14:49:59,055] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.12150122324998261), np.float64(0.049584206644201705), np.float64(2.005398546947727)).
+[2026-08-31 14:49:59,058] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12150122 0.04958421 2.00539855]
+[2026-08-31 14:49:59,058] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 14:49:59,119] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.12138639497579869), np.float64(0.04947505256732652), np.float64(1.9933762436814515)).
+[2026-08-31 14:49:59,122] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.12138639 0.04947505 1.99337624]
+[2026-08-31 14:49:59,219] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.10287068345886927), np.float64(0.034328062865674705), np.float64(1.9973441717655112)).
+[2026-08-31 14:49:59,222] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.10287068 0.03432806 1.99734417]
+[2026-08-31 14:49:59,323] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.05031114355408127), np.float64(-0.017449346205389245), np.float64(1.9965536507145565)).
+[2026-08-31 14:49:59,326] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.05031114 -0.01744935  1.99655365]
+[2026-08-31 14:49:59,480] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.022142391549944303), np.float64(-0.09448358539688924), np.float64(1.9738452299413187)).
+[2026-08-31 14:49:59,482] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.02214239 -0.09448359  1.97384523]
+[2026-08-31 14:49:59,517] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.09929098288889694), np.float64(-0.17360022191663899), np.float64(1.9519560445393784)).
+[2026-08-31 14:49:59,520] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.09929098 -0.17360022  1.95195604]
+[2026-08-31 14:49:59,611] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.16561811692026207), np.float64(-0.24598873863354945), np.float64(1.9175805833121382)).
+[2026-08-31 14:49:59,614] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.16561812 -0.24598874  1.91758058]
+[2026-08-31 14:49:59,707] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.20099559525661734), np.float64(-0.28493229110965507), np.float64(1.8856580666873688)).
+[2026-08-31 14:49:59,710] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.2009956  -0.28493229  1.88565807]
+[2026-08-31 14:49:59,813] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.17941697732154135), np.float64(-0.2666444770874318), np.float64(1.8651210723320981)).
+[2026-08-31 14:49:59,816] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.17941698 -0.26664448  1.86512107]
+[2026-08-31 14:49:59,928] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.11756297524612994), np.float64(-0.20036630748352988), np.float64(1.8604070686805576)).
+[2026-08-31 14:49:59,930] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.11756298 -0.20036631  1.86040707]
+[2026-08-31 14:50:00,014] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.018195131584272384), np.float64(-0.09595446284359327), np.float64(1.8674796049516476)).
+[2026-08-31 14:50:00,017] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.01819513 -0.09595446  1.8674796 ]
+[2026-08-31 14:50:00,117] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.1350425861389652), np.float64(0.06010862848553566), np.float64(1.8948185627777396)).
+[2026-08-31 14:50:00,120] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.13504259 0.06010863 1.89481856]
+[2026-08-31 14:50:00,238] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.34428804319432665), np.float64(0.2727286982091282), np.float64(1.9408562900339552)).
+[2026-08-31 14:50:00,241] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.34428804 0.2727287  1.94085629]
+[2026-08-31 14:50:00,322] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.6492087280744082), np.float64(0.5793272311297548), np.float64(2.1480373526040792)).
+[2026-08-31 14:50:00,325] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.64920873 0.57932723 2.14803735]
+[2026-08-31 14:50:00,417] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.9328606837609087), np.float64(0.8740002217226466), np.float64(2.111645553707073)).
+[2026-08-31 14:50:00,420] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.93286068 0.87400022 2.11164555]
+[2026-08-31 14:52:07,862] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:52:07,888] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:52:07,889] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:52:07,889] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.7 m
+[2026-08-31 14:52:08,141] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:52:08,142] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:52:08,142] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:52:08,142] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=0
+[2026-08-31 14:52:08,145] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.90m
+[2026-08-31 14:52:08,145] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 14:53:17,921] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 14:53:17,948] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 14:53:17,949] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 14:53:17,949] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.7 m
+[2026-08-31 14:53:19,333] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:53:19,333] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 14:53:19,334] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 14:53:19,334] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=0
+[2026-08-31 14:53:19,335] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.90m
+[2026-08-31 14:53:19,335] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:45:03,222] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:45:53,104] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:45:53,115] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:45:53,115] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:45:53,368] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 16:45:54,046] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:45:54,046] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:45:54,046] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:45:54,046] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=0
+[2026-08-31 16:45:54,046] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 16:45:54,046] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:46:41,267] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:46:41,279] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:46:41,279] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:46:41,279] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 16:46:41,477] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:46:41,477] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:46:41,477] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:46:41,477] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 16:46:42,024] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 16:46:42,025] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:46:42,025] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 16:46:42,025] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 16:46:42,025] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 16:46:43,025] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 16:46:43,288] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 16:46:43,288] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 16:46:48,889] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 16:46:53,904] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.1199498831347203), np.float64(0.048033627564694654), np.float64(2.005367475999198)).
+[2026-08-31 16:46:53,908] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11994988 0.04803363 2.00536748]
+[2026-08-31 16:46:53,908] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 16:46:53,948] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.1199498831347203), np.float64(0.048033627564694654), np.float64(2.005367475999198)).
+[2026-08-31 16:46:53,951] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11994988 0.04803363 2.00536748]
+[2026-08-31 16:46:54,046] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.10897169546663206), np.float64(0.04048646416326724), np.float64(1.9934965614852673)).
+[2026-08-31 16:46:54,049] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.1089717  0.04048646 1.99349656]
+[2026-08-31 16:46:54,144] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.06344856826595205), np.float64(-0.003544302507023447), np.float64(1.9967768087985815)).
+[2026-08-31 16:46:54,147] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.06344857 -0.0035443   1.99677681]
+[2026-08-31 16:46:54,261] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.007601546794807055), np.float64(-0.07468878721678648), np.float64(1.9775581122853947)).
+[2026-08-31 16:46:54,264] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.00760155 -0.07468879  1.97755811]
+[2026-08-31 16:46:54,342] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.08274430916091739), np.float64(-0.15682676470514423), np.float64(1.9587853893957057)).
+[2026-08-31 16:46:54,345] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.08274431 -0.15682676  1.95878539]
+[2026-08-31 16:46:54,442] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.15277318387055602), np.float64(-0.23246761541685998), np.float64(1.931119920751725)).
+[2026-08-31 16:46:54,445] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.15277318 -0.23246762  1.93111992]
+[2026-08-31 16:46:54,550] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.19916369490983862), np.float64(-0.28059887510169673), np.float64(1.8927701697042651)).
+[2026-08-31 16:46:54,553] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.19916369 -0.28059888  1.89277017]
+[2026-08-31 16:46:54,658] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.1908985070844105), np.float64(-0.278315367762824), np.float64(1.8647571716712121)).
+[2026-08-31 16:46:54,661] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.19089851 -0.27831537  1.86475717]
+[2026-08-31 16:46:54,747] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.13756979201005173), np.float64(-0.22368733173448335), np.float64(1.8621873293683666)).
+[2026-08-31 16:46:54,749] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.13756979 -0.22368733  1.86218733]
+[2026-08-31 16:46:54,846] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.04811657294546214), np.float64(-0.12685738459702098), np.float64(1.8635826469815087)).
+[2026-08-31 16:46:54,849] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.04811657 -0.12685738  1.86358265]
+[2026-08-31 16:46:54,955] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.08979611091380155), np.float64(0.012845441053158987), np.float64(1.8795806684332097)).
+[2026-08-31 16:46:54,958] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.08979611 0.01284544 1.87958067]
+[2026-08-31 16:46:55,059] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.28527405125044275), np.float64(0.21257244928149854), np.float64(1.9310269164550917)).
+[2026-08-31 16:46:55,062] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.28527405 0.21257245 1.93102692]
+[2026-08-31 16:46:55,159] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.5758189991764644), np.float64(0.5038646559055671), np.float64(2.1426361288596047)).
+[2026-08-31 16:46:55,162] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.575819   0.50386466 2.14263613]
+[2026-08-31 16:46:55,257] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.7806576551062601), np.float64(0.7249695430785337), np.float64(1.928940611502889)).
+[2026-08-31 16:46:55,260] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.78065766 0.72496954 1.92894061]
+[2026-08-31 16:47:13,861] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:47:13,873] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:47:13,873] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:47:13,873] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.7 m
+[2026-08-31 16:47:14,307] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:47:14,307] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:47:14,307] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:47:14,307] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=0
+[2026-08-31 16:47:14,308] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.89m
+[2026-08-31 16:47:14,308] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:48:09,006] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:48:09,018] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:48:09,018] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:48:09,018] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.7 m
+[2026-08-31 16:48:09,826] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:48:09,826] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:48:09,826] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:48:09,826] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 16:48:09,826] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.90m
+[2026-08-31 16:48:09,826] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:48:09,826] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 16:48:09,826] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 16:48:09,826] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 16:48:10,827] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 16:48:10,827] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 16:48:10,827] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 16:50:14,082] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:50:14,093] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:50:14,093] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:50:14,346] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 16:50:14,579] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:50:14,579] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:50:14,579] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:50:14,579] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 16:50:14,850] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 16:50:14,850] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:50:14,850] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 16:50:14,850] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 16:50:14,851] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 16:50:15,852] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 16:50:16,099] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 16:50:16,099] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 16:50:21,651] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 16:50:26,662] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.11787276154152988), np.float64(0.04530294388220909), np.float64(1.9904061515133724)).
+[2026-08-31 16:50:26,665] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11787276 0.04530294 1.99040615]
+[2026-08-31 16:50:26,665] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 16:50:26,751] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.11687603420912028), np.float64(0.04489685931233975), np.float64(1.9976140145283137)).
+[2026-08-31 16:50:26,753] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.11687603 0.04489686 1.99761401]
+[2026-08-31 16:50:26,844] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.08866357136560914), np.float64(0.020708427052957386), np.float64(1.9895611611375912)).
+[2026-08-31 16:50:26,847] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.08866357 0.02070843 1.98956116]
+[2026-08-31 16:50:26,944] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.029046175685093056), np.float64(-0.039380371716115505), np.float64(1.982724519613468)).
+[2026-08-31 16:50:26,947] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.02904618 -0.03938037  1.98272452]
+[2026-08-31 16:50:27,062] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.047922211540357695), np.float64(-0.11911100178037604), np.float64(1.9744512655458868)).
+[2026-08-31 16:50:27,066] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.04792221 -0.119111    1.97445127]
+[2026-08-31 16:50:27,150] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.1230852169346335), np.float64(-0.19842287168344316), np.float64(1.9400611236077476)).
+[2026-08-31 16:50:27,152] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.12308522 -0.19842287  1.94006112]
+[2026-08-31 16:50:27,241] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.1862115230471798), np.float64(-0.2668637741695193), np.float64(1.9107001319853667)).
+[2026-08-31 16:50:27,244] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.18621152 -0.26686377  1.91070013]
+[2026-08-31 16:50:27,344] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.20278993496169026), np.float64(-0.2891707775217319), np.float64(1.8802682541893796)).
+[2026-08-31 16:50:27,347] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.20278993 -0.28917078  1.88026825]
+[2026-08-31 16:50:27,452] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.17085858388301126), np.float64(-0.2575995114338145), np.float64(1.8643880320637922)).
+[2026-08-31 16:50:27,455] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.17085858 -0.25759951  1.86438803]
+[2026-08-31 16:50:27,553] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(-0.09731794035074252), np.float64(-0.18043616776228116), np.float64(1.859277869065421)).
+[2026-08-31 16:50:27,556] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [-0.09731794 -0.18043617  1.85927787]
+[2026-08-31 16:50:27,642] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.013891624284237649), np.float64(-0.06460924252509828), np.float64(1.8668428343499828)).
+[2026-08-31 16:50:27,645] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [ 0.01389162 -0.06460924  1.86684283]
+[2026-08-31 16:50:27,744] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.1827164903254332), np.float64(0.10691590211861485), np.float64(1.9171625612143188)).
+[2026-08-31 16:50:27,746] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.18271649 0.1069159  1.91716256]
+[2026-08-31 16:50:27,851] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.4030437698154954), np.float64(0.3338044965829441), np.float64(1.9472113353533644)).
+[2026-08-31 16:50:27,854] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.40304377 0.3338045  1.94721134]
+[2026-08-31 16:50:27,958] [lib.aruco_lib] [INFO] Detected ArUCO 101 with offset (np.float64(0.6554923753400304), np.float64(0.5941081643761553), np.float64(1.9536360753814448)).
+[2026-08-31 16:50:27,961] [lib.aruco_lib] [INFO] Home ArUco (101) detected at camera offset: [0.65549238 0.59410816 1.95363608]
+[2026-08-31 16:50:29,390] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 16:50:32,215] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.07564168714499493), np.float64(0.6898395770421756), np.float64(1.9323368758447337)).
+[2026-08-31 16:50:32,219] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.07564169  0.68983958  1.93233688]
+[2026-08-31 16:50:32,219] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=1.98
+[2026-08-31 16:50:32,467] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.5927551023692945), np.float64(0.5717664351040772), np.float64(1.8521144954285222)).
+[2026-08-31 16:50:32,470] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.5927551   0.57176644  1.8521145 ]
+[2026-08-31 16:50:32,471] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=2.05
+[2026-08-31 16:52:49,078] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:52:49,090] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:52:49,090] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:52:49,090] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=1.8 m
+[2026-08-31 16:52:49,733] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:52:49,733] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:52:49,733] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:52:49,733] [lib.status] [INFO] Checkpoint loaded: Phase=SEARCHING, SearchWP=1
+[2026-08-31 16:52:49,734] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.03m
+[2026-08-31 16:52:49,734] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:52:51,130] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.7182343181249671), np.float64(0.4384452582724327), np.float64(1.8318187443791072)).
+[2026-08-31 16:52:51,133] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.71823432  0.43844526  1.83181874]
+[2026-08-31 16:52:51,133] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.83
+[2026-08-31 16:52:51,634] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.36761080745499336), np.float64(0.5537706330552292), np.float64(1.838736358040505)).
+[2026-08-31 16:52:51,637] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.36761081 0.55377063 1.83873636]
+[2026-08-31 16:52:51,637] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.20
+[2026-08-31 16:52:52,139] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8825422298168824), np.float64(0.6190960395880741), np.float64(1.7989021317227816)).
+[2026-08-31 16:52:52,142] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.88254223 0.61909604 1.79890213]
+[2026-08-31 16:52:52,142] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.30
+[2026-08-31 16:52:53,144] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.323792455107931), np.float64(0.5998387084462332), np.float64(1.8564385848171825)).
+[2026-08-31 16:52:53,147] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.32379246 0.59983871 1.85643858]
+[2026-08-31 16:52:53,147] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.27
+[2026-08-31 16:52:53,148] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 16:52:53,646] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.3666562745159993), np.float64(0.5185281249798748), np.float64(1.8230311554298748)).
+[2026-08-31 16:52:53,650] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.36665627  0.51852812  1.82303116]
+[2026-08-31 16:52:53,650] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.03
+[2026-08-31 16:52:54,650] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.6463584159191853), np.float64(0.03299286227076856), np.float64(1.881402874983947)).
+[2026-08-31 16:52:54,653] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.64635842  0.03299286  1.88140287]
+[2026-08-31 16:52:54,653] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.71, E=1.89
+[2026-08-31 16:52:58,689] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 16:53:04,257] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 16:53:04,510] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 16:53:04,511] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.13)
+[2026-08-31 16:53:07,774] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.31463861840038343), np.float64(0.13407889423213873), np.float64(1.815488720924885)).
+[2026-08-31 16:53:07,774] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.3420155114427051m
+[2026-08-31 16:53:07,774] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 16:53:07,775] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 16:53:07,776] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.98m
+[2026-08-31 16:53:07,776] [lib.status] [INFO] Checkpoint file cleared.
+[2026-08-31 16:54:42,352] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:54:42,364] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:54:42,364] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:54:42,364] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 16:54:43,142] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:54:43,142] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:54:43,142] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:54:43,142] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 16:54:43,142] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 16:54:43,142] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:54:43,142] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 16:54:43,142] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 16:54:43,142] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 16:54:44,143] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 16:54:44,374] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 16:54:44,374] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 16:54:49,899] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 16:54:54,910] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.7229385333626765), np.float64(0.41380950198318167), np.float64(2.0482669131850058)).
+[2026-08-31 16:54:54,913] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.72293853  0.4138095   2.04826691]
+[2026-08-31 16:54:54,913] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 16:54:54,914] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 16:54:54,992] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.7229385333626765), np.float64(0.41380950198318167), np.float64(2.0482669131850058)).
+[2026-08-31 16:54:54,995] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.72293853  0.4138095   2.04826691]
+[2026-08-31 16:54:54,995] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 16:54:55,092] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.7625032262798842), np.float64(0.41220903470264497), np.float64(2.039978223153475)).
+[2026-08-31 16:54:55,095] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.76250323  0.41220903  2.03997822]
+[2026-08-31 16:54:55,095] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.09
+[2026-08-31 16:54:55,198] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.8454811277999293), np.float64(0.40415067592456916), np.float64(2.003509432850198)).
+[2026-08-31 16:54:55,201] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.84548113  0.40415068  2.00350943]
+[2026-08-31 16:54:55,201] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.00
+[2026-08-31 16:54:55,283] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.9475433070256817), np.float64(0.3938160638458978), np.float64(1.9426742046955716)).
+[2026-08-31 16:54:55,286] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.94754331  0.39381606  1.9426742 ]
+[2026-08-31 16:54:55,286] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=1.90
+[2026-08-31 16:54:55,901] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.8451338298239354), np.float64(0.3993245853120343), np.float64(1.6880832268326469)).
+[2026-08-31 16:54:55,904] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.84513383  0.39932459  1.68808323]
+[2026-08-31 16:54:55,904] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.00
+[2026-08-31 16:54:56,009] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.6677459003701005), np.float64(0.4163426546429637), np.float64(1.741018355630285)).
+[2026-08-31 16:54:56,012] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.6677459   0.41634265  1.74101836]
+[2026-08-31 16:54:56,012] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.14
+[2026-08-31 16:54:56,113] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.44355563619849986), np.float64(0.4300804402686768), np.float64(1.770559286057233)).
+[2026-08-31 16:54:56,116] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.44355564  0.43008044  1.77055929]
+[2026-08-31 16:54:56,116] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.81
+[2026-08-31 16:54:56,421] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.596069772343643), np.float64(0.5112179843148277), np.float64(1.9202345345907916)).
+[2026-08-31 16:54:56,424] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.59606977 0.51121798 1.92023453]
+[2026-08-31 16:54:56,424] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=1.57
+[2026-08-31 16:55:00,453] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 16:55:03,054] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(1.0254299343318047), np.float64(0.665829996653004), np.float64(2.230719577995698)).
+[2026-08-31 16:55:03,057] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.02542993 0.66583    2.23071958]
+[2026-08-31 16:55:03,057] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.36, E=2.02
+[2026-08-31 16:55:03,559] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.3907796567909349), np.float64(0.5122800135941292), np.float64(1.8446108520283588)).
+[2026-08-31 16:55:03,563] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.39077966  0.51228001  1.84461085]
+[2026-08-31 16:55:03,563] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.71
+[2026-08-31 16:55:03,564] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 16:55:04,063] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.9460422488733518), np.float64(0.5707262035980811), np.float64(1.8879764523654432)).
+[2026-08-31 16:55:04,066] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.94604225  0.5707262   1.88797645]
+[2026-08-31 16:55:04,066] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.41, E=1.70
+[2026-08-31 16:55:05,070] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.6427214358848985), np.float64(0.0022860885364272207), np.float64(1.8840947914199535)).
+[2026-08-31 16:55:05,073] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.64272144  0.00228609  1.88409479]
+[2026-08-31 16:55:05,073] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.89, E=1.96
+[2026-08-31 16:55:09,136] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 16:55:14,691] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 16:55:14,942] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 16:55:14,942] [lib.aruco_lib] [INFO] Centering over landing target: (1.46, 2.06)
+[2026-08-31 16:55:18,205] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.3599035606824585), np.float64(0.1801443442688904), np.float64(1.808069226929169)).
+[2026-08-31 16:55:18,205] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.4024705675747987m
+[2026-08-31 16:55:18,205] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 16:55:18,206] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 16:55:18,206] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=1.98m
+[2026-08-31 16:55:18,206] [lib.status] [INFO] Checkpoint file cleared.
+[2026-08-31 16:56:13,699] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 16:56:13,711] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 16:56:13,711] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 16:56:13,711] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 16:56:13,995] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:56:13,995] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 16:56:13,995] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 16:56:13,995] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 16:56:13,996] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.19m
+[2026-08-31 16:56:13,996] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 16:56:13,996] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 16:56:13,996] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 16:56:13,996] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 16:56:14,998] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 16:56:15,715] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 16:56:15,715] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 16:56:20,769] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 16:56:25,776] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.6726820544404399), np.float64(0.38525535188068055), np.float64(2.0387813189739226)).
+[2026-08-31 16:56:25,779] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.67268205  0.38525535  2.03878132]
+[2026-08-31 16:56:25,779] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.12
+[2026-08-31 16:56:25,779] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 16:56:25,785] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.6726820544404399), np.float64(0.38525535188068055), np.float64(2.0387813189739226)).
+[2026-08-31 16:56:25,785] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.67268205  0.38525535  2.03878132]
+[2026-08-31 16:56:25,785] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.12
+[2026-08-31 16:56:25,880] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.6778600905395226), np.float64(0.3860185049617021), np.float64(2.0406513068945786)).
+[2026-08-31 16:56:25,880] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.67786009  0.3860185   2.04065131]
+[2026-08-31 16:56:25,880] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.11
+[2026-08-31 16:56:25,972] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.7264105140314732), np.float64(0.38024842506804984), np.float64(2.0244811579958135)).
+[2026-08-31 16:56:25,972] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.72641051  0.38024843  2.02448116]
+[2026-08-31 16:56:25,972] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.06
+[2026-08-31 16:56:26,072] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.8146934411658264), np.float64(0.368066938317423), np.float64(1.989092303207131)).
+[2026-08-31 16:56:26,073] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.81469344  0.36806694  1.9890923 ]
+[2026-08-31 16:56:26,073] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=1.98
+[2026-08-31 16:56:26,179] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.9221456734702301), np.float64(0.35299595359222397), np.float64(1.9337897100523542)).
+[2026-08-31 16:56:26,179] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.92214567  0.35299595  1.93378971]
+[2026-08-31 16:56:26,179] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=1.87
+[2026-08-31 16:56:26,787] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.7655757552886825), np.float64(0.3667380453938232), np.float64(1.7238205395183717)).
+[2026-08-31 16:56:26,787] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.76557576  0.36673805  1.72382054]
+[2026-08-31 16:56:26,787] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.98
+[2026-08-31 16:56:26,881] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.565135828425201), np.float64(0.3955094046877646), np.float64(1.7708035686518016)).
+[2026-08-31 16:56:26,882] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.56513583  0.3955094   1.77080357]
+[2026-08-31 16:56:26,882] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.55, E=1.57
+[2026-08-31 16:56:27,308] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8481895484457691), np.float64(0.5818325534973094), np.float64(1.9052246479158403)).
+[2026-08-31 16:56:27,308] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.84818955 0.58183255 1.90522465]
+[2026-08-31 16:56:27,308] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.37, E=1.73
+[2026-08-31 16:56:28,815] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 16:56:31,327] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6281310234901382), np.float64(0.5994300442003658), np.float64(1.9987420772760562)).
+[2026-08-31 16:56:31,327] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.62813102 0.59943004 1.99874208]
+[2026-08-31 16:56:31,327] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.40, E=1.83
+[2026-08-31 16:56:31,829] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.09649858032767583), np.float64(0.5075897355268071), np.float64(1.8638013684689567)).
+[2026-08-31 16:56:31,829] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.09649858  0.50758974  1.86380137]
+[2026-08-31 16:56:31,829] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.77
+[2026-08-31 16:56:31,830] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 16:56:32,330] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.2833969134591488), np.float64(0.5536882606371619), np.float64(1.8279549029427096)).
+[2026-08-31 16:56:32,330] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.28339691  0.55368826  1.8279549 ]
+[2026-08-31 16:56:32,330] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=1.85
+[2026-08-31 16:56:33,334] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.015136152856066253), np.float64(-0.06848713113439303), np.float64(1.856464485082992)).
+[2026-08-31 16:56:33,335] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.01513615 -0.06848713  1.85646449]
+[2026-08-31 16:56:33,335] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.95, E=2.12
+[2026-08-31 16:56:34,849] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 16:56:37,868] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 16:56:38,119] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 16:56:38,120] [lib.aruco_lib] [INFO] Centering over landing target: (1.48, 1.98)
+[2026-08-31 16:56:41,378] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07437356748862214), np.float64(0.07934343543661554), np.float64(1.8684468422214557)).
+[2026-08-31 16:56:41,379] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.10875113005329651m
+[2026-08-31 16:56:41,379] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 16:56:41,380] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 16:56:41,380] [lib.drone_lib] [INFO] Telemetry Status: Armed=True, Estimated Alt=1.99m
+[2026-08-31 16:56:42,381] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.00m
+[2026-08-31 16:56:42,382] [lib.status] [INFO] Checkpoint file cleared.
+[2026-08-31 17:00:41,658] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 17:00:41,669] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 17:00:41,670] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 17:00:41,670] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 17:00:42,480] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 17:00:42,480] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 17:00:42,480] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 17:00:42,480] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 17:00:42,481] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-31 17:00:42,481] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 17:00:42,481] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 17:00:42,481] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 17:00:42,481] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 17:00:43,485] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 17:00:43,681] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 17:00:43,681] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 17:00:49,236] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 17:00:54,246] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.12980835681402944), np.float64(0.20338539936883074), np.float64(2.005223375055412)).
+[2026-08-31 17:00:54,250] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.12980836  0.2033854   2.00522338]
+[2026-08-31 17:00:54,250] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 17:00:54,250] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 17:00:54,272] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.1298588871015131), np.float64(0.20386016376933075), np.float64(2.0074252300782445)).
+[2026-08-31 17:00:54,272] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.12985889  0.20386016  2.00742523]
+[2026-08-31 17:00:54,272] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.13
+[2026-08-31 17:00:54,371] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.13918865473966077), np.float64(0.20235157788645122), np.float64(2.008044999394966)).
+[2026-08-31 17:00:54,371] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.13918865  0.20235158  2.008045  ]
+[2026-08-31 17:00:54,371] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.12
+[2026-08-31 17:00:54,477] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.19681493881036793), np.float64(0.18963633495446675), np.float64(1.9985386216357637)).
+[2026-08-31 17:00:54,478] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.19681494  0.18963633  1.99853862]
+[2026-08-31 17:00:54,478] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.06
+[2026-08-31 17:00:54,565] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.2877487080427282), np.float64(0.16648805420686627), np.float64(1.98100481864476)).
+[2026-08-31 17:00:54,565] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.28774871  0.16648805  1.98100482]
+[2026-08-31 17:00:54,566] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=1.97
+[2026-08-31 17:00:54,665] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.39504590914076515), np.float64(0.14154866556748313), np.float64(1.9565281634804095)).
+[2026-08-31 17:00:54,666] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.39504591  0.14154867  1.95652816]
+[2026-08-31 17:00:54,666] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=1.86
+[2026-08-31 17:00:54,770] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.4932777089987119), np.float64(0.1173642725943724), np.float64(1.9230151999470477)).
+[2026-08-31 17:00:54,770] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.49327771  0.11736427  1.9230152 ]
+[2026-08-31 17:00:54,770] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=1.76
+[2026-08-31 17:00:54,900] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.5628232546013339), np.float64(0.09701374037975467), np.float64(1.88127515537296)).
+[2026-08-31 17:00:54,900] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.56282325  0.09701374  1.88127516]
+[2026-08-31 17:00:54,901] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.69
+[2026-08-31 17:00:55,002] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.5583908627363389), np.float64(0.09351527519268552), np.float64(1.8475298507105737)).
+[2026-08-31 17:00:55,002] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.55839086  0.09351528  1.84752985]
+[2026-08-31 17:00:55,002] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.68
+[2026-08-31 17:00:55,100] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.4932318574303437), np.float64(0.10974858922576633), np.float64(1.8415195952062102)).
+[2026-08-31 17:00:55,100] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.49323186  0.10974859  1.8415196 ]
+[2026-08-31 17:00:55,100] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.76
+[2026-08-31 17:00:55,208] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.3729223831459746), np.float64(0.1409147811169738), np.float64(1.849243169689573)).
+[2026-08-31 17:00:55,208] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.37292238  0.14091478  1.84924317]
+[2026-08-31 17:00:55,208] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=1.88
+[2026-08-31 17:00:55,310] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.20333096639969606), np.float64(0.1870987031582867), np.float64(1.8683890775084842)).
+[2026-08-31 17:00:55,311] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.20333097  0.1870987   1.86838908]
+[2026-08-31 17:00:55,311] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=2.00
+[2026-08-31 17:00:55,400] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.046060255331412316), np.float64(0.2502532233525256), np.float64(1.9068367136272102)).
+[2026-08-31 17:00:55,400] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.04606026 0.25025322 1.90683671]
+[2026-08-31 17:00:55,400] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.66
+[2026-08-31 17:00:57,314] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 17:00:59,826] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.09968311231229654), np.float64(0.49065303449265923), np.float64(1.9182931450678453)).
+[2026-08-31 17:00:59,827] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.09968311 0.49065303 1.91829315]
+[2026-08-31 17:00:59,827] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=1.85
+[2026-08-31 17:01:00,329] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.5276932584651984), np.float64(0.3910997583362514), np.float64(1.8139058553225829)).
+[2026-08-31 17:01:00,329] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.52769326  0.39109976  1.81390586]
+[2026-08-31 17:01:00,329] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.58, E=1.74
+[2026-08-31 17:01:00,831] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.5586655691801747), np.float64(0.41287015597626653), np.float64(1.7933714625085708)).
+[2026-08-31 17:01:00,831] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.55866557  0.41287016  1.79337146]
+[2026-08-31 17:01:00,831] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.59, E=1.79
+[2026-08-31 17:01:01,334] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.24674726149183204), np.float64(0.5150916262725327), np.float64(1.8468532498981518)).
+[2026-08-31 17:01:01,334] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.24674726  0.51509163  1.84685325]
+[2026-08-31 17:01:01,334] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.94
+[2026-08-31 17:01:01,834] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.02663873882489784), np.float64(0.5476200202914212), np.float64(1.8503390516432965)).
+[2026-08-31 17:01:01,834] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.02663874 0.54762002 1.85033905]
+[2026-08-31 17:01:01,834] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.05
+[2026-08-31 17:01:01,835] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 17:01:02,338] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1281228170985952), np.float64(0.5687292533497247), np.float64(1.8451646070286767)).
+[2026-08-31 17:01:02,339] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.12812282 0.56872925 1.84516461]
+[2026-08-31 17:01:02,339] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.07
+[2026-08-31 17:01:03,340] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.1498888694824696), np.float64(0.1369381104335027), np.float64(1.866353935923643)).
+[2026-08-31 17:01:03,340] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.14988887 0.13693811 1.86635394]
+[2026-08-31 17:01:03,340] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=0.70, E=2.12
+[2026-08-31 17:01:04,852] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 17:01:07,941] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 17:01:10,955] [lib.aruco_lib] [INFO] Reached search waypoint 4
+[2026-08-31 17:01:11,275] [lib.aruco_lib] [INFO] Reached search waypoint 4
+[2026-08-31 17:01:11,276] [lib.aruco_lib] [INFO] Centering over landing target: (1.48, 1.92)
+[2026-08-31 17:01:14,539] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.1475895348987826), np.float64(-0.07987831202620645), np.float64(1.8225909104699964)).
+[2026-08-31 17:01:14,540] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.16781899637345876m
+[2026-08-31 17:01:14,540] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 17:01:14,541] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 17:01:14,541] [lib.drone_lib] [INFO] Telemetry Status: Armed=True, Estimated Alt=2.00m
+[2026-08-31 17:01:15,546] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.01m
+[2026-08-31 17:01:15,546] [lib.status] [INFO] Checkpoint file cleared.
+[2026-08-31 17:02:04,686] [lib.drone_lib] [INFO] [MAV] Connecting to tcp:localhost:5762 ...
+[2026-08-31 17:02:04,697] [lib.drone_lib] [INFO] [MAV] Heartbeat from system 1, component 0
+[2026-08-31 17:02:04,697] [lib.drone_lib] [INFO] [MAV] Telemetry streams requested @ 4.0 Hz. Waiting for GLOBAL_POSITION_INT ...
+[2026-08-31 17:02:04,697] [lib.drone_lib] [INFO] [MAV] Position streaming OK. Alt=0.0 m
+[2026-08-31 17:02:05,704] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 17:02:05,704] [lib.aruco_lib] [INFO]        ERC DRONE MISSION BOOTLOADER       
+[2026-08-31 17:02:05,704] [lib.aruco_lib] [INFO] ==========================================
+[2026-08-31 17:02:05,704] [lib.status] [INFO] No checkpoint found. Initializing fresh state.
+[2026-08-31 17:02:05,704] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=0.20m
+[2026-08-31 17:02:05,704] [lib.aruco_lib] [INFO] Drone is grounded. Normal startup sequence.
+[2026-08-31 17:02:05,704] [lib.aruco_lib] [INFO] Ready for launch. Waiting for launch signal...
+[2026-08-31 17:02:05,704] [lib.aruco_lib] [INFO] --- Starting Mission ---
+[2026-08-31 17:02:05,704] [lib.drone_lib] [INFO] [MAV] Switching to GUIDED ...
+[2026-08-31 17:02:06,705] [lib.drone_lib] [INFO] [MAV] Arming ...
+[2026-08-31 17:02:06,709] [lib.drone_lib] [INFO] [MAV] Armed.
+[2026-08-31 17:02:06,709] [lib.drone_lib] [INFO] [MAV] Taking off to 2.0 m ...
+[2026-08-31 17:02:12,512] [lib.drone_lib] [INFO] [MAV] Reached 1.9 m.
+[2026-08-31 17:02:17,524] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.13913225502834925), np.float64(-0.09778119211454919), np.float64(2.009139553850214)).
+[2026-08-31 17:02:17,527] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.13913226 -0.09778119  2.00913955]
+[2026-08-31 17:02:17,527] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.11
+[2026-08-31 17:02:17,528] [lib.aruco_lib] [INFO] Moving to first waypoint
+[2026-08-31 17:02:17,589] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.13913225502834925), np.float64(-0.09778119211454919), np.float64(2.009139553850214)).
+[2026-08-31 17:02:17,590] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.13913226 -0.09778119  2.00913955]
+[2026-08-31 17:02:17,590] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.10
+[2026-08-31 17:02:17,693] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.16789666878705772), np.float64(-0.10616253837315834), np.float64(2.0089178115616977)).
+[2026-08-31 17:02:17,693] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.16789667 -0.10616254  2.00891781]
+[2026-08-31 17:02:17,694] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.07
+[2026-08-31 17:02:17,787] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.24244710322056456), np.float64(-0.13216976028830504), np.float64(1.9920401815870383)).
+[2026-08-31 17:02:17,787] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.2424471  -0.13216976  1.99204018]
+[2026-08-31 17:02:17,787] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.49, E=2.00
+[2026-08-31 17:02:17,887] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.3044651035182288), np.float64(-0.15905696735364722), np.float64(1.9719225990961093)).
+[2026-08-31 17:02:17,887] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.3044651  -0.15905697  1.9719226 ]
+[2026-08-31 17:02:17,887] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.94
+[2026-08-31 17:02:17,997] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.316147423626987), np.float64(-0.16667041618910614), np.float64(1.9520451213833467)).
+[2026-08-31 17:02:17,998] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.31614742 -0.16667042  1.95204512]
+[2026-08-31 17:02:17,998] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.92
+[2026-08-31 17:02:18,107] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.28970710481183476), np.float64(-0.15709351466125557), np.float64(1.9328503501996432)).
+[2026-08-31 17:02:18,110] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.2897071  -0.15709351  1.93285035]
+[2026-08-31 17:02:18,110] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=1.95
+[2026-08-31 17:02:18,188] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.23563686766386058), np.float64(-0.13584714622721283), np.float64(1.909443909905793)).
+[2026-08-31 17:02:18,189] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.23563687 -0.13584715  1.90944391]
+[2026-08-31 17:02:18,189] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.50, E=2.01
+[2026-08-31 17:02:18,362] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.17027284526383812), np.float64(-0.10911421761224839), np.float64(1.888214780896944)).
+[2026-08-31 17:02:18,362] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.17027285 -0.10911422  1.88821478]
+[2026-08-31 17:02:18,362] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.48, E=2.08
+[2026-08-31 17:02:18,475] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.10005586481068093), np.float64(-0.08176185894819867), np.float64(1.8700402801002434)).
+[2026-08-31 17:02:18,475] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.10005586 -0.08176186  1.87004028]
+[2026-08-31 17:02:18,475] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=2.17
+[2026-08-31 17:02:18,580] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.026415224146083667), np.float64(-0.05432098921669322), np.float64(1.8588004178088435)).
+[2026-08-31 17:02:18,580] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.02641522 -0.05432099  1.85880042]
+[2026-08-31 17:02:18,580] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.46, E=2.23
+[2026-08-31 17:02:18,659] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.0463156219676487), np.float64(-0.026070281790486392), np.float64(1.8320316904274234)).
+[2026-08-31 17:02:18,662] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.04631562 -0.02607028  1.83203169]
+[2026-08-31 17:02:18,662] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.29
+[2026-08-31 17:02:18,763] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.11830455116789873), np.float64(0.0014521265939835865), np.float64(1.8197394654563896)).
+[2026-08-31 17:02:18,763] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [1.18304551e-01 1.45212659e-03 1.81973947e+00]
+[2026-08-31 17:02:18,763] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.45, E=2.14
+[2026-08-31 17:02:19,120] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.32885051218262285), np.float64(0.07520494668729691), np.float64(1.818169003419728)).
+[2026-08-31 17:02:19,120] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.32885051 0.07520495 1.818169  ]
+[2026-08-31 17:02:19,120] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.04
+[2026-08-31 17:02:19,626] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.6445273269484261), np.float64(0.1861503851756817), np.float64(1.855148213752605)).
+[2026-08-31 17:02:19,629] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.64452733 0.18615039 1.85514821]
+[2026-08-31 17:02:19,629] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.35, E=2.04
+[2026-08-31 17:02:20,126] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.9106735636572949), np.float64(0.2823441466646327), np.float64(1.8598832938637773)).
+[2026-08-31 17:02:20,126] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.91067356 0.28234415 1.85988329]
+[2026-08-31 17:02:20,126] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.29, E=2.03
+[2026-08-31 17:02:25,695] [lib.aruco_lib] [INFO] Reached search waypoint 0
+[2026-08-31 17:02:32,250] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.833599023223705), np.float64(0.6997107253639883), np.float64(1.8563485695844661)).
+[2026-08-31 17:02:32,253] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.83359902 0.69971073 1.85634857]
+[2026-08-31 17:02:32,253] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.30, E=2.03
+[2026-08-31 17:02:32,753] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.5482684805883734), np.float64(0.6391690379776792), np.float64(1.8707574992933333)).
+[2026-08-31 17:02:32,757] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.54826848 0.63916904 1.8707575 ]
+[2026-08-31 17:02:32,757] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.36, E=2.04
+[2026-08-31 17:02:33,253] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.21097071705510415), np.float64(0.5596118694956569), np.float64(1.853842086392852)).
+[2026-08-31 17:02:33,254] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.21097072 0.55961187 1.85384209]
+[2026-08-31 17:02:33,254] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.00
+[2026-08-31 17:02:33,759] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.06663520522742078), np.float64(0.496128946621683), np.float64(1.8417803011392964)).
+[2026-08-31 17:02:33,762] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.06663521  0.49612895  1.8417803 ]
+[2026-08-31 17:02:33,763] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.51, E=1.94
+[2026-08-31 17:02:33,763] [lib.aruco_lib] [INFO] Reached search waypoint 1
+[2026-08-31 17:02:34,261] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.18199932625911125), np.float64(0.5132652368113998), np.float64(1.8167152071464063)).
+[2026-08-31 17:02:34,262] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.18199933  0.51326524  1.81671521]
+[2026-08-31 17:02:34,262] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.47, E=1.94
+[2026-08-31 17:02:34,792] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.17932460151754817), np.float64(0.5055789664263274), np.float64(1.807401516521852)).
+[2026-08-31 17:02:34,796] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.1793246   0.50557897  1.80740152]
+[2026-08-31 17:02:34,796] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.34, E=1.96
+[2026-08-31 17:02:35,296] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.06898885110284556), np.float64(0.15370868627467926), np.float64(1.8172505800620964)).
+[2026-08-31 17:02:35,299] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [-0.06898885  0.15370869  1.81725058]
+[2026-08-31 17:02:35,299] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.42, E=2.07
+[2026-08-31 17:02:35,801] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.014265260457726043), np.float64(-0.1652829841365302), np.float64(1.8257557200772887)).
+[2026-08-31 17:02:35,804] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.01426526 -0.16528298  1.82575572]
+[2026-08-31 17:02:35,804] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.43, E=2.15
+[2026-08-31 17:02:36,303] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.07413731403491663), np.float64(-0.45122809032164685), np.float64(1.8378613791665819)).
+[2026-08-31 17:02:36,303] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [ 0.07413731 -0.45122809  1.83786138]
+[2026-08-31 17:02:36,303] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.44, E=2.21
+[2026-08-31 17:02:41,325] [lib.aruco_lib] [INFO] Reached search waypoint 2
+[2026-08-31 17:02:48,851] [lib.aruco_lib] [INFO] Reached search waypoint 3
+[2026-08-31 17:02:56,411] [lib.aruco_lib] [INFO] Reached search waypoint 4
+[2026-08-31 17:02:56,659] [lib.aruco_lib] [INFO] Reached search waypoint 4
+[2026-08-31 17:02:56,660] [lib.aruco_lib] [INFO] Centering over landing target: (1.45, 2.07)
+[2026-08-31 17:02:59,936] [lib.aruco_lib] [WARNING] Target lost during alignment!
+[2026-08-31 17:02:59,977] [lib.aruco_lib] [INFO] Centering over landing target: (1.45, 2.07)
+[2026-08-31 17:03:03,000] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.951696214831819), np.float64(0.3534147830074628), np.float64(2.055730301336176)).
+[2026-08-31 17:03:03,000] [lib.aruco_lib] [INFO] Aligning complete. Distance: 1.0151983521329335m
+[2026-08-31 17:03:03,088] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(0.8855129592165311), np.float64(0.3272263239251557), np.float64(2.041917096949899)).
+[2026-08-31 17:03:03,093] [lib.aruco_lib] [INFO] Landing ArUco (102) detected at camera offset: [0.88551296 0.32722632 2.0419171 ]
+[2026-08-31 17:03:03,093] [lib.aruco_lib] [INFO] Calculated Landing Pad NED: N=1.77, E=0.65
+[2026-08-31 17:03:03,094] [lib.aruco_lib] [INFO] Centering over landing target: (1.45, 2.06)
+[2026-08-31 17:03:06,106] [lib.aruco_lib] [INFO] Detected ArUCO 102 with offset (np.float64(-0.08404913064217051), np.float64(-0.0986669382747548), np.float64(1.824115647421098)).
+[2026-08-31 17:03:06,106] [lib.aruco_lib] [INFO] Aligning complete. Distance: 0.12961258067880185m
+[2026-08-31 17:03:06,107] [lib.aruco_lib] [INFO] Approach finalised, landing...
+[2026-08-31 17:03:06,107] [lib.drone_lib] [INFO] [MAV] Switching to LAND mode – PLND active.
+[2026-08-31 17:03:06,108] [lib.drone_lib] [INFO] Telemetry Status: Armed=True, Estimated Alt=2.00m
+[2026-08-31 17:03:07,111] [lib.drone_lib] [INFO] Telemetry Status: Armed=False, Estimated Alt=2.00m
+[2026-08-31 17:03:07,111] [lib.status] [INFO] Checkpoint file cleared.

@@ -35,17 +35,22 @@ class VideoCapture:
         self.capture_source = capture_source
         
         if HAS_PICAMERA:
+            self.HAS_PICAMERA = True
             self.capture = Picamera2(capture_source)
             config = self.capture.create_preview_configuration(main={"size": self.resolution, "format": self.format})
             self.capture.configure(config)
 
         else:
+            self.HAS_PICAMERA = False
             self.capture = cv2.VideoCapture(self.capture_source)
             self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution[0])
             self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution[1])
             self.capture.set(cv2.CAP_PROP_FPS, self.fps)
 
     def read(self):
+        if HAS_PICAMERA:
+            new_frame = self.capture.capture_array()
+            return (new_frame == None, new_frame)
         return self.capture.read()
 
 class CalibrationConfig:
