@@ -153,3 +153,92 @@ class GazeboVideoCapture:
 
     def read(self):
         return self.capture.read()
+
+
+import cv2
+import threading
+import time
+import logging
+from flask import Flask, Response, render_template_string
+from werkzeug.serving import make_server
+
+class FlaskPreviewServer:
+    def __init__(self, host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55):
+        """
+        :param str host: IP binding address
+        :param int port: Listening port
+        :param int max_fps: Frame-rate cap for preview stream to reduce CPU load
+        :param int jpeg_quality: 0-100 JPEG compression quality (lower = faster)
+        """
+        self.host = host
+        self.port = port
+        self.frame_delay = 1.0 / max_fps
+        self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), jpeg_quality]
+        
+        self._frame = None
+        self._lock = threading.Lock()
+        self._running = False
+        self._server = None
+        self._thread = None
+        
+        self.app = Flask(__name__)
+        # Suppress logging to avoid console I/O bottlenecks
+        logging.getLogger('werkzeug').setLevel(logging.ERROR)
+        self._setup_routes()
+
+    def _setup_routes(self):
+        @self.app.route('/')
+        def index():
+            return render_template_string('''
+                <!doctype html>
+                <html>
+                <head><title>Live Preview</title></head>
+                <body style="background:#111;margin:0;display:flex;justify-content:center;align-items:center;height:100vh;">
+                    <img src="/video_feed" style="max-width:98%;max-height:98%;border-radius:6px;" />
+                </body>
+                </html>
+            ''')
+
+        @self.app.route('/video_feed')
+        def video_feed():
+            return Response(self._generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+    def _generate(self):
+        while self._running:
+            start_time = time.time()
+            frame_to_encode = None
+            
+            with self._lock:
+                if self._frame is not None:
+                    frame_to_encode = self._frame.copy()
+            
+            if frame_to_encode is not None:
+                # Fast JPEG compression
+                success, buffer = cv2.imencode('.jpg', frame_to_encode, self.encode_param)
+                if success:
+                    yield (b'--frame\r\n'
+                           b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+            
+            # Sleep remainder of interval to maintain max_fps
+            elapsed = time.time() - start_time
+            time.sleep(max(0.0, self.frame_delay - elapsed))
+
+    def update_frame(self, frame):
+        """Pass the latest processed frame from your main loop."""
+        with self._lock:
+            self._frame = frame
+
+    def start(self):
+        """Launches the server in a non-blocking daemon thread."""
+        if self._running:
+            return
+        self._running = True
+        self._server = make_server(self.host, self.port, self.app, threaded=True)
+        self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
+        self._thread.start()
+
+    def stop(self):
+        """Stops the background server cleanly."""
+        self._running = False
+        if self._server:
+            self._server.shutdown()

@@ -108,6 +108,9 @@ class ERCMissionController:
 
         self.last_image_time = -1
 
+        self.preview = FlaskPreviewServer(host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55)
+        self.preview.start()
+
     def on_boot(self):
         """Bootloader entry point executed by systemd service."""
         logger.info("==========================================")
@@ -197,6 +200,7 @@ class ERCMissionController:
         res = self.cvproc.detect()
         try:
             frame, homes, lands = res
+            self.preview.update_frame(frame)
         except Exception as e:
             logger.error(e)
             return None
