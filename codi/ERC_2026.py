@@ -23,7 +23,7 @@ import math
 import numpy as np
 
 # PARAMS (to be changed)
-SEARCH_SQUARE_SIDE = 2
+SEARCH_SQUARE_SIDE = 1.5
 SEARCH_ALT = -3
 SEARCH_MAX_DIST_TO_WP = 0.15
 SEARCH_SPEED = 0.1
@@ -34,7 +34,7 @@ ALIGN_DELAY = 0.5
 ALIGN_THRSH_DIST = 0.15
 WINDOW_SIZE = 30
 
-IMAGES_DIR = "/Users/algreen/Documents/GitHub/Control-ATLAS/.imgs/"
+IMAGES_DIR = "/home/grasshopper/imgs/"
 IMAGES_DELAY = 0.5
 
 
