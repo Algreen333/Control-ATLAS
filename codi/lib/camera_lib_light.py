@@ -39,6 +39,7 @@ class VideoCapture:
             self.capture = Picamera2(capture_source)
             config = self.capture.create_preview_configuration(main={"size": self.resolution, "format": self.format})
             self.capture.configure(config)
+            self.capture.start()
 
         else:
             self.HAS_PICAMERA = False
