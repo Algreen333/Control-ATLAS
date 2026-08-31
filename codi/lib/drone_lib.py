@@ -37,7 +37,7 @@ class MavlinkConnection:
         #Reconeixer la raspi con a GCS
         #self.mav = mavutil.mavlink_connection(connection_string, baud=baud, source_system=254)
 
-        self.heartbeat_thread = threading.Thread(traget=self._heartbeat_loop, daemon=True)
+        self.heartbeat_thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
         self.heartbeat_thread.start()
 
         self.mav.wait_heartbeat()
@@ -418,15 +418,36 @@ class MavlinkConnection:
         :param float y: East target in meters
         :param float z: Down target in meters (negative for altitude)
         :param float speed_ms: Optional speed limit in m/s (feed-forward velocity)
-        :param bool face_dest: If True, yaws to face the target. If False, holds current heading.
+        :param float yaw: Optional yaw target in radians
+        :param float yaw_rate: Yaw rate in rad/s
         """
-        if speed_ms is not None:
-            self.set_attitude_speed(speed_ms)
+        type_mask = 0b010111111000 # Default: Use pos and yaw rate, ignore vel
+        
+        vx, vy, vz = 0.0, 0.0, 0.0
 
-        type_mask = 0b010111111000 # Default: Use pos and yaw rate
+        if speed_ms is not None:
+            pos = self.get_local_position()
+            if pos:
+                # Calculate the distance vector to the target
+                dx = x - pos[0]
+                dy = y - pos[1]
+                dz = z - pos[2]
+                dist = (dx**2 + dy**2 + dz**2)**0.5
+                
+                # Avoid division by zero if already at the target
+                if dist > 0.05:
+                    # Normalize the vector and scale by requested speed
+                    vx = (dx / dist) * speed_ms
+                    vy = (dy / dist) * speed_ms
+                    vz = (dz / dist) * speed_ms
+                    
+                    # Clear bits 3, 4, and 5 to enable velocity targets
+                    type_mask &= 0b111111000111
+            else:
+                logger.warning("[MAV] No local position found. Speed target may be ignored.")
 
         if yaw is not None: 
-            type_mask &= 0b101111111111 # Enable yaw
+            type_mask &= 0b101111111111 # Enable yaw (clears bit 10)
         else: 
             yaw = 0
             yaw_rate = 0
@@ -439,8 +460,8 @@ class MavlinkConnection:
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,
             type_mask,
             x, y, z,
-            0, 0, 0,  # Velocities 
-            0, 0, 0,     # Accelerations
+            vx, vy, vz,         # Velocities 
+            0, 0, 0,            # Accelerations
             yaw, yaw_rate       # Yaw, Yaw_rate
         )
         

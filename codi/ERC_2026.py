@@ -34,7 +34,7 @@ ALIGN_DELAY = 0.5
 ALIGN_THRSH_DIST = 0.75
 WINDOW_SIZE = 30
 
-IMAGES_DIR = "~/imgs"
+IMAGES_DIR = "/Users/algreen/Documents/GitHub/Control-ATLAS/.imgs/"
 IMAGES_DELAY = 0.5
 
 
@@ -101,7 +101,8 @@ class ERCMissionController:
             (SEARCH_SQUARE_SIDE,  -SEARCH_SQUARE_SIDE, SEARCH_ALT),
             (SEARCH_SQUARE_SIDE,  SEARCH_SQUARE_SIDE,  SEARCH_ALT),
             (-SEARCH_SQUARE_SIDE, SEARCH_SQUARE_SIDE,  SEARCH_ALT),
-            (-SEARCH_SQUARE_SIDE, -SEARCH_SQUARE_SIDE, SEARCH_ALT)
+            (-SEARCH_SQUARE_SIDE, -SEARCH_SQUARE_SIDE, SEARCH_ALT),
+            (SEARCH_SQUARE_SIDE,  -SEARCH_SQUARE_SIDE, SEARCH_ALT)
             #,(0, 0, SEARCH_ALT) # RTH if not found
         ]
 
@@ -155,6 +156,7 @@ class ERCMissionController:
                 self.mav.set_attitude_speed(SEARCH_SPEED)
                 self.mav.arm_and_takeoff(self.state.search_altitude_m)
                 time.sleep(5)
+                self.mav.set_attitude_speed(SEARCH_SPEED)
                 self.state.current_phase = FlightPhase.SEARCHING
                 self.state_manager.save_state(self.state)
 
@@ -177,6 +179,9 @@ class ERCMissionController:
                     time.sleep(1)
                 self.state.current_phase = FlightPhase.MISSION_COMPLETED
 
+        self.state_manager.clear()
+
+
     def _execute_search_step(self):
         pos = self.mav.get_local_position()
         if pos is None:
@@ -190,8 +195,9 @@ class ERCMissionController:
 
         # Image search
         frame, homes, lands = self.cvproc.detect()
-        if self.last_image_time > IMAGES_DELAY or self.last_image_time == -1:
+        if time.time() > self.last_image_time + IMAGES_DELAY or self.last_image_time == -1:
             save_img_dir(frame, IMAGES_DIR)
+            self.last_image_time = time.time()
 
         meanhomes = None
         meanlands = None
@@ -245,6 +251,11 @@ class ERCMissionController:
                 self.state_manager.save_state(self.state)
                 return False
             else: return True
+
+        else:
+            # Continuously update the target and velocity vector while traveling
+            self.mav.send_target_ned(self.search_path[self.state.search_wp_idx][0], self.search_path[self.state.search_wp_idx][1], -self.state.search_altitude_m, speed_ms=SEARCH_SPEED)
+            return False
 
     def register_landing_target(self, coords):
         self.state.landing_coords.append(coords)
