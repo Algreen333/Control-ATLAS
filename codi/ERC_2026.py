@@ -23,8 +23,8 @@ import math
 import numpy as np
 
 # PARAMS (to be changed)
-SEARCH_SQUARE_SIDE = 2
-SEARCH_ALT = -2
+SEARCH_SQUARE_SIDE = 1
+SEARCH_ALT = -3
 SEARCH_MAX_DIST_TO_WP = 0.15
 SEARCH_SPEED = 0.1
 ARUCO_HOME_ID = 101
@@ -55,7 +55,7 @@ class CVProcessing:
         ret, frame = self.capture.read()
         if not ret:
             logger.warning("Capture read returned error")
-            return None
+            return None, [], []
 
         prediction = self.detector.full_prediction(frame, do_draw)
         if prediction is None:
@@ -194,7 +194,12 @@ class ERCMissionController:
         yaw = att_msg.yaw if att_msg else 0.0
 
         # Image search
-        frame, homes, lands = self.cvproc.detect()
+        res = self.cvproc.detect()
+        try:
+            frame, homes, lands = res
+        except Exception as e:
+            logger.error(e)
+            return None
         if time.time() > self.last_image_time + IMAGES_DELAY or self.last_image_time == -1:
             save_img_dir(frame, IMAGES_DIR)
             self.last_image_time = time.time()
