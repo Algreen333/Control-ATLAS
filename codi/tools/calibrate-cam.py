@@ -1,72 +1,72 @@
 import io
-import time
 from flask import Flask, Response, request, render_template_string
-import picamera
+from picamera2 import Picamera2
+from PIL import Image
 
 app = Flask(__name__)
 
-# Initialize PiCamera with default settings
-camera = picamera.PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 24
-time.sleep(2) # Allow sensor to warm up
+# Initialize Picamera2 and configure it for preview
+picam2 = Picamera2()
+config = picam2.create_preview_configuration(main={"size": (640, 480), "format": "RGB888"})
+picam2.configure(config)
+picam2.start()
 
-# HTML/JS UI embedded as a string
+# HTML/JS UI updated for Picamera2 controls
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PiCamera Calibration</title>
+    <title>Picamera2 Calibration</title>
     <style>
         body { font-family: system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; background: #1a1a1a; color: #fff; margin: 0; padding: 20px; }
         .container { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
-        .controls { display: flex; flex-direction: column; gap: 20px; background: #2d2d2d; padding: 25px; border-radius: 12px; min-width: 300px; }
+        .controls { display: flex; flex-direction: column; gap: 20px; background: #2d2d2d; padding: 25px; border-radius: 12px; min-width: 350px; }
         img { border: 2px solid #444; border-radius: 12px; background: #000; }
         label { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
         input[type="range"] { width: 150px; }
         select { width: 150px; padding: 4px; background: #444; color: white; border: none; border-radius: 4px; }
+        span.val { display: inline-block; width: 30px; text-align: right; color: #888; font-size: 12px; margin-right: 10px;}
     </style>
 </head>
 <body>
-    <h2>Live PiCamera Calibration</h2>
+    <h2>Live Picamera2 Calibration</h2>
     <div class="container">
         <div>
             <img src="/video_feed" width="640" height="480" alt="Live Stream" />
         </div>
         <div class="controls">
-            <label>Brightness (0-100): 
-                <input type="range" min="0" max="100" value="50" oninput="update('brightness', this.value)">
+            <label>Brightness: 
+                <div>
+                    <span class="val" id="val-Brightness">0</span>
+                    <input type="range" min="-1" max="1" step="0.1" value="0" oninput="update('Brightness', this.value)">
+                </div>
             </label>
-            <label>Contrast (-100-100): 
-                <input type="range" min="-100" max="100" value="0" oninput="update('contrast', this.value)">
+            <label>Contrast: 
+                <div>
+                    <span class="val" id="val-Contrast">1.0</span>
+                    <input type="range" min="0" max="2" step="0.1" value="1.0" oninput="update('Contrast', this.value)">
+                </div>
             </label>
-            <label>Exposure Compensation (-25-25): 
-                <input type="range" min="-25" max="25" value="0" oninput="update('exposure_compensation', this.value)">
+            <label>Saturation: 
+                <div>
+                    <span class="val" id="val-Saturation">1.0</span>
+                    <input type="range" min="0" max="2" step="0.1" value="1.0" oninput="update('Saturation', this.value)">
+                </div>
             </label>
-            <label>ISO:
-                <select onchange="update('iso', this.value)">
+            <label>Exposure Comp (EV): 
+                <div>
+                    <span class="val" id="val-ExposureValue">0</span>
+                    <input type="range" min="-8" max="8" step="0.5" value="0" oninput="update('ExposureValue', this.value)">
+                </div>
+            </label>
+            <label>White Balance:
+                <select onchange="update('AwbMode', this.value)">
                     <option value="0">Auto</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="400">400</option>
-                    <option value="800">800</option>
-                </select>
-            </label>
-            <label>Exposure Mode:
-                <select onchange="update('exposure_mode', this.value)">
-                    <option value="auto">Auto</option>
-                    <option value="night">Night</option>
-                    <option value="sports">Sports</option>
-                    <option value="snow">Snow</option>
-                </select>
-            </label>
-            <label>AWB (White Balance):
-                <select onchange="update('awb_mode', this.value)">
-                    <option value="auto">Auto</option>
-                    <option value="sunlight">Sunlight</option>
-                    <option value="cloudy">Cloudy</option>
-                    <option value="tungsten">Tungsten</option>
-                    <option value="fluorescent">Fluorescent</option>
+                    <option value="1">Incandescent</option>
+                    <option value="2">Tungsten</option>
+                    <option value="3">Fluorescent</option>
+                    <option value="5">Daylight</option>
+                    <option value="6">Cloudy</option>
                 </select>
             </label>
         </div>
@@ -74,6 +74,11 @@ HTML_TEMPLATE = """
 
     <script>
         function update(param, value) {
+            // Update the display number next to sliders
+            let valSpan = document.getElementById('val-' + param);
+            if(valSpan) valSpan.innerText = value;
+
+            // Send to Flask backend
             fetch('/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -86,42 +91,59 @@ HTML_TEMPLATE = """
 """
 
 def generate_frames():
-    """Generator that continuously captures frames from the camera into a byte stream."""
-    stream = io.BytesIO()
-    for _ in camera.capture_continuous(stream, format='jpeg', use_video_port=True):
-        stream.seek(0)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + stream.read() + b'\r\n')
-        stream.seek(0)
-        stream.truncate()
+    """Continuously pull frames from Picamera2, encode to JPEG, and yield to stream."""
+    while True:
+        try:
+            # Capture raw array from camera (this automatically throttles to camera FPS)
+            frame = picam2.capture_array()
+            
+            # Convert numpy array to JPEG using Pillow
+            img = Image.fromarray(frame)
+            stream = io.BytesIO()
+            img.save(stream, format='JPEG', quality=85)
+            
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + stream.getvalue() + b'\r\n')
+        except Exception as e:
+            print(f"Frame capture error: {e}")
+            break
 
 @app.route('/')
 def index():
-    """Serve the main calibration UI."""
     return render_template_string(HTML_TEMPLATE)
 
 @app.route('/video_feed')
 def video_feed():
-    """Serve the MJPEG video stream."""
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/update', methods=['POST'])
 def update_params():
-    """Receive JSON from the UI and update camera hardware parameters instantly."""
+    """Receive JSON and set the new libcamera controls."""
     data = request.json
+    controls_to_update = {}
+    
     for key, value in data.items():
         try:
-            # Numeric values need to be cast to integers
-            if key in ['brightness', 'contrast', 'exposure_compensation', 'iso']:
-                setattr(camera, key, int(value))
-            else:
-                setattr(camera, key, value)
-            print(f"Updated {key} to {value}")
+            val = float(value)
+            # Enums like AwbMode require integers
+            if key in ['AwbMode']:
+                val = int(val)
+                
+            controls_to_update[key] = val
+        except ValueError:
+            print(f"Invalid value for {key}: {value}")
+            
+    if controls_to_update:
+        try:
+            picam2.set_controls(controls_to_update)
+            print(f"Updated camera controls: {controls_to_update}")
         except Exception as e:
-            print(f"Failed to update {key}: {e}")
+            print(f"Failed to update controls: {e}")
             
     return {"status": "ok"}
 
 if __name__ == '__main__':
-    # Listen on all network interfaces so you can access it from another computer
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    try:
+        app.run(host='0.0.0.0', port=5000, threaded=True)
+    finally:
+        picam2.stop()
