@@ -27,7 +27,7 @@ class FlightPhase(str, Enum):
 class FlightState:
     current_phase: FlightPhase = FlightPhase.INIT
 
-    search_altitude_m: float = 2.0
+    search_altitude_m: float = 3.0
     search_wp_idx: int = -1
 
     liftoff_coords: Tuple[float, float, float] = (0.0, 0.0, 0.0)
