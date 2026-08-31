@@ -34,6 +34,9 @@ ALIGN_DELAY = 0.5
 ALIGN_THRSH_DIST = 0.75
 WINDOW_SIZE = 30
 
+IMAGES_DIR = "~/imgs"
+IMAGES_DELAY = 0.5
+
 
 class CVProcessing:
     def __init__(self, capture: VideoCapture, config_path: str, aruco_dict=cv2.aruco.DICT_ARUCO_ORIGINAL):
@@ -101,6 +104,8 @@ class ERCMissionController:
             (-SEARCH_SQUARE_SIDE, -SEARCH_SQUARE_SIDE, SEARCH_ALT)
             #,(0, 0, SEARCH_ALT) # RTH if not found
         ]
+
+        self.last_image_time = -1
 
     def on_boot(self):
         """Bootloader entry point executed by systemd service."""
@@ -185,6 +190,9 @@ class ERCMissionController:
 
         # Image search
         frame, homes, lands = self.cvproc.detect()
+        if self.last_image_time > IMAGES_DELAY or self.last_image_time == -1:
+            save_img_dir(frame, IMAGES_DIR)
+
         meanhomes = None
         meanlands = None
 

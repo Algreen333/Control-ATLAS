@@ -1,6 +1,8 @@
 import cv2
 import json
 import numpy as np
+from datetime import datetime
+import os
 
 try:
     from picamera2 import Picamera2
@@ -11,6 +13,12 @@ except (ImportError, RuntimeError):
 import logging
 logger = logging.getLogger(__name__)
 
+
+def save_img_dir(capture, directory:str):
+    fname = f"{datetime.now().strftime('%F_%T.%f')[:-3]}.jpg"
+    path = os.path.join(directory, fname)
+    
+    cv2.imwrite(path, capture)
 
 class VideoCapture:
     def __init__(self, capture_source = 0, resolution=(640, 480), format="RGB888", fps=30.0):
@@ -38,7 +46,7 @@ class VideoCapture:
             self.capture.set(cv2.CAP_PROP_FPS, self.fps)
 
     def read(self):
-        return self.capture.read()   
+        return self.capture.read()
 
 class CalibrationConfig:
     """
