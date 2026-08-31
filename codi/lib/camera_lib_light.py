@@ -51,7 +51,7 @@ class VideoCapture:
     def read(self):
         if HAS_PICAMERA:
             new_frame = self.capture.capture_array()
-            return (new_frame == None, new_frame)
+            return (new_frame is None, new_frame)
         return self.capture.read()
 
 class CalibrationConfig:
