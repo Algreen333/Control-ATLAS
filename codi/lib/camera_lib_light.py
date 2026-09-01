@@ -155,10 +155,8 @@ class GazeboVideoCapture:
         return self.capture.read()
 
 
-import cv2
-import threading
 import time
-import logging
+import threading
 from flask import Flask, Response, render_template_string
 from werkzeug.serving import make_server
 

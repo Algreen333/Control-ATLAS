@@ -13,3 +13,6 @@
 *.raw
 *.parm
 *.DAT
+
+*flight_checkpoint.json
+*drone_mission.log

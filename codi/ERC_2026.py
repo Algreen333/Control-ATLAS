@@ -108,7 +108,7 @@ class ERCMissionController:
 
         self.last_image_time = -1
 
-        self.preview = FlaskPreviewServer(host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55)
+        self.preview = FlaskPreviewServer(host="0.0.0.0", port=5050, max_fps=15, jpeg_quality=55)
         self.preview.start()
 
     def on_boot(self):
@@ -149,12 +149,34 @@ class ERCMissionController:
         elif self.state.current_phase == FlightPhase.WAITING_MANUAL_RESET:
             logger.info(f"Awaiting manual reset...")
 
+    def _handle_grounded_boot(self):
+        phase = self.state.current_phase
+
+        if phase == FlightPhase.INIT:
+            logger.info("Ready for launch. Waiting for launch signal...")
+            
+        elif phase == FlightPhase.WAITING_MANUAL_RESET:
+            logger.info("Awaiting manual reset...")
+            
+        elif phase in [FlightPhase.SEARCHING, FlightPhase.ALIGNING, FlightPhase.LANDING]:
+            logger.warning(
+                f"Drone grounded but state is {phase.value}. "
+                "Rewinding to INIT for takeoff sequence..."
+            )
+            self.state.current_phase = FlightPhase.INIT
+            self.state.landing_coords.clear()
+            self.state_manager.save_state(self.state)
+            
+        elif phase == FlightPhase.MISSION_COMPLETED:
+            logger.info("Mission was already completed. Resetting for fresh flight.")
+            self.state_manager.clear()
+            self.state = FlightState()
+
     def run_mission_loop(self):
         while self.state.current_phase != FlightPhase.MISSION_COMPLETED:
             phase = self.state.current_phase
 
             if phase == FlightPhase.INIT:
-                # Step 1: Liftoff
                 logger.info(f"--- Starting Mission ---")
                 self.mav.set_attitude_speed(SEARCH_SPEED)
                 self.mav.arm_and_takeoff(self.state.search_altitude_m)
@@ -324,5 +346,5 @@ if __name__ == "__main__":
     BAUD_RATE = int(os.getenv("MAVLINK_BAUD", "57600"))
     STATE_FILE = os.getenv("FLIGHT_CHKP_FILE", "flight_checkpoint.json")
 
-    controller = ERCMissionController(state_file=STATE_FILE, mavlink_con=SERIAL_PORT,mavlink_baud=BAUD_RATE, debug=False, doGazebo=False)
+    controller = ERCMissionController(state_file=STATE_FILE, mavlink_con=SERIAL_PORT,mavlink_baud=BAUD_RATE, debug=False, doGazebo=True)
     controller.on_boot()

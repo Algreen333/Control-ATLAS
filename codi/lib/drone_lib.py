@@ -11,6 +11,7 @@ from typing import List, Optional, Tuple
 import logging
 logger = logging.getLogger(__name__)
 
+from lib.led_lib import LEDController
 
 # Coses a mirar:
 # https://mavlink.io/en/messages/common.html#MAV_CMD_REQUEST_MESSAGE -> request_message
@@ -40,6 +41,10 @@ class MavlinkConnection:
         self.heartbeat_thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
         self.heartbeat_thread.start()
 
+        # Initialize and start the external LED controller daemon
+        self.led_controller = LEDController()
+        self.led_controller.start()
+
         self.mav.wait_heartbeat()
         logger.info(f"[MAV] Heartbeat from system {self.mav.target_system}, "
             f"component {self.mav.target_component}")
@@ -48,20 +53,30 @@ class MavlinkConnection:
         self.debug = debug
 
     def _heartbeat_loop(self):
+        """Runs continuously to send keep-alives and receive all incoming messages."""
+        last_hb_send = 0
         while True:
-            try:
-                self.mav.mav.heartbeat_send(
-                    mavutil.mavlink.MAV_TYPE_GCS,               # Identifica connexió com a GCS
-                    mavutil.mavlink.MAV_AUTOPILOT_INVALID,      # Declara que aixó NO és la FC
-                    0,                                          # Base Mode (no utilitzat)
-                    0,                                          # Custom Mode (no utilitzat)
-                    0                                           # System Status (no utilitzat)
-                )
-            except Exception as e:
-                if self.debug:
-                    print(f"[MAVLINK] Heartbeat thread exception: {e}")
+            # Send Onboard Controller keep-alive at 4Hz[cite: 1]
+            if time.monotonic() - last_hb_send > 0.25:
+                try:
+                    self.mav.mav.heartbeat_send(
+                        mavutil.mavlink.MAV_TYPE_ONBOARD_CONTROLLER, 
+                        mavutil.mavlink.MAV_AUTOPILOT_INVALID,
+                        0, 0, 0
+                    )
+                except Exception:
+                    pass
+                last_hb_send = time.monotonic()
 
-            time.sleep(0.25)
+            # Constantly pull and cache incoming messages
+            msg = self.mav.recv_msg()
+            if msg:
+                if msg.get_type() == 'HEARTBEAT':
+                    # Push the updated mode to the LED Controller instantly
+                    self.led_controller.update_state(self.mav.flightmode)
+            else:
+                # Prevent high CPU usage when queue is empty
+                time.sleep(0.05)
 
     # ---------------------------------------------------------------------------
     # Telemetry stream requests
@@ -137,13 +152,7 @@ class MavlinkConnection:
         """
         Returns True or False if armed or not armed, if no heartbeat returns None
         """
-
-        hb = self.mav.recv_match(type="HEARTBEAT", blocking=False)
-        if hb and hb.type == 2:
-            armed = bool(hb.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
-            return armed
-        
-        else: return None
+        return self.mav.motors_armed()
 
 
     # ---------------------------------------------------------------------------
@@ -248,10 +257,12 @@ class MavlinkConnection:
             altitude_m,
         )
         while True:
-            msg = self.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=True, timeout=2)
+            # Read from the messages cache populated by the pump thread
+            msg = self.mav.messages.get("GLOBAL_POSITION_INT")
             if msg and msg.relative_alt / 1000.0 >= altitude_m * 0.92:
                 logger.info(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
                 break
+            time.sleep(0.1)
 
     def arm_and_takeoff(self, altitude_m: float) -> None:
         """Switch to GUIDED, arm, and climb to altitude_m metres."""
