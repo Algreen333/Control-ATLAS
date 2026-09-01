@@ -1,0 +1,42 @@
+{
+  "mavlink": {
+    "connection": "/dev/ttyAMA0",
+    "baud": 57600,
+    "debug": false,
+    "do_gazebo": false
+  },
+  "flight": {
+    "auto_arm": true,
+    "auto_guided": true,
+    "search_altitude_m": 3.0,
+    "search_speed_ms": 0.1,
+    "search_max_dist_to_wp": 0.15,
+    "search_path": [
+      [1.5, -1.5, -3.0],
+      [1.5, 1.5, -3.0],
+      [-1.5, 1.5, -3.0],
+      [-1.5, -1.5, -3.0],
+      [1.5, -1.5, -3.0]
+    ]
+  },
+  "vision": {
+    "capture_source": 0,
+    "capture_resolution": [1640, 1232],
+    "capture_fps": 30.0,
+    "camera_config_path": "./configs/1640x1232-v2.conf",
+    "aruco_home_id": 101,
+    "aruco_land_id": 102,
+    "images_dir": "/home/grasshopper/imgs/",
+    "images_delay": 0.5,
+    "preview_port": 5000
+  },
+  "alignment": {
+    "align_iters": 4,
+    "align_delay": 0.5,
+    "align_thrsh_dist": 0.15,
+    "window_size": 30
+  },
+  "storage": {
+    "state_file": "flight_checkpoint.json"
+  }
+}

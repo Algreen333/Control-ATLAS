@@ -66,7 +66,7 @@ class LEDController:
             self.neo.fill_strip(r, g, b)
             self.neo.update_strip()
         else:
-            logger.debug(f"[LED SIMULATION] Changed to {color} {label}")
+            logger.info(f"[LED SIMULATION] Changed to {color} {label}")
 
     def _led_loop(self):
         while True:
@@ -78,7 +78,7 @@ class LEDController:
                     self._fill_leds((0, 0, 0))
                     time.sleep(0.25)
                 else:
-                    logger.debug("[LED SIMULATION] Flashing MAGENTA (Link Lost)")
+                    logger.info("[LED SIMULATION] Flashing MAGENTA (Link Lost)")
                     time.sleep(0.5)
                 self.last_applied_mode = None
                 continue

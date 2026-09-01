@@ -160,23 +160,23 @@ class MavlinkConnection:
     # ---------------------------------------------------------------------------
 
     def get_local_position(self) -> Optional[Tuple[float, float, float]]:
-        """Returns (x, y, z) in NED frame (meters) where Z is negative upward."""
-        msg = self.mav.recv_match(type="LOCAL_POSITION_NED", blocking=True, timeout=2.0)
+        """Returns (x, y, z) in NED frame (meters) instantly from cache."""
+        msg = self.mav.messages.get("LOCAL_POSITION_NED")
         if msg:
             return (msg.x, msg.y, msg.z)
         return None
-    
+
     def is_airborne(self, alt_threshold_m: float = 0.5) -> bool:
-        """Determines if the drone is in flight by checking arm status and altitude."""
-        msg_hb = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2.0)
+        """Determines flight state using cached data to prevent blocking."""
+        msg_hb = self.mav.messages.get("HEARTBEAT")
         is_armed = False
         if msg_hb:
-            is_armed = bool(msg_hb.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
+            # Check the MAV_MODE_FLAG_SAFETY_ARMED bit (128)
+            is_armed = bool(msg_hb.base_mode & 128)
 
         pos = self.get_local_position()
         curr_alt = -pos[2] if pos else 0.0
 
-        logger.info(f"Telemetry Status: Armed={is_armed}, Estimated Alt={curr_alt:.2f}m")
         return is_armed and (curr_alt > alt_threshold_m)
 
     
