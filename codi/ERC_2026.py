@@ -90,7 +90,10 @@ class ERCMissionController:
             self.capture = GazeboVideoCapture(capture_source=src, resolution=res, fps=fps)
         else:
             self.capture = VideoCapture(capture_source=src, resolution=res, fps=fps, 
-                AeEnable=False, ExposureTime=50000, AnalogueGain=2.0, Brightness=0.1
+                AeEnable=self.cfg["camera_config"]["AeEnable"], 
+                ExposureTime=self.cfg["camera_config"]["ExposureTime"], 
+                AnalogueGain=self.cfg["camera_config"]["AnalogueGain"], 
+                Brightness=self.cfg["camera_config"]["Brightness"]
             )
 
         self.cvproc = CVProcessing(

@@ -30,6 +30,12 @@
     "images_delay": 0.5,
     "preview_port": 5000
   },
+  "camera_config": {
+    "AeEnable": false,
+    "ExposureTime": 50000,
+    "AnalogueGain": 2.0,
+    "Brightness": 0.1
+  },
   "alignment": {
     "align_iters": 4,
     "align_delay": 0.5,
