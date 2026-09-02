@@ -89,7 +89,9 @@ class ERCMissionController:
         if self.cfg["mavlink"]["do_gazebo"]:
             self.capture = GazeboVideoCapture(capture_source=src, resolution=res, fps=fps)
         else:
-            self.capture = VideoCapture(capture_source=src, resolution=res, fps=fps)
+            self.capture = VideoCapture(capture_source=src, resolution=res, fps=fps, 
+                AeEnable=False, ExposureTime=50000, AnalogueGain=2.0, Brightness=0.1
+            )
 
         self.cvproc = CVProcessing(
             capture=self.capture,

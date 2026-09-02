@@ -21,7 +21,7 @@ def save_img_dir(capture, directory:str):
     cv2.imwrite(path, capture)
 
 class VideoCapture:
-    def __init__(self, capture_source = 0, resolution=(640, 480), format="RGB888", fps=30.0):
+    def __init__(self, capture_source = 0, resolution=(640, 480), format="RGB888", fps=30.0, AeEnable=False, ExposureTime=50000, AnalogueGain=2.0, Brightness=0.1):
         """
         :param any capture_source: Source of the capture. Irrelevant when using Picamera2
         :param (int,int) resolution: Resolution of the capture. By default (640,480)
@@ -39,6 +39,12 @@ class VideoCapture:
             self.capture = Picamera2(capture_source)
             config = self.capture.create_preview_configuration(main={"size": self.resolution, "format": self.format})
             self.capture.configure(config)
+            self.capture.set_controls({
+                "AeEnable": AeEnable,
+                "ExposureTime": ExposureTime,
+                "AnalogueGain": AnalogueGain,
+                "Brightness": Brightness
+            })
             self.capture.start()
 
         else:
