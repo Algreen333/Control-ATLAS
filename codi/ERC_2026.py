@@ -233,14 +233,19 @@ class ERCMissionController:
         res = self.cvproc.detect()
         try:
             frame, homes, lands = res
+
+            if frame is None:
+                logger.warning("Got empty frame")
+
             self.preview.update_frame(frame)
         except Exception as e:
             logger.error(e)
             return False
 
         if time.time() > self.last_image_time + self.cfg["vision"]["images_delay"] or self.last_image_time == -1:
-            save_img_dir(frame, self.images_dir)
-            self.last_image_time = time.time()
+            if frame is not None:
+                save_img_dir(frame, self.images_dir)
+                self.last_image_time = time.time()
 
         if len(lands) > 0:
             meanlands = np.mean(np.array(lands), axis=0)

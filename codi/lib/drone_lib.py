@@ -38,12 +38,12 @@ class MavlinkConnection:
         #Reconeixer la raspi con a GCS
         #self.mav = mavutil.mavlink_connection(connection_string, baud=baud, source_system=254)
 
-        self.heartbeat_thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
-        self.heartbeat_thread.start()
-
         # Initialize and start the external LED controller daemon
         self.led_controller = LEDController()
         self.led_controller.start()
+
+        self.heartbeat_thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
+        self.heartbeat_thread.start()
 
         self.mav.wait_heartbeat()
         logger.info(f"[MAV] Heartbeat from system {self.mav.target_system}, "
