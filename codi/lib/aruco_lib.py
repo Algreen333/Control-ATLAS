@@ -220,7 +220,7 @@ class ArucoDetector():
                     if VERBOSE: logger.info("--------------------------------------------",
                                     "\nShape:", corners[i].shape)
 
-                    rvec, tvec = self.estimate_pose(corners[i], 0.2)
+                    rvec, tvec = self.estimate_pose(corners[i], 0.15)
 
                     distance = np.linalg.norm(tvec)
                     if VERBOSE: logger.info(f"Distance: {distance:.3f} meters")
