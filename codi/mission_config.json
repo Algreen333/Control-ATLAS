@@ -8,7 +8,7 @@
   "flight": {
     "auto_arm": false,
     "auto_guided": true,
-    "search_altitude_m": 3.5,
+    "search_altitude_m": 3.0,
     "search_speed_ms": 0.2,
     "search_max_dist_to_wp": 0.15,
     "search_path": [
@@ -32,8 +32,8 @@
   },
   "camera_config": {
     "AeEnable": false,
-    "ExposureTime": 1500,
-    "AnalogueGain": 1.0,
+    "ExposureTime": 9000,
+    "AnalogueGain": 8.0,
     "Brightness": 0.0
   },
   "alignment": {
@@ -44,5 +44,11 @@
   },
   "storage": {
     "state_file": "flight_checkpoint.json"
-  }
+  },
+  "offload": {
+    "enabled": true,
+    "host": "10.209.239.12",
+    "port": 5005,
+    "timeout_s": 10
+}
 }
