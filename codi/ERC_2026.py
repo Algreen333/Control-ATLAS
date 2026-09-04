@@ -24,6 +24,7 @@ from lib.camera_lib_light import VideoCapture, GazeboVideoCapture, FlaskPreviewS
 from lib.aruco_lib import ArucoDetector
 import cv2
 
+USE_SEARCH_ALT = False
 
 class CVProcessing:
     def __init__(self, capture, config_path: str, home_id: int, land_id: int, aruco_dict=cv2.aruco.DICT_ARUCO_ORIGINAL):
@@ -273,7 +274,10 @@ class ERCMissionController:
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
                 wp = self.search_path[self.state.search_wp_idx]
-                self.mav.send_target_ned(wp[0], wp[1], -self.state.search_altitude_m, speed_ms=speed)
+
+                if USE_SEARCH_ALT: self.mav.send_target_ned(wp[0], wp[1], -self.state.search_altitude_m, speed_ms=speed)
+                else: self.mav.send_target_ned(wp[0], wp[1], pos[2], speed_ms=speed)
+
                 self.state_manager.save_state(self.state)
                 return False
             return True
@@ -286,7 +290,10 @@ class ERCMissionController:
             if self.state.search_wp_idx < len(self.search_path) - 1:
                 self.state.search_wp_idx += 1
                 wp = self.search_path[self.state.search_wp_idx]
-                self.mav.send_target_ned(wp[0], wp[1], -self.state.search_altitude_m, speed_ms=speed)
+                
+                if USE_SEARCH_ALT: self.mav.send_target_ned(wp[0], wp[1], -self.state.search_altitude_m, speed_ms=speed)
+                else: self.mav.send_target_ned(wp[0], wp[1], pos[2], speed_ms=speed)
+
                 self.state_manager.save_state(self.state)
                 return False
             return True
