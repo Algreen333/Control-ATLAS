@@ -107,6 +107,7 @@ class ERCMissionController:
         self.search_path: List[Tuple[float, float, float]] = [
             tuple(wp) for wp in self.cfg["flight"]["search_path"]
         ]
+        logger.info("Search path:\n", self.search_path)
         self.images_dir = self.cfg["vision"]["images_dir"]
         os.makedirs(self.images_dir, exist_ok=True)
         self.last_image_time = -1

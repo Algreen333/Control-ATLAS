@@ -25,7 +25,7 @@ HTML_TEMPLATE = """
         label { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
         input[type="range"] { width: 150px; }
         select { width: 150px; padding: 4px; background: #444; color: white; border: none; border-radius: 4px; }
-        span.val { display: inline-block; width: 30px; text-align: right; color: #888; font-size: 12px; margin-right: 10px;}
+        span.val { display: inline-block; width: 45px; text-align: right; color: #888; font-size: 12px; margin-right: 10px;}
     </style>
 </head>
 <body>
@@ -35,50 +35,38 @@ HTML_TEMPLATE = """
             <img src="/video_feed" width="640" height="480" alt="Live Stream" />
         </div>
         <div class="controls">
+            <label>Auto Exposure (AeEnable):
+                <select onchange="update('AeEnable', this.value)">
+                    <option value="0">Disabled</option>
+                    <option value="1">Enabled</option>
+                </select>
+            </label>
+            <label>Exposure Time (µs): 
+                <div>
+                    <span class="val" id="val-ExposureTime">50000</span>
+                    <input type="range" min="100" max="100000" step="100" value="50000" oninput="update('ExposureTime', this.value)">
+                </div>
+            </label>
+            <label>Analogue Gain: 
+                <div>
+                    <span class="val" id="val-AnalogueGain">2.0</span>
+                    <input type="range" min="1.0" max="16.0" step="0.1" value="2.0" oninput="update('AnalogueGain', this.value)">
+                </div>
+            </label>
             <label>Brightness: 
                 <div>
-                    <span class="val" id="val-Brightness">0</span>
-                    <input type="range" min="-1" max="1" step="0.1" value="0" oninput="update('Brightness', this.value)">
+                    <span class="val" id="val-Brightness">0.1</span>
+                    <input type="range" min="-1" max="1" step="0.1" value="0.1" oninput="update('Brightness', this.value)">
                 </div>
-            </label>
-            <label>Contrast: 
-                <div>
-                    <span class="val" id="val-Contrast">1.0</span>
-                    <input type="range" min="0" max="2" step="0.1" value="1.0" oninput="update('Contrast', this.value)">
-                </div>
-            </label>
-            <label>Saturation: 
-                <div>
-                    <span class="val" id="val-Saturation">1.0</span>
-                    <input type="range" min="0" max="2" step="0.1" value="1.0" oninput="update('Saturation', this.value)">
-                </div>
-            </label>
-            <label>Exposure Comp (EV): 
-                <div>
-                    <span class="val" id="val-ExposureValue">0</span>
-                    <input type="range" min="-8" max="8" step="0.5" value="0" oninput="update('ExposureValue', this.value)">
-                </div>
-            </label>
-            <label>White Balance:
-                <select onchange="update('AwbMode', this.value)">
-                    <option value="0">Auto</option>
-                    <option value="1">Incandescent</option>
-                    <option value="2">Tungsten</option>
-                    <option value="3">Fluorescent</option>
-                    <option value="5">Daylight</option>
-                    <option value="6">Cloudy</option>
-                </select>
             </label>
         </div>
     </div>
 
     <script>
         function update(param, value) {
-            // Update the display number next to sliders
             let valSpan = document.getElementById('val-' + param);
             if(valSpan) valSpan.innerText = value;
 
-            // Send to Flask backend
             fetch('/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -118,18 +106,19 @@ def video_feed():
 
 @app.route('/update', methods=['POST'])
 def update_params():
-    """Receive JSON and set the new libcamera controls."""
+    """Receive JSON and set the new libcamera controls with strict typing."""
     data = request.json
     controls_to_update = {}
     
     for key, value in data.items():
         try:
-            val = float(value)
-            # Enums like AwbMode require integers
-            if key in ['AwbMode']:
-                val = int(val)
-                
-            controls_to_update[key] = val
+            if key == 'AeEnable':
+                controls_to_update[key] = bool(int(value))
+            elif key == 'ExposureTime':
+                controls_to_update[key] = int(float(value))
+            else:
+                # AnalogueGain and Brightness remain floats
+                controls_to_update[key] = float(value)
         except ValueError:
             print(f"Invalid value for {key}: {value}")
             
