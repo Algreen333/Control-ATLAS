@@ -6,10 +6,10 @@
     "do_gazebo": false
   },
   "flight": {
-    "auto_arm": true,
+    "auto_arm": false,
     "auto_guided": true,
-    "search_altitude_m": 3.0,
-    "search_speed_ms": 0.1,
+    "search_altitude_m": 3.5,
+    "search_speed_ms": 0.2,
     "search_max_dist_to_wp": 0.15,
     "search_path": [
       [1.5, -1.5, -3.0],
@@ -32,9 +32,9 @@
   },
   "camera_config": {
     "AeEnable": false,
-    "ExposureTime": 50000,
-    "AnalogueGain": 2.0,
-    "Brightness": 0.1
+    "ExposureTime": 1500,
+    "AnalogueGain": 1.0,
+    "Brightness": 0.0
   },
   "alignment": {
     "align_iters": 4,

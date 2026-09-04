@@ -432,7 +432,7 @@ class MavlinkConnection:
         :param float yaw: Optional yaw target in radians
         :param float yaw_rate: Yaw rate in rad/s
         """
-        type_mask = 0b010111111000 # Default: Use pos and yaw rate, ignore vel
+        type_mask = 0b010111111001 # Default: Use pos and yaw rate, ignore vel
         
         vx, vy, vz = 0.0, 0.0, 0.0
 
