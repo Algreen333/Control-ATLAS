@@ -6,6 +6,7 @@ import time
 import math
 import numpy as np
 from typing import List, Tuple
+import subprocess
 
 log_format = "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
 logging.basicConfig(
@@ -23,6 +24,10 @@ from lib.drone_lib import MavlinkConnection
 from lib.camera_lib_light import VideoCapture, GazeboVideoCapture, FlaskPreviewServer, save_img_dir
 from lib.aruco_lib import ArucoDetector
 import cv2
+
+
+# S'HA DE CANVIAR!!!
+ADRECA_SCP = "username@192.168.X.X:/path/to/ground/folder/"
 
 
 class CVProcessing:
@@ -218,6 +223,7 @@ class ERCMissionController:
                 self.state.current_phase = FlightPhase.MISSION_COMPLETED
 
         self.state_manager.clear()
+        self._upload_images_batch()
 
     def _execute_search_step(self):
         pos = self.mav.get_local_position()
@@ -331,6 +337,19 @@ class ERCMissionController:
         logger.info(f"Aligning distance: {dist:.3f}m")
 
         return dist < self.cfg["alignment"]["align_thrsh_dist"]
+
+    def _upload_images_batch(self):
+        logger.info("Mission complete. Starting batch image transfer to ground computer...")
+        
+        remote_dest = ADRECA_SCP
+        
+        cmd = f"scp {self.images_dir}/*.jpg {remote_dest}"
+        
+        try:
+            subprocess.run(cmd, shell=True, check=True)
+            logger.info("Batch transfer completed successfully.")
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to transfer images: {e}")
 
 
 if __name__ == "__main__":
