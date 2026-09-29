@@ -6,28 +6,23 @@
     "do_gazebo": false
   },
   "flight": {
-    "auto_arm": false,
-    "auto_guided": true,
-    "search_altitude_m": 3.5,
-    "search_speed_ms": 0.2,
-    "search_max_dist_to_wp": 0.15,
-    "search_path": [
-      [1.5, -1.5, -3.0],
-      [1.5, 1.5, -3.0],
-      [-1.5, 1.5, -3.0],
-      [-1.5, -1.5, -3.0],
-      [1.5, -1.5, -3.0]
+    "gnss_midpoint_ned": [
+      0.0, 
+      0.0, 
+      0.0
     ]
   },
   "vision": {
     "capture_source": 0,
-    "capture_resolution": [1640, 1232],
+    "capture_resolution": [
+      1640, 
+      1232
+    ],
     "capture_fps": 30.0,
     "camera_config_path": "./configs/1640x1232-v2.conf",
-    "aruco_home_id": 101,
-    "aruco_land_id": 102,
+    "aruco_target_id": 26,
+    "marker_size_m": 0.48,
     "images_dir": "/home/grasshopper/imgs/",
-    "images_delay": 0.5,
     "preview_port": 5000
   },
   "camera_config": {
@@ -36,11 +31,27 @@
     "AnalogueGain": 1.0,
     "Brightness": 0.0
   },
-  "alignment": {
-    "align_iters": 4,
-    "align_delay": 0.5,
-    "align_thrsh_dist": 0.15,
-    "window_size": 30
+  "autonomy": {
+    "max_horizontal_speed_ms": 1.0,
+    "marker_search_timeout": 15.0,
+    "blind_land_alt_m": 0.7,
+    "geofence_radius_m": 10.0,
+    "altitude_ceiling_m": 30.0,
+    "min_activation_alt_m": 5.0,
+    "max_activation_alt_m": 20.0,
+    "climb_target_alt_m": 5.0,
+    "max_lost_frames": 15,
+    "loop_delay_s": 0.05,
+    "descend_radius_inner_m": 0.3,
+    "descend_speed_fast_ms": 0.35,
+    "descend_radius_outer_m": 0.5,
+    "descend_speed_slow_ms": 0.05
+  },
+  "pid": {
+    "kp": 0.15,
+    "ki": 0.1,
+    "kd": 0.12,
+    "live_tuning_enabled": true
   },
   "storage": {
     "state_file": "flight_checkpoint.json"

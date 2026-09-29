@@ -85,5 +85,10 @@
       <pose degrees="true">2 1.5 0.01 0 0 90</pose>
     </include>
 
+    <include>
+      <uri>model://aruco_marker_26</uri>
+      <pose degrees="true">-2 2.5 0.01 0 0 90</pose>
+    </include>
+
   </world>
 </sdf>

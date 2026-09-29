@@ -163,21 +163,28 @@ class GazeboVideoCapture:
 
 import time
 import threading
-from flask import Flask, Response, render_template_string
+from flask import Flask, Response, render_template_string, request
 from werkzeug.serving import make_server
 
 class FlaskPreviewServer:
-    def __init__(self, host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55):
+    def __init__(self, host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55, tuning_enabled=False, pid_controllers=None, config_path=None):
         """
         :param str host: IP binding address
         :param int port: Listening port
-        :param int max_fps: Frame-rate cap for preview stream to reduce CPU load
-        :param int jpeg_quality: 0-100 JPEG compression quality (lower = faster)
+        :param int max_fps: Frame-rate cap for preview stream
+        :param int jpeg_quality: 0-100 JPEG compression quality
+        :param bool tuning_enabled: Enables the PID tuning UI overlay
+        :param list pid_controllers: References to the PID objects to update
+        :param str config_path: Path to the JSON config file to save changes
         """
         self.host = host
         self.port = port
         self.frame_delay = 1.0 / max_fps
         self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), jpeg_quality]
+        
+        self.tuning_enabled = tuning_enabled
+        self.pid_controllers = pid_controllers or []
+        self.config_path = config_path
         
         self._frame = None
         self._lock = threading.Lock()
@@ -186,27 +193,132 @@ class FlaskPreviewServer:
         self._thread = None
         
         self.app = Flask(__name__)
-        # Suppress logging to avoid console I/O bottlenecks
         logging.getLogger('werkzeug').setLevel(logging.ERROR)
         self._setup_routes()
 
     def _setup_routes(self):
         @self.app.route('/')
         def index():
-            return render_template_string('''
+            tuning_html = ""
+            if self.tuning_enabled and self.pid_controllers:
+                base_kp = self.pid_controllers[0].kp
+                base_ki = self.pid_controllers[0].ki
+                base_kd = self.pid_controllers[0].kd
+                
+                tuning_html = f'''
+                <div style="position:absolute; top:20px; left:20px; background:rgba(255,255,255,0.9); padding:15px; border-radius:8px; font-family:sans-serif; z-index:1000; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    <h3 style="margin-top:0; margin-bottom:15px;">Live PID Tuning</h3>
+                    
+                    <div style="margin-bottom: 8px;">
+                        <label style="display:inline-block; width:25px; font-weight:bold;">Kp:</label>
+                        <input type="range" id="kp_slider" min="0" max="2.0" step="0.01" value="{base_kp}" oninput="syncPID('kp', 'slider')" style="vertical-align: middle;">
+                        <input type="number" id="kp_input" min="0" max="2.0" step="0.01" value="{base_kp}" oninput="syncPID('kp', 'input')" style="width:60px; margin-left:10px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 8px;">
+                        <label style="display:inline-block; width:25px; font-weight:bold;">Ki:</label>
+                        <input type="range" id="ki_slider" min="0" max="0.2" step="0.001" value="{base_ki}" oninput="syncPID('ki', 'slider')" style="vertical-align: middle;">
+                        <input type="number" id="ki_input" min="0" max="0.2" step="0.001" value="{base_ki}" oninput="syncPID('ki', 'input')" style="width:60px; margin-left:10px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 8px;">
+                        <label style="display:inline-block; width:25px; font-weight:bold;">Kd:</label>
+                        <input type="range" id="kd_slider" min="0" max="1.0" step="0.01" value="{base_kd}" oninput="syncPID('kd', 'slider')" style="vertical-align: middle;">
+                        <input type="number" id="kd_input" min="0" max="1.0" step="0.01" value="{base_kd}" oninput="syncPID('kd', 'input')" style="width:60px; margin-left:10px;">
+                    </div>
+
+                    <script>
+                        function syncPID(param, source) {{
+                            let slider = document.getElementById(param + '_slider');
+                            let input = document.getElementById(param + '_input');
+                            
+                            // If the user cleared the input box, do not update the slider or send the request
+                            if (source === 'input' && (input.value === "" || isNaN(parseFloat(input.value)))) {{
+                                return;
+                            }}
+                            
+                            // Sync the UI elements bidirectionally
+                            if (source === 'slider') {{
+                                input.value = slider.value;
+                            }} else {{
+                                slider.value = input.value;
+                            }}
+                            
+                            let kp = document.getElementById('kp_input').value;
+                            let ki = document.getElementById('ki_input').value;
+                            let kd = document.getElementById('kd_input').value;
+                            
+                            // Final safety check: ensure no inputs are empty before sending to the backend
+                            if (kp === "" || ki === "" || kd === "" || 
+                                isNaN(parseFloat(kp)) || isNaN(parseFloat(ki)) || isNaN(parseFloat(kd))) {{
+                                return;
+                            }}
+                            
+                            fetch('/update_pid', {{
+                                method: 'POST',
+                                headers: {{'Content-Type': 'application/json'}},
+                                body: JSON.stringify({{
+                                    kp: parseFloat(kp), 
+                                    ki: parseFloat(ki), 
+                                    kd: parseFloat(kd)
+                                }})
+                            }});
+                        }}
+                    </script>
+                </div>
+                '''
+
+            return render_template_string(f'''
                 <!doctype html>
                 <html>
                 <head><title>Live Preview</title></head>
-                <body style="background:#111;margin:0;display:flex;justify-content:center;align-items:center;height:100vh;">
+                <body style="background:#111;margin:0;display:flex;justify-content:center;align-items:center;height:100vh;position:relative;">
                     <img src="/video_feed" style="max-width:98%;max-height:98%;border-radius:6px;" />
+                    {tuning_html}
                 </body>
                 </html>
             ''')
 
+        @self.app.route('/update_pid', methods=['POST'])
+        def update_pid():
+            if not self.tuning_enabled:
+                return {"status": "forbidden", "message": "Live tuning is disabled in config"}, 403
+                
+            data = request.json
+            
+            for pid in self.pid_controllers:
+                pid.kp = data.get('kp', pid.kp)
+                pid.ki = data.get('ki', pid.ki)
+                pid.kd = data.get('kd', pid.kd)
+            
+            logger.info(f"[PID] Updated in memory: Kp={data.get('kp')}, Ki={data.get('ki')}, Kd={data.get('kd')}")
+            
+            if self.config_path and os.path.exists(self.config_path):
+                try:
+                    with self._lock: # Prevent concurrent read/write issues
+                        with open(self.config_path, "r") as f:
+                            cfg_data = json.load(f)
+                            
+                        if "pid" not in cfg_data:
+                            cfg_data["pid"] = {}
+                            
+                        cfg_data["pid"]["kp"] = data.get("kp", cfg_data["pid"].get("kp", 0.7))
+                        cfg_data["pid"]["ki"] = data.get("ki", cfg_data["pid"].get("ki", 0.02))
+                        cfg_data["pid"]["kd"] = data.get("kd", cfg_data["pid"].get("kd", 0.15))
+                        
+                        with open(self.config_path, "w") as f:
+                            json.dump(cfg_data, f, indent=2)
+                            
+                    logger.info(f"[PID] Saved new values to {self.config_path}")
+                except Exception as e:
+                    logger.error(f"[PID] Failed to write to config file: {e}")
+                    return {"status": "error", "message": str(e)}, 500
+                    
+            return {"status": "success"}
+
         @self.app.route('/video_feed')
         def video_feed():
             return Response(self._generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
     def _generate(self):
         while self._running:
             start_time = time.time()

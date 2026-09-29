@@ -56,7 +56,7 @@ class MavlinkConnection:
         """Runs continuously to send keep-alives and receive all incoming messages."""
         last_hb_send = 0
         while True:
-            # Send Onboard Controller keep-alive at 4Hz[cite: 1]
+            # Send Onboard Controller keep-alive at 4Hz
             if time.monotonic() - last_hb_send > 0.25:
                 try:
                     self.mav.mav.heartbeat_send(
@@ -68,14 +68,15 @@ class MavlinkConnection:
                     pass
                 last_hb_send = time.monotonic()
 
-            # Constantly pull and cache incoming messages
-            msg = self.mav.recv_msg()
-            if msg:
-                if msg.get_type() == 'HEARTBEAT':
-                    # Push the updated mode to the LED Controller instantly
-                    self.led_controller.update_state(self.mav.flightmode)
-            else:
-                # Prevent high CPU usage when queue is empty
+            # Safely pull messages, ignoring UART noise
+            try:
+                msg = self.mav.recv_msg()
+                if msg:
+                    if msg.get_type() == 'HEARTBEAT':
+                        self.led_controller.update_state(self.mav.flightmode)
+                else:
+                    time.sleep(0.05)
+            except Exception as e:
                 time.sleep(0.05)
 
     # ---------------------------------------------------------------------------
@@ -179,6 +180,13 @@ class MavlinkConnection:
 
         return is_armed and (curr_alt > alt_threshold_m)
 
+    def get_attitude(self) -> tuple[float, float, float] | None:
+        """Returns (roll, pitch, yaw) in radians from the IMU."""
+        msg = self.mav.messages.get("ATTITUDE")
+        if msg:
+            return (msg.roll, msg.pitch, msg.yaw)
+        return None
+    
     
     # ---------------------------------------------------------------------------
     # Flight control commands
@@ -199,13 +207,15 @@ class MavlinkConnection:
         logger.info("[MAV] Switching to GUIDED ...")
 
         self.mav.set_mode("GUIDED")
+
+        retry_timeout = time.time() + 2
+
         # Wait for guided
-        msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
-        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
-            if (msg is not None and msg.type == 2. and not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
+        while (not self.isGuided()):
+            if (time.time() > retry_timeout):
                 logger.info("[MAV] Retrying to switch to GUIDED ...")
                 self.mav.set_mode("GUIDED")
-            msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+                retry_timeout = time.time() + 2
 
         logger.info("[MAV] GUIDED mode set")
 
@@ -217,6 +227,22 @@ class MavlinkConnection:
             msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
         
         logger.info("[MAV] GUIDED mode set")
+
+    def isGuided(self, timeout=-1) -> bool:
+        """
+        Returns True if the drone is in GUIDED mode.
+        If timeout >= 0, blocks for up to `timeout` seconds waiting for the mode to change.
+        """
+        if timeout < 0:
+            return self.mav.flightmode == "GUIDED"
+        
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if self.mav.flightmode == "GUIDED":
+                return True
+            time.sleep(0.05)  # Yield to prevent high CPU usage
+            
+        return self.mav.flightmode == "GUIDED"
     
     def setStabilize(self) -> None:
         logger.info("[MAV] Switching to STABILIZE ...")
@@ -297,7 +323,7 @@ class MavlinkConnection:
 
     def switch_to_land(self) -> None:
         """Command LAND mode (activates ArduPilot's PLND controller)."""
-        logger.info("[MAV] Switching to LAND mode – PLND active.")
+        logger.info("[MAV] Switching to LAND mode")
         self.mav.set_mode("LAND")
 
     def wait_for_disarm(self, timeout_s: float = 120.0) -> bool:
