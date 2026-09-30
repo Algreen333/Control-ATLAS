@@ -2,17 +2,47 @@ import cv2
 import threading
 import time
 import logging
+import json
+
+try:
+    from picamera2 import Picamera2
+    HAS_PICAMERA = True
+except (ImportError, RuntimeError):
+    HAS_PICAMERA = False
 
 class Camera:
-    def __init__(self, source, width=640, height=480, fps=30, timeout=0.5):
+    def __init__(self, source, resolution=(640, 480), fps=30, timeout=0.5, AeEnable=False, ExposureTime=50000, AnalogueGain=2.0, Brightness=0.1, format="BGR888"):
         self.source = source
         self.timeout = timeout
+        self.resolution = resolution
+        self.fps = fps
+        self.has_picamera = bool(HAS_PICAMERA)
+        self.format = format
 
-        self.cap = cv2.VideoCapture(self.source)
+        if self.has_picamera:
+            try:
+                self.cap = Picamera2(self.source)
+                config = self.cap.create_preview_configuration(main={"size": self.resolution, "format": self.format})
+                self.cap.configure(config)
+                frame_duration = int(1e6/self.fps)
+                self.cap.set_controls({
+                    "AeEnable": AeEnable,
+                    "FrameDurationLimits": (frame_duration,frame_duration),
+                    "AnalogueGain": float(AnalogueGain),
+                    "Brightness": float(Brightness),
+                    "ExposureTime": int(ExposureTime)
+                })
 
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self.cap.set(cv2.CAP_PROP_FPS, fps)
+                self.cap.start()
+            except Exception as e:
+                logging.error(f"[HAL] CRITICAL: Failed to initialize Picamera2: {e}")
+                raise RuntimeError(f"Picamera2 hardware unreachable on source {self.source}")
+            
+        else:
+            self.cap = cv2.VideoCapture(self.source)
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, resolution[0])
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, resolution[1])
+            self.cap.set(cv2.CAP_PROP_FPS, fps)
 
         if not self.cap.isOpened():
             self.isHealthy = False
