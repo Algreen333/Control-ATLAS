@@ -6,6 +6,7 @@ import os
 
 try:
     from picamera2 import Picamera2
+    from libcamera import controls
     HAS_PICAMERA = True
 except (ImportError, RuntimeError):
     HAS_PICAMERA = False
@@ -59,6 +60,154 @@ class VideoCapture:
             new_frame = self.capture.capture_array()
             return (True, new_frame)
         return self.capture.read()
+
+class StereoCapture:
+    def __init__(self, idx_server=0, idx_client=1, resolution=(640, 480), format="RGB888", fps=30.0, 
+                 AeEnable=False, ExposureTime=1000, AnalogueGain=60.0, max_drift_ns=5_000_000):
+        """
+        Synchronized stereo capture using libcamera hardware sync.
+        
+        :param int idx_server: Camera index for the sync server.
+        :param int idx_client: Camera index for the sync client.
+        :param (int,int) resolution: Resolution of the capture.
+        :param str format: Format of the capture.
+        :param float fps: Fps of the capture.
+        :param bool AeEnable: Auto-exposure toggle.
+        :param int ExposureTime: Shutter speed in microseconds.
+        :param float AnalogueGain: Sensor gain.
+        :param int max_drift_ns: Maximum allowed sync drift in nanoseconds before flushing.
+        """
+        self.resolution = resolution
+        self.fps = fps
+        self.format = format
+        self.max_drift_ns = max_drift_ns
+        
+        # Threading and state management patterned after FlaskPreviewServer
+        self._lock = threading.Lock()
+        self._running = False
+        self._thread = None
+        
+        self.latest_frame_server = None
+        self.latest_frame_client = None
+        self.latest_drift_ms = None
+        
+        if not HAS_PICAMERA:
+            logger.error("Picamera2 is required for hardware synchronized StereoCapture.")
+            raise RuntimeError("Picamera2 not found.")
+
+        # Configuration logic similar to VideoCapture
+        self.capture_server = self._setup_node(idx_server, "server", AeEnable, ExposureTime, AnalogueGain)
+        self.capture_client = self._setup_node(idx_client, "client", AeEnable, ExposureTime, AnalogueGain)
+
+    def _setup_node(self, cam_index, sync_mode, AeEnable, ExposureTime, AnalogueGain):
+        picam = Picamera2(cam_index)
+        
+        # Configuration matches the dictionary setup style of VideoCapture
+        config = picam.create_video_configuration(main={"size": self.resolution, "format": self.format})
+        
+        # Crucial for minimizing latency: prevents libcamera from queueing old frames
+        config["main"]["queue"] = False
+        config["main"]["buffer_count"] = 6
+        config["main"]["framerate"] = self.fps
+        
+        picam.configure(config)
+        
+        controls_dict = {
+            "NoiseReductionMode": 2,
+            "ExposureTime": ExposureTime,
+            "AnalogueGain": AnalogueGain,
+            "AeEnable": AeEnable,
+        }
+        
+        if sync_mode == "server":
+            controls_dict["SyncMode"] = controls.rpi.SyncModeEnum.Server
+            logger.info(f"Hardware node {cam_index} initialized as IPA SYNC SERVER.")
+        elif sync_mode == "client":
+            controls_dict["SyncMode"] = controls.rpi.SyncModeEnum.Client
+            logger.info(f"Hardware node {cam_index} initialized as IPA SYNC CLIENT.")
+
+        picam.set_controls(controls_dict)
+        picam.start()
+        return picam
+
+    def _update_loop(self):
+        """Background daemon thread pulling synchronized frames continuously."""
+        time.sleep(2) # Camera warmup
+        
+        while self._running:
+            req_server = self.capture_server.capture_request()
+            req_client = self.capture_client.capture_request()
+            
+            ts_server = req_server.get_metadata().get('SensorTimestamp', 0)
+            ts_client = req_client.get_metadata().get('SensorTimestamp', 0)
+            
+            time_diff_ns = ts_server - ts_client
+            drift_ns = abs(time_diff_ns)
+            
+            with self._lock:
+                self.latest_drift_ms = drift_ns / 1_000_000.0
+            
+            # Threshold-based drift correction
+            if drift_ns > self.max_drift_ns:
+                logger.warning(f"Desync detected: {self.latest_drift_ms:.2f}ms. Realigning...")
+                if time_diff_ns < 0:
+                    req_server.release()
+                    req_server = self.capture_server.capture_request()
+                else:
+                    req_client.release()
+                    req_client = self.capture_client.capture_request()
+                    
+            img_server = req_server.make_array("main")
+            img_client = req_client.make_array("main")
+            
+            # Rotate client if physically mounted upside down
+            img_client = cv2.rotate(img_client, cv2.ROTATE_180)
+            
+            req_server.release()
+            req_client.release()
+            
+            with self._lock:
+                self.latest_frame_server = img_server.copy()
+                self.latest_frame_client = img_client.copy()
+
+    def start(self):
+        """Launches the background capture loop in a non-blocking daemon thread."""
+        if self._running:
+            return self
+        self._running = True
+        self._thread = threading.Thread(target=self._update_loop, daemon=True)
+        self._thread.start()
+        logger.info("[SYNC-CAP] Sync camera thread started.")
+        return self
+        
+    def read(self):
+        """
+        Returns latest frames captured. Patterned after the standard read() format.
+        
+        :return: ( (ret_server, frame_server), (ret_client, frame_client), drift_ms )
+        """
+        with self._lock:
+            if self.latest_frame_server is not None:
+                serv = (True, self.latest_frame_server.copy())
+            else:
+                serv = (False, None)
+                
+            if self.latest_frame_client is not None:
+                clnt = (True, self.latest_frame_client.copy())
+            else:
+                clnt = (False, None)
+                
+            drft = self.latest_drift_ms
+            
+        return serv, clnt, drft
+
+    def stop(self):
+        """Stops the background loop cleanly"""
+        self._running = False
+        if self._thread:
+            self._thread.join()
+        self.capture_server.stop()
+        self.capture_client.stop()
 
 class CalibrationConfig:
     """

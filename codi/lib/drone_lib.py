@@ -222,9 +222,8 @@ class MavlinkConnection:
     def waitGuided(self) -> None:
         logger.info("[MAV] Waiting for GUIDED mode ...")
 
-        msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
-        while (msg is None or msg.type != 2 or not(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED) or not (msg.custom_mode & 4)):
-            msg = self.mav.recv_match(type="HEARTBEAT", blocking=True, timeout=2)
+        while (not self.isGuided()):
+            time.sleep(0.05)
         
         logger.info("[MAV] GUIDED mode set")
 
@@ -316,10 +315,11 @@ class MavlinkConnection:
             altitude_m,
         )
         while True:
-            msg = self.mav.recv_match(type="GLOBAL_POSITION_INT", blocking=True, timeout=2)
+            msg = self.mav.messages.get("GLOBAL_POSITION_INT")
             if msg and msg.relative_alt / 1000.0 >= altitude_m * 0.92:
                 logger.info(f"[MAV] Reached {msg.relative_alt / 1000:.1f} m.")
                 break
+            time.sleep(0.1)
 
     def switch_to_land(self) -> None:
         """Command LAND mode (activates ArduPilot's PLND controller)."""

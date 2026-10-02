@@ -18,3 +18,4 @@
 *drone_mission*.log
 
 *venv
+assets-gazebo/models/rubicon/*
