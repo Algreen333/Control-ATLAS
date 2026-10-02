@@ -20,9 +20,9 @@ logging.basicConfig(
 logger = logging.getLogger("MissionCtrl")
 
 from lib.status import FlightPhase, FlightState, StateManager
-from lib.drone_lib import MavlinkConnection
-from lib.camera_lib_light import VideoCapture, GazeboVideoCapture, FlaskPreviewServer, save_img_dir
-from lib.aruco_lib import ArucoDetector
+from lib.drone_lib import MavlinkConnection, FakeMavlinkConnection
+from lib.camera_lib_light import VideoCapture, GazeboVideoCapture, FlaskPreviewServer, save_img_dir, StereoCapture
+from lib.aruco_lib import ArucoDetector, transform_auco_poses, fuse_stereo_aruco_poses
 from lib.pid_controller import PIDController
 
 
@@ -42,7 +42,7 @@ class CVProcessing:
     def detect(self, do_draw: bool = False):
         ret, frame = self.capture.read()
         if not ret or frame is None:
-            return None, []
+            return None, [], None
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, _ = self.detector.detectMarkers(gray)
@@ -61,7 +61,99 @@ class CVProcessing:
             if do_draw:
                 cv2.aruco.drawDetectedMarkers(frame, corners, ids)
 
-        return frame, target_detections
+        return frame, target_detections, None
+
+
+class CVStereoProcessing:
+    def __init__(self, capture, cam1_config_path: str, cam2_config_path: str, offsets: dict, target_id: int = 26, marker_size: float = 0.48, aruco_dict=cv2.aruco.DICT_4X4_50):
+        # Load Camera 1 Intrinsics
+        with open(cam1_config_path, "r") as f:
+            data1 = json.load(f)
+        self.mtx1 = np.array(data1["mtx"], dtype=np.float32)
+        self.dist1 = np.array(data1["dist"], dtype=np.float32)
+        
+        # Load Camera 2 Intrinsics
+        with open(cam2_config_path, "r") as f:
+            data2 = json.load(f)
+        self.mtx2 = np.array(data2["mtx"], dtype=np.float32)
+        self.dist2 = np.array(data2["dist"], dtype=np.float32)
+
+        self.target_id = target_id
+        self.marker_size = marker_size
+
+        self.detector1 = ArucoDetector(self.mtx1, self.dist1, dict=aruco_dict)
+        self.detector2 = ArucoDetector(self.mtx2, self.dist2, dict=aruco_dict)
+        self.capture = capture
+
+        self.T_C_1 = np.eye(4)
+        self.T_C_1[0, 3] = offsets.get("cam1_chassis_x_dist", 0.0)
+        self.T_C_1[1, 3] = offsets.get("cam1_chassis_y_dist", 0.0)
+        self.T_C_1[2, 3] = offsets.get("cam1_chassis_z_dist", 0.0)
+
+        self.T_C_2 = np.eye(4)
+        self.T_C_2[0, 3] = offsets.get("cam2_chassis_x_dist", 0.0)
+        self.T_C_2[1, 3] = offsets.get("cam2_chassis_y_dist", 0.0)
+        self.T_C_2[2, 3] = offsets.get("cam2_chassis_z_dist", 0.0)
+
+    def _get_detections(self, frame, cam_idx):
+        if frame is None:
+            return [], None, None
+            
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        detector = self.detector1 if cam_idx == 1 else self.detector2
+        
+        corners, ids, _ = detector.detectMarkers(gray)
+        valid_poses = []
+        if ids is not None:
+            flat_ids = np.ravel(ids)
+            for i in range(len(flat_ids)):
+                if flat_ids[i] == self.target_id:
+                    rvec, tvec = detector.estimate_pose(corners[i], self.marker_size)
+                    valid_poses.append((rvec, tvec))
+        return valid_poses, corners, ids
+
+    def detect(self, do_draw: bool = False):
+        serv, clnt, drft = self.capture.read()
+        ret1, frame1 = serv
+        ret2, frame2 = clnt
+
+        # Pass the camera index (1 or 2) to select the correct calibration matrix
+        poses1, corners1, ids1 = self._get_detections(frame1, 1) if ret1 else ([], None, None)
+        poses2, corners2, ids2 = self._get_detections(frame2, 2) if ret2 else ([], None, None)
+
+        disp_frame = None
+        if do_draw:
+            if ret1 and frame1 is not None and ids1 is not None:
+                cv2.aruco.drawDetectedMarkers(frame1, corners1, ids1)
+            if ret2 and frame2 is not None and ids2 is not None:
+                cv2.aruco.drawDetectedMarkers(frame2, corners2, ids2)
+            
+            if ret1 and ret2 and frame1 is not None and frame2 is not None:
+                disp_frame = cv2.hconcat([frame1, frame2])
+            elif ret1 and frame1 is not None:
+                disp_frame = frame1
+            elif ret2 and frame2 is not None:
+                disp_frame = frame2
+
+        target_detections = []
+        
+        if len(poses1) > 0 and len(poses2) > 0:
+            r1, t1 = poses1[0]
+            r2, t2 = poses2[0]
+            r_avg, t_avg = fuse_stereo_aruco_poses(r1, t1, self.T_C_1, r2, t2, self.T_C_2)
+            target_detections.append((float(t_avg[0][0]), float(t_avg[1][0]), float(t_avg[2][0])))
+            
+        elif len(poses1) > 0:
+            r1, t1 = poses1[0]
+            _, t_trans = transform_auco_poses(r1, t1, self.T_C_1)
+            target_detections.append((float(t_trans[0][0]), float(t_trans[1][0]), float(t_trans[2][0])))
+            
+        elif len(poses2) > 0:
+            r2, t2 = poses2[0]
+            _, t_trans = transform_auco_poses(r2, t2, self.T_C_2)
+            target_detections.append((float(t_trans[0][0]), float(t_trans[1][0]), float(t_trans[2][0])))
+
+        return disp_frame, target_detections, drft
 
 
 class ZDCMissionController:
@@ -72,46 +164,102 @@ class ZDCMissionController:
         self.state_manager = StateManager(self.cfg.get("storage", {}).get("state_file", "flight_status.json"))
         self.state = FlightState()
 
-        self.mav = MavlinkConnection(
-            connection_string=self.cfg["mavlink"]["connection"],
-            baud=self.cfg["mavlink"]["baud"],
-            debug=self.cfg["mavlink"].get("debug", False)
-        )
+        use_fake = self.cfg["mavlink"].get("fake_connection", False)
+        if use_fake:
+            self.mav = FakeMavlinkConnection(
+                connection_string=self.cfg["mavlink"]["connection"],
+                baud=self.cfg["mavlink"]["baud"],
+                debug=self.cfg["mavlink"].get("debug", False)
+            )
+        else:
+            self.mav = MavlinkConnection(
+                connection_string=self.cfg["mavlink"]["connection"],
+                baud=self.cfg["mavlink"]["baud"],
+                debug=self.cfg["mavlink"].get("debug", False)
+            )
 
         res = tuple(self.cfg["vision"]["capture_resolution"])
         fps = self.cfg["vision"]["capture_fps"]
         src = self.cfg["vision"]["capture_source"]
-
-        if self.cfg["mavlink"].get("do_gazebo", False):
-            self.capture = GazeboVideoCapture(capture_source=src, resolution=res, fps=fps)
-        else:
-            cam_cfg = self.cfg.get("camera_config", {})
-            self.capture = VideoCapture(
-                capture_source=src,
-                resolution=res,
-                fps=fps,
-                AeEnable=cam_cfg.get("AeEnable", False),
-                ExposureTime=cam_cfg.get("ExposureTime", 50000),
-                AnalogueGain=cam_cfg.get("AnalogueGain", 2.0),
-                Brightness=cam_cfg.get("Brightness", 0.1)
-            )
+        
+        cam_cfg = self.cfg.get("camera_config", {})
+        cam1_cfg = cam_cfg.get("cam1", cam_cfg) 
+        cam2_cfg = cam_cfg.get("cam2", cam_cfg)
+        
+        # Extract calibration files
+        cam1_calib = cam1_cfg.get("calibration_file", "./configs/1640x1232-v2.conf")
+        cam2_calib = cam2_cfg.get("calibration_file", "./configs/1640x1232-v2.conf")
+        
+        offsets = self.cfg.get("offsets", {})
 
         self.target_id = self.cfg["vision"].get("aruco_target_id", 26)
         self.marker_size = self.cfg["vision"].get("marker_size_m", 0.48)
-        self.cvproc = CVProcessing(
-            capture=self.capture,
-            config_path=self.cfg["vision"]["camera_config_path"],
-            target_id=self.target_id,
-            marker_size=self.marker_size,
-            aruco_dict=cv2.aruco.DICT_4X4_50
-        )
+        
+        # Extract and map the ArUCo dictionary
+        aruco_dict_name = self.cfg["vision"].get("aruco_dict", "DICT_4X4_50")
+        aruco_dict_enum = getattr(cv2.aruco, aruco_dict_name, cv2.aruco.DICT_4X4_50)
+
+        if self.cfg["mavlink"].get("do_gazebo", False):
+            self.capture = GazeboVideoCapture(capture_source=src, resolution=res, fps=fps)
+            self.cvproc = CVProcessing(
+                capture=self.capture,
+                config_path=cam1_calib,
+                target_id=self.target_id,
+                marker_size=self.marker_size,
+                aruco_dict=aruco_dict_enum
+            )
+        else:
+            try:
+                logger.info("Attempting to initialize hardware StereoCapture...")
+                self.capture = StereoCapture(
+                    idx_server=0, idx_client=1,
+                    resolution=res, fps=fps,
+                    cam1_cfg=cam1_cfg,
+                    cam2_cfg=cam2_cfg
+                )
+                self.capture.start()
+                self.cvproc = CVStereoProcessing(
+                    capture=self.capture,
+                    cam1_config_path=cam1_calib,
+                    cam2_config_path=cam2_calib,
+                    offsets=offsets,
+                    target_id=self.target_id,
+                    marker_size=self.marker_size,
+                    aruco_dict=aruco_dict_enum
+                )
+                logger.info("StereoCapture successfully initialized.")
+            except Exception as e:
+                logger.warning(f"StereoCapture initialization failed: {e}. Falling back to single VideoCapture.")
+                
+                # Release the hardware lock before trying to open the fallback VideoCapture
+                if hasattr(self, 'capture') and self.capture is not None:
+                    try:
+                        self.capture.stop()
+                    except Exception:
+                        pass
+                
+                self.capture = VideoCapture(
+                    capture_source=src,
+                    resolution=res,
+                    fps=fps,
+                    AeEnable=cam1_cfg.get("AeEnable", False),
+                    ExposureTime=cam1_cfg.get("ExposureTime", 50000),
+                    AnalogueGain=cam1_cfg.get("AnalogueGain", 2.0),
+                    Brightness=cam1_cfg.get("Brightness", 0.1)
+                )
+                self.cvproc = CVProcessing(
+                    capture=self.capture,
+                    config_path=cam1_calib,
+                    target_id=self.target_id,
+                    marker_size=self.marker_size,
+                    aruco_dict=aruco_dict_enum
+                )
 
         self.images_dir = self.cfg["vision"].get("images_dir", "captured_images")
         os.makedirs(self.images_dir, exist_ok=True)
         
         self.gnss_midpoint = np.array(self.cfg["flight"].get("gnss_midpoint_ned", [0.0, 0.0, 0.0]))
 
-        # --- Extracted Autonomy Config Variables ---
         auto_cfg = self.cfg.get("autonomy", {})
         self.max_horizontal_speed = auto_cfg.get("max_horizontal_speed_ms", 1.0)
         self.geofence_radius = auto_cfg.get("geofence_radius_m", 10.0)
@@ -128,7 +276,6 @@ class ZDCMissionController:
         self.descend_speed_fast = auto_cfg.get("descend_speed_fast_ms", 0.35)
         self.descend_radius_outer = auto_cfg.get("descend_radius_outer_m", 0.8)
         self.descend_speed_slow = auto_cfg.get("descend_speed_slow_ms", 0.20)
-        # -------------------------------------------
 
         pid_cfg = self.cfg.get("pid", {})
         self.pid_x = PIDController(
@@ -247,9 +394,9 @@ class ZDCMissionController:
             if not self._check_geofence_and_override():
                 return False
 
-            frame, targets = self.cvproc.detect(do_draw=True)
+            frame, targets, drift = self.cvproc.detect(do_draw=True)
             if frame is not None:
-                self.preview.update_frame(frame)
+                self.preview.update_frame(frame, drift_ms=drift)
 
             if len(targets) > 0:
                 logger.info("[SEARCH] Marker acquired. Switching to ALIGNING.")
@@ -276,9 +423,9 @@ class ZDCMissionController:
             if not self._check_geofence_and_override():
                 return False
 
-            frame, targets = self.cvproc.detect(do_draw=True)
+            frame, targets, drift = self.cvproc.detect(do_draw=True)
             if frame is not None:
-                self.preview.update_frame(frame)
+                self.preview.update_frame(frame, drift_ms=drift)
 
             if len(targets) == 0:
                 lost_frames += 1
@@ -289,7 +436,8 @@ class ZDCMissionController:
                     if pos and -pos[2] <= self.blind_land_alt:
                         logger.info(f"[ALIGN] Close to ground ({-pos[2]:.2f} m <= {self.blind_land_alt} m). Switching to physical touchdown (LAND mode).")
                         return True
-                    else: return False
+                    else:
+                        return False
                 time.sleep(self.loop_delay)
                 continue
 
@@ -351,7 +499,12 @@ class ZDCMissionController:
             return False
 
         logger.info("[TOUCHDOWN] Touchdown confirmed. Capturing mandatory touchdown evidence...")
-        ret, td_frame = self.capture.read()
+        if isinstance(self.capture, StereoCapture):
+            serv, _, _ = self.capture.read()
+            ret, td_frame = serv
+        else:
+            ret, td_frame = self.capture.read()
+
         if ret and td_frame is not None:
             td_path = os.path.join(self.images_dir, "touchdown.jpg")
             cv2.imwrite(td_path, td_frame)
@@ -362,7 +515,12 @@ class ZDCMissionController:
         time.sleep(1.2)
 
         logger.info(f"[ASCENT] Climbing back to {self.climb_target_alt} m AGL directly above marker...")
-        self.mav.arm_and_takeoff(self.climb_target_alt)
+        if hasattr(self.mav, 'arm_and_takeoff'):
+            self.mav.arm_and_takeoff(self.climb_target_alt)
+        else:
+            self.mav.setGuided()
+            time.sleep(0.2)
+            self.mav.takeoff(self.climb_target_alt)
 
         climb_start = time.time()
         while time.time() - climb_start < 10.0:
@@ -379,6 +537,6 @@ class ZDCMissionController:
 
 
 if __name__ == "__main__":
-    config_file = os.getenv("MISSION_CONFIG_FILE", ".mission_mac.json")
+    config_file = os.getenv("MISSION_CONFIG_FILE", "mission_config.json")
     controller = ZDCMissionController(config_path=config_file)
     controller.on_boot()

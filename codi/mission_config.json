@@ -3,7 +3,8 @@
     "connection": "/dev/ttyAMA0",
     "baud": 57600,
     "debug": false,
-    "do_gazebo": false
+    "do_gazebo": false,
+    "fake_connection": true
   },
   "flight": {
     "gnss_midpoint_ned": [
@@ -14,25 +15,36 @@
   },
   "vision": {
     "capture_source": 0,
-    "capture_resolution": [
-      1640, 
-      1232
-    ],
+    "capture_resolution": [1640, 1232],
     "capture_fps": 30.0,
-    "camera_config_path": "./configs/1640x1232-v2.conf",
     "aruco_target_id": 26,
     "marker_size_m": 0.48,
+    "aruco_dict": "DICT_4X4_50",
     "images_dir": "/home/grasshopper/imgs/",
     "preview_port": 5000
   },
   "camera_config": {
-    "AeEnable": false,
-    "ExposureTime": 1500,
-    "AnalogueGain": 1.0,
-    "Brightness": 0.0
+    "cam1": {
+      "calibration_file": "./configs/1640x1232-v2.conf",
+      "rotation": 0,
+      "AeEnable": false,
+      "ExposureTime": 1500,
+      "AnalogueGain": 2.0,
+      "Brightness": 0.0,
+      "Contrast": 1.0
+    },
+    "cam2": {
+      "calibration_file": "./configs/1640x1232-v2.conf",
+      "rotation": 0,
+      "AeEnable": false,
+      "ExposureTime": 1500,
+      "AnalogueGain": 2.0,
+      "Brightness": 0.0,
+      "Contrast": 1.0
+    }
   },
   "autonomy": {
-    "max_horizontal_speed_ms": 1.0,
+    "max_horizontal_speed_ms": 0.5,
     "marker_search_timeout": 15.0,
     "blind_land_alt_m": 0.7,
     "geofence_radius_m": 10.0,
@@ -48,9 +60,9 @@
     "descend_speed_slow_ms": 0.05
   },
   "pid": {
-    "kp": 0.15,
-    "ki": 0.1,
-    "kd": 0.12,
+    "kp": 0.1,
+    "ki": 0.05,
+    "kd": 0.06,
     "live_tuning_enabled": true
   },
   "storage": {

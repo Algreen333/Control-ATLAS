@@ -633,3 +633,46 @@ class MavlinkConnection:
     
     def close_gripper(self):
         self.actuate_servo(8, 1100)
+
+# Fake MavlinkConnection
+class FakeMav:
+    """Mock nested MAV object for set_mode calls"""
+    def set_mode(self, mode):
+        logger.info(f"[FAKE MAV] mav.set_mode called with: {mode}")
+
+class FakeMavlinkConnection:
+    def __init__(self, connection_string, baud, debug):
+        logger.info(f"[FAKE MAV] Initialized (Target: {connection_string}, Baud: {baud})")
+        self.mode = "GUIDED"
+        self.pos = [0.0, 0.0, -10.0]  # Start at 10m altitude (NED format, so Z is negative)
+        self.mav = FakeMav()
+        
+    def isGuided(self) -> bool:
+        # We don't print this on every call because it runs in a 20Hz loop and would flood the console.
+        return self.mode == "GUIDED"
+        
+    def get_local_position(self) -> Optional[Tuple[float, float, float]]:
+        return tuple(self.pos)
+        
+    def move_velocity_body(self, v_fwd: float, v_right: float, v_down: float):
+        logger.info(f"[FAKE MAV] move_velocity_body called | fwd={v_fwd:.2f}, right={v_right:.2f}, down={v_down:.2f}")
+        # Simulate physical descent over time so the script thinks it's approaching the ground
+        self.pos[2] += (v_down * 0.05) 
+        
+    def switch_to_land(self) -> None:
+        logger.info("[FAKE MAV] switch_to_land called")
+        self.mode = "LAND"
+        # Simulate instant touchdown for the mock test
+        self.pos[2] = 0.0
+        
+    def is_airborne(self, alt_threshold_m: float = 0.15) -> bool:
+        logger.info(f"[FAKE MAV] is_airborne called (threshold: {alt_threshold_m}m). Current Alt: {-self.pos[2]:.2f}m")
+        return (-self.pos[2]) > alt_threshold_m
+        
+    def setGuided(self) -> None:
+        logger.info("[FAKE MAV] setGuided called")
+        self.mode = "GUIDED"
+        
+    def takeoff(self, altitude_m: float):
+        logger.info(f"[FAKE MAV] takeoff called | Target Alt: {altitude_m}m")
+        self.pos[2] = -altitude_m
