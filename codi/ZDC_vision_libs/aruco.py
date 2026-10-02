@@ -3,7 +3,7 @@ import numpy as np
 import logging
 
 class Aruco:
-    def __init__(self, marker_size_m, camera_matrix, dist_coeffs, dict_id=cv2.aruco.DICT_4):
+    def __init__(self, marker_size_m, camera_matrix, dist_coeffs, dict_id=cv2.aruco.DICT_4X4_50):
         self.marker_size_m = marker_size_m 
         self.camera_matrix = camera_matrix
         self.dist_coeffs = dist_coeffs

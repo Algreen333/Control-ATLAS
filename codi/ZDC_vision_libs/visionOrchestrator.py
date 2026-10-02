@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass
 from camera import Camera
-from aruco import ArucoPipeline
+from aruco import Aruco
 
 # 1. THE DATA CONTRACT
 # A dataclass strictly formats the output. If your MAVLink pilot script 
@@ -27,8 +27,8 @@ class VisionOrchestrator:
         self.cam1 = Camera(source=cam1_idx)
         
         # Inject calibration profiles into the math pipelines
-        self.pipe0 = ArucoPipeline(marker_size_m, cam0_matrix, cam0_dist)
-        self.pipe1 = ArucoPipeline(marker_size_m, cam1_matrix, cam1_dist)
+        self.pipe0 = Aruco(marker_size_m, cam0_matrix, cam0_dist)
+        self.pipe1 = Aruco(marker_size_m, cam1_matrix, cam1_dist)
 
         # Store Extrinsic Offsets (Distance from Camera lens to Drone Center of Gravity)
         self.cam0_offset = cam0_offset_m

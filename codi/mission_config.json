@@ -57,12 +57,12 @@
     "state_file": "flight_checkpoint.json"
   },
   "offsets": {
-    "cam2cam_distance": 0.0,
+    "cam2cam_distance": 72.9,
     "cam1_chassis_x_dist": 0.0,
-    "cam1_chassis_y_dist": 0.0,
+    "cam1_chassis_y_dist": 30.0,
     "cam1_chassis_z_dist": 0.0,
-    "cam2_chassis_x_dist": 0.0,
-    "cam2_chassis_y_dist": 0.0,
-    "cam2_chassis_z_dist": 0.0
+    "cam2_chassis_x_dist": 10.0,
+    "cam2_chassis_y_dist": 30.0,
+    "cam2_chassis_z_dist": 10.0
   }
 }
