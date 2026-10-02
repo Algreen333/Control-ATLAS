@@ -42,7 +42,7 @@ class Camera:
             self.cap = cv2.VideoCapture(self.source)
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, resolution[0])
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, resolution[1])
-            self.cap.set(cv2.CAP_PROP_FPS, fps)
+            self.cap.set(cv2.CAP_PROP_FPS, self.fps)
 
         if not self.cap.isOpened():
             self.isHealthy = False
