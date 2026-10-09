@@ -56,7 +56,7 @@ def generate_frames():
         payload = orchestrator.get_vision_data()
 
         h0, f0 = orchestrator.cam0.get_frame()
-        h1, f1 = orchestrator.cam1.get_frame()
+        h1, f1 = orchestrator.cam1.get_frame() 
 
         img0 = f0.copy() if (h0 and f0 is not None) else blank.copy()
         img1 = f1.copy() if (h1 and f1 is not None) else blank.copy()
