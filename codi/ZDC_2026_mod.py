@@ -81,8 +81,12 @@ class ZDCMissionController:
             cam0_dist=dist1,
             cam1_matrix=mtx2,
             cam1_dist=dist2,
+            target_id=int(self.cfg["vision"].get("aruco_target_id", 26)),
             cam0_offset_m=cam0_offset,
-            cam1_offset_m=cam1_offset
+            cam1_offset_m=cam1_offset,
+            resolution=tuple(self.cfg["vision"].get("capture_resolution", [640, 480])),
+            fps=int(self.cfg["vision"].get("capture_fps", 30)),
+            camera_settings=cam1_cfg
         )
 
         self.images_dir = self.cfg["vision"].get("images_dir", "captured_images")
@@ -254,8 +258,9 @@ class ZDCMissionController:
             if not self._check_geofence_and_override():
                 return False
 
-            payload: VisionPayload = self.orchestrator.get_vision_data()
-            self._update_preview_feed()
+            payload, preview_frame = self.orchestrator.get_vision_data(do_draw=True)
+            if preview_frame is not None:
+                self.preview.update_frame(preview_frame)
 
             if payload.target_acquired:
                 logger.info(f"[SEARCH] Marker acquired (Active cams: {payload.active_cameras}). Switching to ALIGNING.")
