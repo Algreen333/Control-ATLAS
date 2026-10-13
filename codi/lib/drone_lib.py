@@ -233,14 +233,21 @@ class MavlinkConnection:
         If timeout >= 0, blocks for up to `timeout` seconds waiting for the mode to change.
         """
         if timeout < 0:
+            # Drain any pending messages first so flightmode is up-to-date
+            while self.mav.recv_match(type='HEARTBEAT', blocking=False):
+                pass
             return self.mav.flightmode == "GUIDED"
-        
+
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
-            if self.mav.flightmode == "GUIDED":
-                return True
-            time.sleep(0.05)  # Yield to prevent high CPU usage
+            remaining = deadline - time.monotonic()
+            # Wait specifically for a HEARTBEAT (which carries the custom_mode / flightmode)
+            msg = self.mav.recv_match(type='HEARTBEAT', blocking=True, timeout=max(0.01, remaining))
             
+            # When pymavlink receives a HEARTBEAT, it refreshes self.mav.flightmode
+            if msg and self.mav.flightmode == "GUIDED":
+                return True
+
         return self.mav.flightmode == "GUIDED"
     
     def setStabilize(self) -> None:

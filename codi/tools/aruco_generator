@@ -1,0 +1,61 @@
+import cv2
+import numpy as np
+from PIL import Image
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
+from reportlab.lib.utils import ImageReader
+import os
+
+def create_split_aruco_pdfs(marker_id=0, dict_type=cv2.aruco.DICT_4X4_50, output_dir="aruco_pdfs"):
+    # Create output directory
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # 1. Generate high-resolution ArUco marker
+    # 4000x4000 pixels ensures high print quality (~290 DPI at 350mm)
+    pixel_size = 4000 
+    aruco_dict = cv2.aruco.getPredefinedDictionary(dict_type)
+    
+    # Generate the marker (1 bit border is standard)
+    marker_img = cv2.aruco.generateImageMarker(aruco_dict, marker_id, pixel_size)
+
+    # 2. Split the image into 4 quadrants
+    h, w = marker_img.shape
+    mid_h, mid_w = h // 2, w // 2
+
+    quadrants = {
+        "top_left": marker_img[0:mid_h, 0:mid_w],
+        "top_right": marker_img[0:mid_h, mid_w:w],
+        "bottom_left": marker_img[mid_h:h, 0:mid_w],
+        "bottom_right": marker_img[mid_h:h, mid_w:w]
+    }
+
+    # 3. Create A4 PDFs with exact physical dimensions
+    page_w, page_h = A4
+    
+    # Total size is 350mm, so each quadrant is 175mm
+    quadrant_size_mm = 175 * mm 
+
+    # Calculate offsets to center the 175mm square on the 210x297mm A4 page
+    x_offset = (page_w - quadrant_size_mm) / 2
+    y_offset = (page_h - quadrant_size_mm) / 2
+
+    for name, img_array in quadrants.items():
+        pdf_path = os.path.join(output_dir, f"marker_{marker_id}_{name}.pdf")
+        
+        # Convert NumPy array to PIL Image, then to ReportLab ImageReader
+        pil_img = Image.fromarray(img_array)
+        img_reader = ImageReader(pil_img)
+
+        # Generate PDF
+        c = canvas.Canvas(pdf_path, pagesize=A4)
+        c.drawImage(img_reader, x_offset, y_offset, width=quadrant_size_mm, height=quadrant_size_mm)
+        c.showPage()
+        c.save()
+        
+        print(f"Saved: {pdf_path}")
+
+if __name__ == "__main__":
+    create_split_aruco_pdfs(marker_id=26)
+    print("\nDone! Remember to print the PDFs at '100% Scale' or 'Actual Size' in your printer settings.")
