@@ -70,8 +70,12 @@ class ZDCMissionController:
 
         idx_cam0 = cam1_cfg.get("source", 0)
         idx_cam1 = cam2_cfg.get("source", 1)
+        # Extract target ID, resolution, and fps from mission_config
+        target_id = int(self.cfg["vision"].get("aruco_target_id", 26))
+        resolution = tuple(self.cfg["vision"].get("capture_resolution", (640, 480)))
+        fps = int(self.cfg["vision"].get("capture_fps", 30))
 
-        # Initialize the threaded multi-camera vision pipeline
+        # Initialize the threaded multi-camera vision pipeline with full config
         logger.info("[INIT] Instantiating VisionOrchestrator...")
         self.orchestrator = VisionOrchestrator(
             cam0_idx=idx_cam0,
@@ -81,11 +85,11 @@ class ZDCMissionController:
             cam0_dist=dist1,
             cam1_matrix=mtx2,
             cam1_dist=dist2,
-            target_id=int(self.cfg["vision"].get("aruco_target_id", 26)),
+            target_id=target_id,
             cam0_offset_m=cam0_offset,
             cam1_offset_m=cam1_offset,
-            resolution=tuple(self.cfg["vision"].get("capture_resolution", [640, 480])),
-            fps=int(self.cfg["vision"].get("capture_fps", 30)),
+            resolution=resolution,
+            fps=fps,
             camera_settings=cam1_cfg
         )
 
