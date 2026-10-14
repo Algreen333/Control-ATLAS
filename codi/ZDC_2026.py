@@ -267,7 +267,9 @@ class ZDCMissionController:
         self.min_activation_alt = auto_cfg.get("min_activation_alt_m", 5.0)
         self.max_activation_alt = auto_cfg.get("max_activation_alt_m", 20.0)
         self.climb_target_alt = auto_cfg.get("climb_target_alt_m", 5.0)
-        self.blind_land_alt = auto_cfg.get("blind_land_alt_m", 0.6)
+        self.blind_land_alt = auto_cfg.get("blind_land_alt_m", 0.5)
+        self.posz_minimum = auto_cfg.get("posz_minimum_m", 0.5)
+        self.land_alt = auto_cfg.get("land_alt_,", 0.5)
         
         self.max_lost_frames = auto_cfg.get("max_lost_frames", 15)
         self.loop_delay = auto_cfg.get("loop_delay_s", 0.05)
@@ -424,6 +426,7 @@ class ZDCMissionController:
         self.pid_y.reset()
 
         lost_frames = 0
+        last_cam_z = None
 
         while True:
             if not self._check_geofence_and_override():
@@ -437,18 +440,25 @@ class ZDCMissionController:
                 lost_frames += 1
                 self.mav.move_velocity_body(0.0, 0.0, 0.0)
                 if lost_frames > self.max_lost_frames:
-                    logger.warning("[ALIGN] Marker lost during visual servoing. Hovering.")
+                    logger.warning("[ALIGN] Marker lost during visual servoing. Checking parameters to determine next state.")
                     pos = self.mav.get_local_position()
-                    if pos and -pos[2] <= self.blind_land_alt:
+                    
+                    if last_cam_z is not None and last_cam_z < self.posz_minimum:
+                        logger.info(f"[ALIGN] Last known cam_z ({last_cam_z:.2f} m) < {self.posz_minimum} m. Switching to physical touchdown (LAND mode).")
+                        return True
+                    elif pos and -pos[2] <= self.blind_land_alt:
                         logger.info(f"[ALIGN] Close to ground ({-pos[2]:.2f} m <= {self.blind_land_alt} m). Switching to physical touchdown (LAND mode).")
                         return True
                     else:
+                        logger.warning("[ALIGN] Drone lost target too high up. Hovering and aborting.")
                         return False
+                        
                 time.sleep(self.loop_delay)
                 continue
 
             lost_frames = 0
             cam_x, cam_y, cam_z = targets[0]
+            last_cam_z = cam_z
 
             error_fwd = -cam_y
             error_right = cam_x
@@ -474,9 +484,9 @@ class ZDCMissionController:
             pos = self.mav.get_local_position()
             curr_alt = -pos[2] if pos else cam_z
 
-            logger.info(f"[ALIGN] Current height: {curr_alt:.2f} m, Distance to target: {horizontal_error:.2f} m")
+            logger.info(f"[ALIGN] Current height: {curr_alt:.2f} m, Distance to target: {horizontal_error:.2f} m, Posz: {cam_z}")
 
-            if curr_alt <= self.blind_land_alt:
+            if curr_alt <= self.land_alt:
                 logger.info(f"[ALIGN] Close to ground ({curr_alt:.2f} m <= {self.blind_land_alt} m). Switching to physical touchdown (LAND mode).")
                 return True
 
