@@ -300,6 +300,8 @@ class ZDCMissionController:
             jpeg_quality=55,
             tuning_enabled=pid_cfg.get("live_tuning_enabled", False),
             pid_controllers=[self.pid_x, self.pid_y],
+            cam_tuning_enabled=cam_cfg.get("live_cam_tuning", False),
+            capture=self.capture
             config_path=config_path
         )
         self.preview.start()

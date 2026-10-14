@@ -34,6 +34,7 @@ class VideoCapture:
         self.fps = fps
         self.format = format
         self.capture_source = capture_source
+        self.exposure_time = ExposureTime
         
         if HAS_PICAMERA:
             self.HAS_PICAMERA = True
@@ -60,6 +61,14 @@ class VideoCapture:
             new_frame = self.capture.capture_array()
             return (True, new_frame)
         return self.capture.read()
+
+    def set_exposure(self):
+        self.exposure_time = int(self.exposure_time)
+        if self.HAS_PICAMERA:
+            self.capture.set_controls({
+                "AeEnable": False,
+                "ExposureTime": self.exposure_time
+            })
 
 class StereoCapture:
     def __init__(self, idx_server=0, idx_client=1, resolution=(640, 480), format="RGB888", fps=30.0, 
@@ -197,6 +206,19 @@ class StereoCapture:
             
         return serv, clnt, drft
 
+    def set_exposure(self, cam_idx: int, exposure_time: int):
+        exposure_time=int(exposure_time)
+        if cam_idx == 1 and self.capture_server:
+            self.cam1_cfg["ExposureTime"] = exposure_time
+            self.cam1_cfg["AeEnable"] = False
+            self.capture_server.set_controls({"AeEnable": False, "ExposureTime": exposure_time})
+        elif cam_idx == 2 and self.capture_client:
+            self.cam2_cfg["ExposureTime"] = exposure_time
+            self.cam2_cfg["AeEnable"] = False
+            self.capture_client.set_controls({"AeEnable": False, "ExposureTime": exposure_time})   
+
+    
+
     def stop(self):
         self._running = False
         if self._thread:
@@ -321,7 +343,9 @@ from flask import Flask, Response, render_template_string, request
 from werkzeug.serving import make_server
 
 class FlaskPreviewServer:
-    def __init__(self, host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55, tuning_enabled=False, pid_controllers=None, config_path=None):
+    def __init__(self, host="0.0.0.0", port=5000, max_fps=15, jpeg_quality=55,
+                 tuning_enabled=False, pid_controllers=None,
+                 cam_tuning_enabled=False, capture=None, config_path=None):
         self.host = host
         self.port = port
         self.frame_delay = 1.0 / max_fps
@@ -329,6 +353,8 @@ class FlaskPreviewServer:
         
         self.tuning_enabled = tuning_enabled
         self.pid_controllers = pid_controllers or []
+        self.cam_tuning_enabled = cam_tuning_enabled
+        self.capture = capture
         self.config_path = config_path
         
         self._frame = None
@@ -378,12 +404,10 @@ class FlaskPreviewServer:
                             let slider = document.getElementById(param + '_slider');
                             let input = document.getElementById(param + '_input');
                             
-                            // If the user cleared the input box, do not update the slider or send the request
                             if (source === 'input' && (input.value === "" || isNaN(parseFloat(input.value)))) {{
                                 return;
                             }}
                             
-                            // Sync the UI elements bidirectionally
                             if (source === 'slider') {{
                                 input.value = slider.value;
                             }} else {{
@@ -394,7 +418,6 @@ class FlaskPreviewServer:
                             let ki = document.getElementById('ki_input').value;
                             let kd = document.getElementById('kd_input').value;
                             
-                            // Final safety check: ensure no inputs are empty before sending to the backend
                             if (kp === "" || ki === "" || kd === "" || 
                                 isNaN(parseFloat(kp)) || isNaN(parseFloat(ki)) || isNaN(parseFloat(kd))) {{
                                 return;
@@ -414,6 +437,72 @@ class FlaskPreviewServer:
                 </div>
                 '''
 
+            cam_tuning_html = ""
+            if self.cam_tuning_enabled and self.capture is not None:
+                is_stereo = isinstance(self.capture, StereoCapture)
+                if is_stereo:
+                    exp1 = self.capture.cam1_cfg.get("ExposureTime", 700)
+                    exp2 = self.capture.cam2_cfg.get("ExposureTime", 700)
+                else:
+                    exp1 = getattr(self.capture, "exposure_time", 700)
+                    exp2 = exp1
+
+                cam2_row = ""
+                if is_stereo:
+                    cam2_row = f'''
+                    <div style="margin-bottom: 8px;">
+                        <label style="display:inline-block; width:65px; font-weight:bold;">Cum 2:</label>
+                        <input type="range" id="exp2_slider" min="100" max="50000" step="50" value="{exp2}" oninput="syncCam(2, 'slider')" style="vertical-align: middle;">
+                        <input type="number" id="exp2_input" min="100" max="50000" step="50" value="{exp2}" oninput="syncCam(2, 'input')" style="width:70px; margin-left:10px;">
+                    </div>
+                    '''
+
+                cam_tuning_html = f'''
+                <div style="position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.9); padding:15px; border-radius:8px; font-family:sans-serif; z-index:1000; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    <h3 style="margin-top:0; margin-bottom:15px;">Live Exposure (µs)</h3>
+                    
+                    <div style="margin-bottom: 8px;">
+                        <label style="display:inline-block; width:65px; font-weight:bold;">Cum 1:</label>
+                        <input type="range" id="exp1_slider" min="100" max="50000" step="50" value="{exp1}" oninput="syncCam(1, 'slider')" style="vertical-align: middle;">
+                        <input type="number" id="exp1_input" min="100" max="50000" step="50" value="{exp1}" oninput="syncCam(1, 'input')" style="width:70px; margin-left:10px;">
+                    </div>
+                    {cam2_row}
+
+                    <script>
+                        let camDebounce = {{}};
+                        function syncCam(camIdx, source) {{
+                            let slider = document.getElementById('exp' + camIdx + '_slider');
+                            let input = document.getElementById('exp' + camIdx + '_input');
+                            
+                            if (source === 'input' && (input.value === "" || isNaN(parseInt(input.value)))) {{
+                                return;
+                            }}
+                            
+                            if (source === 'slider') {{
+                                input.value = slider.value;
+                            }} else {{
+                                slider.value = input.value;
+                            }}
+                            
+                            let expVal = parseInt(input.value);
+                            if (isNaN(expVal)) return;
+
+                            clearTimeout(camDebounce[camIdx]);
+                            camDebounce[camIdx] = setTimeout(() => {{
+                                fetch('/update_exposure', {{
+                                    method: 'POST',
+                                    headers: {{'Content-Type': 'application/json'}},
+                                    body: JSON.stringify({{
+                                        cam_idx: camIdx,
+                                        exposure: expVal
+                                    }})
+                                }});
+                            }}, 60);
+                        }}
+                    </script>
+                </div>
+                '''
+
             return render_template_string(f'''
                 <!doctype html>
                 <html>
@@ -421,6 +510,7 @@ class FlaskPreviewServer:
                 <body style="background:#111;margin:0;display:flex;justify-content:center;align-items:center;height:100vh;position:relative;">
                     <img src="/video_feed" style="max-width:98%;max-height:98%;border-radius:6px;" />
                     {tuning_html}
+                    {cam_tuning_html}
                 </body>
                 </html>
             ''')
@@ -441,7 +531,7 @@ class FlaskPreviewServer:
             
             if self.config_path and os.path.exists(self.config_path):
                 try:
-                    with self._lock: # Prevent concurrent read/write issues
+                    with self._lock:
                         with open(self.config_path, "r") as f:
                             cfg_data = json.load(f)
                             
@@ -462,9 +552,53 @@ class FlaskPreviewServer:
                     
             return {"status": "success"}
 
+        @self.app.route('/update_exposure', methods=['POST'])
+        def update_exposure():
+            if not self.cam_tuning_enabled or self.capture is None:
+                return {"status": "forbidden", "message": "Live camera tuning is disabled in config"}, 403
+
+            data = request.json
+            cam_idx = int(data.get('cam_idx', 1))
+            exposure = int(data.get('exposure', 700))
+
+            try:
+                if isinstance(self.capture, StereoCapture):
+                    self.capture.set_exposure(cam_idx, exposure)
+                elif hasattr(self.capture, "set_exposure"):
+                    self.capture.set_exposure(exposure)
+
+                logger.info(f"[CAM] Updated Cam {cam_idx} ExposureTime in memory: {exposure} us")
+
+                if self.config_path and os.path.exists(self.config_path):
+                    with self._lock:
+                        with open(self.config_path, "r") as f:
+                            cfg_data = json.load(f)
+
+                        if "camera_config" not in cfg_data:
+                            cfg_data["camera_config"] = {}
+
+                        cam_key = f"cam{cam_idx}"
+                        if cam_key in cfg_data["camera_config"]:
+                            cfg_data["camera_config"][cam_key]["ExposureTime"] = exposure
+                            cfg_data["camera_config"][cam_key]["AeEnable"] = False
+                        else:
+                            cfg_data["camera_config"]["ExposureTime"] = exposure
+                            cfg_data["camera_config"]["AeEnable"] = False
+
+                        with open(self.config_path, "w") as f:
+                            json.dump(cfg_data, f, indent=2)
+
+                    logger.info(f"[CAM] Saved Cam {cam_idx} ExposureTime={exposure} to {self.config_path}")
+            except Exception as e:
+                logger.error(f"[CAM] Failed to update exposure: {e}")
+                return {"status": "error", "message": str(e)}, 500
+
+            return {"status": "success"}
+
         @self.app.route('/video_feed')
         def video_feed():
             return Response(self._generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
     def _generate(self):
         while self._running:
             start_time = time.time()

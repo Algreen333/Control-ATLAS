@@ -24,6 +24,7 @@
     "preview_port": 5000
   },
   "camera_config": {
+    "live_cam_tuning": true,
     "cam1": {
       "calibration_file": "./configs/1640x1232-v2.conf",
       "rotation": 0,
