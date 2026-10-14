@@ -1,9 +1,10 @@
-import cv2
-import numpy as np
 import logging
 from typing import Tuple, Optional
+import cv2
+import numpy as np
 
 logger = logging.getLogger("ArucoDetector")
+
 
 class Aruco:
     def __init__(
@@ -24,7 +25,6 @@ class Aruco:
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.parameters)
 
         half = self.marker_size_m / 2.0
-        # Marker object points in marker local frame (z = 0)
         self.obj_points = np.array([
             [-half,  half, 0.0],
             [ half,  half, 0.0],
@@ -44,10 +44,6 @@ class Aruco:
         target_id: Optional[int] = None,
         draw: bool = False
     ) -> Tuple[bool, Optional[np.ndarray], Optional[np.ndarray], np.ndarray]:
-        """
-        Detects marker, refines corners with subpixel accuracy, and runs IPPE_SQUARE PnP.
-        Returns: (success, rvec, tvec, annotated_or_original_frame)
-        """
         if frame is None:
             return False, None, None, frame
 
@@ -69,15 +65,17 @@ class Aruco:
         if target_idx is None:
             return False, None, None, frame
 
-        # Refine target corners with sub-pixel interpolation
         target_corners = corners[target_idx].copy()
-        target_corners = cv2.cornerSubPix(
-            gray,
-            target_corners,
-            winSize=(5, 5),
-            zeroZone=(-1, -1),
-            criteria=self.subpix_criteria
-        )
+        try:
+            target_corners = cv2.cornerSubPix(
+                gray,
+                target_corners,
+                winSize=(5, 5),
+                zeroZone=(-1, -1),
+                criteria=self.subpix_criteria
+            )
+        except cv2.error:
+            pass  # Fall back to raw contour corners if subpixel fails
 
         success, rvec, tvec = cv2.solvePnP(
             self.obj_points,

@@ -2,7 +2,7 @@ import cv2
 import threading
 import time
 import logging
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Union
 import numpy as np
 
 logger = logging.getLogger("CameraHAL")
@@ -13,25 +13,33 @@ try:
 except (ImportError, RuntimeError):
     HAS_PICAMERA = False
 
+try:
+    from lib.camera_lib_light import GazeboVideoCapture
+    HAS_GAZEBO_LIB = True
+except ImportError:
+    HAS_GAZEBO_LIB = False
+
 
 class Camera:
     def __init__(
         self,
-        source: int = 0,
+        source: Union[int, str] = 0,
         resolution: Tuple[int, int] = (640, 480),
         fps: int = 30,
         timeout: float = 0.5,
         AeEnable: bool = False,
-        ExposureTime: int = 50000,
+        ExposureTime: int = 5000,
         AnalogueGain: float = 2.0,
         Brightness: float = 0.1,
-        format: str = "BGR888"
+        format: str = "BGR888",
+        do_gazebo: bool = False
     ):
         self.source = source
         self.timeout = timeout
         self.resolution = resolution
         self.fps = fps
-        self.has_picamera = bool(HAS_PICAMERA)
+        self.do_gazebo = bool(do_gazebo)
+        self.has_picamera = bool(HAS_PICAMERA) and not self.do_gazebo and isinstance(source, int)
         self.format = format
 
         self._lock = threading.Lock()
@@ -40,7 +48,26 @@ class Camera:
         self.isRunning: bool = True
         self.last_frame_time: float = 0.0
 
-        if self.has_picamera:
+        if self.do_gazebo:
+            if not HAS_GAZEBO_LIB:
+                raise RuntimeError("[HAL] do_gazebo=True but GazeboVideoCapture could not be imported.")
+            try:
+                logger.info(f"[HAL] Initializing GazeboVideoCapture on source {self.source}...")
+                self.cap = GazeboVideoCapture(
+                    capture_source=self.source,
+                    resolution=self.resolution,
+                    fps=self.fps
+                )
+                ret, test_frame = self.cap.read()
+                if ret and test_frame is not None:
+                    self.frame = test_frame
+                    self.isHealthy = True
+                    self.last_frame_time = time.time()
+            except Exception as e:
+                logger.error(f"[HAL] Critical: GazeboVideoCapture init failed on {self.source}: {e}")
+                raise RuntimeError(f"GazeboVideoCapture init failed on {self.source}")
+
+        elif self.has_picamera:
             try:
                 self.cap = Picamera2(self.source)
                 config = self.cap.create_preview_configuration(
@@ -111,12 +138,15 @@ class Camera:
             if not ret:
                 time.sleep(0.01)
 
-    def get_frame(self) -> Tuple[bool, Optional[np.ndarray]]:
-        """Non-blocking snapshot retrieval."""
+    def get_frame(self, copy: bool = True) -> Tuple[bool, Optional[np.ndarray], float]:
+        """Non-blocking snapshot retrieval with capture timestamp."""
         with self._lock:
-            healthy = self.isHealthy and ((time.time() - self.last_frame_time) <= self.timeout)
-            frame = self.frame.copy() if (self.frame is not None and healthy) else None
-            return healthy, frame
+            now = time.time()
+            healthy = self.isHealthy and ((now - self.last_frame_time) <= self.timeout)
+            if self.frame is not None and healthy:
+                frame = self.frame.copy() if copy else self.frame
+                return True, frame, self.last_frame_time
+            return False, None, 0.0
 
     def stop(self):
         self.isRunning = False
@@ -131,7 +161,10 @@ class Camera:
                 pass
         else:
             try:
-                self.cap.release()
+                if hasattr(self.cap, 'stop'):
+                    self.cap.stop()
+                elif hasattr(self.cap, 'release'):
+                    self.cap.release()
             except Exception:
                 pass
 

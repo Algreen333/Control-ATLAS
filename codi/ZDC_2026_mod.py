@@ -4,9 +4,9 @@ import os
 import json
 import time
 import math
-import numpy as np
-from typing import Optional, Tuple
+from typing import Tuple, Optional
 import cv2
+import numpy as np
 
 log_format = "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
 logging.basicConfig(
@@ -24,7 +24,11 @@ from lib.drone_lib import MavlinkConnection, FakeMavlinkConnection
 from lib.camera_lib_light import FlaskPreviewServer, save_img_dir
 from lib.pid_controller import PIDController
 
-from ZDC_vision_libs.visionOrchestrator import VisionOrchestrator, VisionPayload
+# Support root or package imports cleanly
+try:
+    from ZDC_vision_libs.visionOrchestrator import VisionOrchestrator, VisionPayload
+except ImportError:
+    from visionOrchestrator import VisionOrchestrator, VisionPayload
 
 
 class ZDCMissionController:
@@ -36,47 +40,58 @@ class ZDCMissionController:
         self.state = FlightState()
 
         use_fake = self.cfg["mavlink"].get("fake_connection", False)
-        connection_cls = FakeMavlinkConnection if use_fake else MavlinkConnection
-        self.mav = connection_cls(
+        conn_cls = FakeMavlinkConnection if use_fake else MavlinkConnection
+        self.mav = conn_cls(
             connection_string=self.cfg["mavlink"]["connection"],
             baud=self.cfg["mavlink"]["baud"],
             debug=self.cfg["mavlink"].get("debug", False)
         )
 
-        # Vision and Geometry Configuration
+        do_gazebo = bool(self.cfg["mavlink"].get("do_gazebo", False))
+
+        # Vision and Target Geometry
         self.marker_size = float(self.cfg["vision"].get("marker_size_m", 0.48))
+        self.target_id = int(self.cfg["vision"].get("aruco_target_id", 26))
         
+        dict_name = self.cfg["vision"].get("aruco_dict", "DICT_4X4_50")
+        aruco_dict_enum = getattr(cv2.aruco, dict_name, cv2.aruco.DICT_4X4_50)
+
         cam_cfg = self.cfg.get("camera_config", {})
         cam1_cfg = cam_cfg.get("cam1", cam_cfg)
         cam2_cfg = cam_cfg.get("cam2", cam_cfg)
 
-        cam1_calib_path = cam1_cfg.get("calibration_file", "./configs/1640x1232-v2.conf")
-        cam2_calib_path = cam2_cfg.get("calibration_file", "./configs/1640x1232-v2.conf")
+        cam1_calib = cam1_cfg.get("calibration_file", "./configs/1640x1232-v2.conf")
+        cam2_calib = cam2_cfg.get("calibration_file", "./configs/1640x1232-v2.conf")
 
-        mtx1, dist1 = self._load_calibration(cam1_calib_path)
-        mtx2, dist2 = self._load_calibration(cam2_calib_path)
+        mtx1, dist1 = self._load_calibration(cam1_calib)
+        mtx2, dist2 = self._load_calibration(cam2_calib)
 
         offsets = self.cfg.get("offsets", {})
-        cam0_offset = (
-            float(offsets.get("cam1_chassis_x_dist", 0.0)),
-            float(offsets.get("cam1_chassis_y_dist", 0.0)),
-            float(offsets.get("cam1_chassis_z_dist", 0.0))
-        )
-        cam1_offset = (
-            float(offsets.get("cam2_chassis_x_dist", 0.0)),
-            float(offsets.get("cam2_chassis_y_dist", 0.0)),
-            float(offsets.get("cam2_chassis_z_dist", 0.0))
-        )
+        if do_gazebo:
+            # Zero out chassis offsets in Gazebo SITL if using centered sim camera
+            cam0_offset = (0.0, 0.0, 0.0)
+            cam1_offset = (0.0, 0.0, 0.0)
+            idx_cam0 = self.cfg["vision"].get("capture_source", 0)
+            idx_cam1 = 1
+        else:
+            cam0_offset = (
+                float(offsets.get("cam1_chassis_x_dist", 0.0)),
+                float(offsets.get("cam1_chassis_y_dist", 0.0)),
+                float(offsets.get("cam1_chassis_z_dist", 0.0))
+            )
+            cam1_offset = (
+                float(offsets.get("cam2_chassis_x_dist", 0.0)),
+                float(offsets.get("cam2_chassis_y_dist", 0.0)),
+                float(offsets.get("cam2_chassis_z_dist", 0.0))
+            )
+            idx_cam0 = cam1_cfg.get("source", 0)
+            idx_cam1 = cam2_cfg.get("source", 1)
 
-        idx_cam0 = cam1_cfg.get("source", 0)
-        idx_cam1 = cam2_cfg.get("source", 1)
-        # Extract target ID, resolution, and fps from mission_config
-        target_id = int(self.cfg["vision"].get("aruco_target_id", 26))
         resolution = tuple(self.cfg["vision"].get("capture_resolution", (640, 480)))
         fps = int(self.cfg["vision"].get("capture_fps", 30))
 
-        # Initialize the threaded multi-camera vision pipeline with full config
-        logger.info("[INIT] Instantiating VisionOrchestrator...")
+        # Instantiate Threaded Multi-Camera Pipeline with complete config
+        logger.info(f"[INIT] Instantiating VisionOrchestrator (Gazebo SITL: {do_gazebo})...")
         self.orchestrator = VisionOrchestrator(
             cam0_idx=idx_cam0,
             cam1_idx=idx_cam1,
@@ -85,12 +100,15 @@ class ZDCMissionController:
             cam0_dist=dist1,
             cam1_matrix=mtx2,
             cam1_dist=dist2,
-            target_id=target_id,
+            target_id=self.target_id,
+            aruco_dict_id=aruco_dict_enum,
             cam0_offset_m=cam0_offset,
             cam1_offset_m=cam1_offset,
             resolution=resolution,
             fps=fps,
-            camera_settings=cam1_cfg
+            cam0_settings=cam1_cfg,
+            cam1_settings=cam2_cfg,
+            do_gazebo=do_gazebo
         )
 
         self.images_dir = self.cfg["vision"].get("images_dir", "captured_images")
@@ -150,21 +168,6 @@ class ZDCMissionController:
         dist = np.array(data["dist"], dtype=np.float32)
         return mtx, dist
 
-    def _update_preview_feed(self):
-        h0, f0 = self.orchestrator.cam0.get_frame()
-        h1, f1 = self.orchestrator.cam1.get_frame()
-
-        disp_frame = None
-        if h0 and h1 and f0 is not None and f1 is not None:
-            disp_frame = cv2.hconcat([f0, f1])
-        elif h0 and f0 is not None:
-            disp_frame = f0
-        elif h1 and f1 is not None:
-            disp_frame = f1
-
-        if disp_frame is not None:
-            self.preview.update_frame(disp_frame)
-
     def on_boot(self):
         logger.info("==========================================")
         logger.info("       ZDC 2026 AUTONOMOUS CONTROLLER      ")
@@ -210,7 +213,7 @@ class ZDCMissionController:
         while self.state.current_phase != FlightPhase.MISSION_COMPLETED:
             phase = self.state.current_phase
 
-            if phase == FlightPhase.INIT or phase == FlightPhase.WAITING_GUIDED:
+            if phase in (FlightPhase.INIT, FlightPhase.WAITING_GUIDED):
                 self._wait_for_autonomous_activation()
 
             elif phase == FlightPhase.SEARCHING:
@@ -238,7 +241,7 @@ class ZDCMissionController:
         logger.info("[ZDC] Autonomous sequence finished.")
 
     def _wait_for_autonomous_activation(self):
-        logger.info("[HANDOVER] Waiting for manual fly-in and GUIDED activation in autonomous handover zone...")
+        logger.info("[HANDOVER] Waiting for manual fly-in and GUIDED activation...")
         while True:
             if self.mav.isGuided():
                 pos = self.mav.get_local_position()
@@ -249,7 +252,7 @@ class ZDCMissionController:
                     self.state_manager.save_state(self.state)
                     break
                 else:
-                    logger.warning(f"[HANDOVER] Switched to GUIDED outside altitude window (5-20m): {curr_alt:.2f} m")
+                    logger.warning(f"[HANDOVER] Switched to GUIDED outside altitude window: {curr_alt:.2f} m")
             time.sleep(self.loop_delay)
 
     def _execute_search_phase(self) -> bool:
@@ -264,10 +267,10 @@ class ZDCMissionController:
 
             payload, preview_frame = self.orchestrator.get_vision_data(do_draw=True)
             if preview_frame is not None:
-                self.preview.update_frame(preview_frame)
+                self.preview.update_frame(preview_frame, drift_ms=payload.drift_ms)
 
             if payload.target_acquired:
-                logger.info(f"[SEARCH] Marker acquired (Active cams: {payload.active_cameras}). Switching to ALIGNING.")
+                logger.info(f"[SEARCH] Marker acquired ({payload.active_cameras} cam active). Switching to ALIGN.")
                 return True
 
             self.mav.move_velocity_body(0.0, 0.0, 0.0)
@@ -291,35 +294,35 @@ class ZDCMissionController:
             if not self._check_geofence_and_override():
                 return False
 
-            payload: VisionPayload = self.orchestrator.get_vision_data()
-            self._update_preview_feed()
+            payload, preview_frame = self.orchestrator.get_vision_data(do_draw=True)
+            if preview_frame is not None:
+                self.preview.update_frame(preview_frame, drift_ms=payload.drift_ms)
 
             if not payload.target_acquired:
                 lost_frames += 1
                 self.mav.move_velocity_body(0.0, 0.0, 0.0)
                 if lost_frames > self.max_lost_frames:
-                    logger.warning("[ALIGN] Marker lost during visual servoing. Checking blind landing criteria.")
+                    logger.warning("[ALIGN] Marker lost during visual servoing.")
                     pos = self.mav.get_local_position()
                     if pos and -pos[2] <= self.blind_land_alt:
-                        logger.info(f"[ALIGN] Close to ground ({-pos[2]:.2f} m <= {self.blind_land_alt} m). Switching to physical touchdown (LAND mode).")
+                        logger.info(f"[ALIGN] Close to ground ({-pos[2]:.2f} m). Engaging LAND mode.")
                         return True
-                    else:
-                        return False
+                    return False
                 time.sleep(self.loop_delay)
                 continue
 
             lost_frames = 0
 
-            # Drone Body Frame transformation: Forward is -y_cam, Right is +x_cam
+            # Forward is -y_cam, Right is +x_cam
             error_fwd = -payload.y_offset_m
             error_right = payload.x_offset_m
 
             v_fwd = self.pid_x.update(error_fwd)
             v_right = self.pid_y.update(error_right)
 
-            current_horizontal_speed = math.hypot(v_fwd, v_right)
-            if current_horizontal_speed > self.max_horizontal_speed:
-                scale = self.max_horizontal_speed / current_horizontal_speed
+            speed = math.hypot(v_fwd, v_right)
+            if speed > self.max_horizontal_speed:
+                scale = self.max_horizontal_speed / speed
                 v_fwd *= scale
                 v_right *= scale
 
@@ -335,13 +338,14 @@ class ZDCMissionController:
             pos = self.mav.get_local_position()
             curr_alt = -pos[2] if pos else payload.z_distance_m
 
+            drift_str = f" | Drift: {payload.drift_ms:.1f}ms" if payload.drift_ms is not None else ""
             logger.info(
                 f"[ALIGN] Alt: {curr_alt:.2f} m | Horiz Err: {horizontal_error:.2f} m | "
-                f"Z-Dist: {payload.z_distance_m:.2f} m | Cams: {payload.active_cameras}"
+                f"Z-Dist: {payload.z_distance_m:.2f} m | Cams: {payload.active_cameras}{drift_str}"
             )
 
             if curr_alt <= self.blind_land_alt:
-                logger.info(f"[ALIGN] Close to ground ({curr_alt:.2f} m <= {self.blind_land_alt} m). Switching to physical touchdown (LAND mode).")
+                logger.info(f"[ALIGN] Close to ground ({curr_alt:.2f} m). Engaging LAND mode.")
                 return True
 
             self.mav.move_velocity_body(float(v_fwd), float(v_right), float(v_down))
@@ -370,10 +374,7 @@ class ZDCMissionController:
             return False
 
         logger.info("[TOUCHDOWN] Touchdown confirmed. Capturing mandatory touchdown evidence...")
-        h0, td_frame = self.orchestrator.cam0.get_frame()
-        if not h0 or td_frame is None:
-            _, td_frame = self.orchestrator.cam1.get_frame()
-
+        td_frame = self.orchestrator.get_evidence_frame()
         if td_frame is not None:
             td_path = os.path.join(self.images_dir, "touchdown.jpg")
             cv2.imwrite(td_path, td_frame)
