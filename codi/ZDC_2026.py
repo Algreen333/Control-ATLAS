@@ -319,6 +319,7 @@ class ZDCMissionController:
     def _check_geofence_and_override(self, allow_land=False) -> bool:
         if not (self.mav.isGuided() or (allow_land and (self.mav.mav.flightmode in ["LANDING", "LAND"]))):
             logger.warning("[SAFETY] Manual pilot override detected. Aborting autonomous control.")
+            time.sleep(self.loop_delay)
             return False
 
         pos = self.mav.get_local_position()
@@ -383,6 +384,9 @@ class ZDCMissionController:
                 else:
                     logger.warning(f"[HANDOVER] Switched to GUIDED outside altitude window (5-20m): {curr_alt:.2f} m")
             time.sleep(self.loop_delay)
+            frame, targets, drift = self.cvproc.detect(do_draw=True)
+            if frame is not None:
+                self.preview.update_frame(frame, drift_ms=drift)
 
     def _execute_search_phase(self) -> bool:
         logger.info("[SEARCH] Looking for marker...")
