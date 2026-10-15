@@ -4,7 +4,7 @@
     "baud": 57600,
     "debug": false,
     "do_gazebo": false,
-    "fake_connection": false
+    "fake_connection": true
   },
   "flight": {
     "gnss_midpoint_ned": [
@@ -17,9 +17,9 @@
     "capture_source": 0,
     "capture_resolution": [1640, 1232],
     "capture_fps": 30.0,
-    "aruco_target_id": 101,
-    "marker_size_m": 0.18,
-    "aruco_dict": "DICT_ARUCO_ORIGINAL",
+    "aruco_target_id": 26,
+    "marker_size_m": 0.48,
+    "aruco_dict": "DICT_ARUCO_4X4_50",
     "images_dir": "/home/grasshopper/imgs/",
     "preview_port": 5000
   },
@@ -29,7 +29,7 @@
       "calibration_file": "./configs/1640x1232-v2.conf",
       "rotation": 0,
       "AeEnable": false,
-      "ExposureTime": 700,
+      "ExposureTime": 3000,
       "AnalogueGain": 1.0,
       "Brightness": 0.0,
       "Contrast": 1.0
@@ -38,7 +38,7 @@
       "calibration_file": "./configs/1640x1232-v2.conf",
       "rotation": 0,
       "AeEnable": false,
-      "ExposureTime": 700,
+      "ExposureTime": 3000,
       "AnalogueGain": 1.0,
       "Brightness": 0.0,
       "Contrast": 1.0
@@ -46,7 +46,7 @@
   },
   "autonomy": {
     "max_horizontal_speed_ms": 0.5,
-    "marker_search_timeout": 30.0,
+    "marker_search_timeout": 60.0,
     "blind_land_alt_m": 0.7,
     "geofence_radius_m": 1000.0,
     "altitude_ceiling_m": 30.0,

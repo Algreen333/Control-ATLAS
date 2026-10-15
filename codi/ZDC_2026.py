@@ -7,6 +7,7 @@ import math
 import numpy as np
 from typing import List, Tuple, Optional
 import cv2
+from datetime import datetime
 
 log_format = "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
 logging.basicConfig(
@@ -27,7 +28,7 @@ from lib.pid_controller import PIDController
 
 
 class CVProcessing:
-    def __init__(self, capture, config_path: str, target_id: int = 26, marker_size: float = 0.48, aruco_dict=cv2.aruco.DICT_4X4_50):
+    def __init__(self, capture, config_path: str, offsets: Optional[dict] = None, target_id: int = 26, marker_size: float = 0.48, aruco_dict=cv2.aruco.DICT_4X4_50):
         with open(config_path, "r") as f:
             data = json.load(f)
 
@@ -38,6 +39,12 @@ class CVProcessing:
 
         self.detector = ArucoDetector(self.mtx, self.dist, dict=aruco_dict)
         self.capture = capture
+
+        self.T_C = np.eye(4)
+        if offsets:
+            self.T_C[0, 3] = offsets.get("cam1_chassis_x_dist", 0.0)
+            self.T_C[1, 3] = offsets.get("cam1_chassis_y_dist", 0.0)
+            self.T_C[2, 3] = offsets.get("cam1_chassis_z_dist", 0.0)
 
     def detect(self, do_draw: bool = False):
         ret, frame = self.capture.read()
@@ -53,9 +60,10 @@ class CVProcessing:
             for i in range(len(flat_ids)):
                 if flat_ids[i] == self.target_id:
                     rvec, tvec = self.detector.estimate_pose(corners[i], self.marker_size)
-                    x_cam = float(tvec[0][0])
-                    y_cam = float(tvec[1][0])
-                    z_cam = float(tvec[2][0])
+                    _, t_trans = transform_auco_poses(rvec, tvec, self.T_C)
+                    x_cam = float(t_trans[0][0])
+                    y_cam = float(t_trans[1][0])
+                    z_cam = float(t_trans[2][0])
                     target_detections.append((x_cam, y_cam, z_cam))
 
             if do_draw:
@@ -204,11 +212,13 @@ class ZDCMissionController:
             self.cvproc = CVProcessing(
                 capture=self.capture,
                 config_path=cam1_calib,
+                offsets=offsets,
                 target_id=self.target_id,
                 marker_size=self.marker_size,
                 aruco_dict=aruco_dict_enum
             )
         else:
+            self.capture = None
             try:
                 logger.info("Attempting to initialize hardware StereoCapture...")
                 self.capture = StereoCapture(
@@ -229,31 +239,33 @@ class ZDCMissionController:
                 )
                 logger.info("StereoCapture successfully initialized.")
             except Exception as e:
-                logger.warning(f"StereoCapture initialization failed: {e}. Falling back to single VideoCapture.")
+                logger.warning(f"StereoCapture initialization failed ({e}). Falling back to single VideoCapture.")
                 
-                # Release the hardware lock before trying to open the fallback VideoCapture
-                if hasattr(self, 'capture') and self.capture is not None:
+                if self.capture is not None:
                     try:
                         self.capture.stop()
                     except Exception:
                         pass
                 
                 self.capture = VideoCapture(
-                    capture_source=src,
+                    capture_source=0,
                     resolution=res,
                     fps=fps,
                     AeEnable=cam1_cfg.get("AeEnable", False),
                     ExposureTime=cam1_cfg.get("ExposureTime", 50000),
                     AnalogueGain=cam1_cfg.get("AnalogueGain", 2.0),
-                    Brightness=cam1_cfg.get("Brightness", 0.1)
+                    Brightness=cam1_cfg.get("Brightness", 0.1),
+                    rotation=cam1_cfg.get("rotation", 0)
                 )
                 self.cvproc = CVProcessing(
                     capture=self.capture,
                     config_path=cam1_calib,
+                    offsets=offsets,
                     target_id=self.target_id,
                     marker_size=self.marker_size,
                     aruco_dict=aruco_dict_enum
                 )
+                logger.info("Single VideoCapture successfully initialized.")
 
         self.images_dir = self.cfg["vision"].get("images_dir", "captured_images")
         os.makedirs(self.images_dir, exist_ok=True)
@@ -303,8 +315,9 @@ class ZDCMissionController:
             tuning_enabled=pid_cfg.get("live_tuning_enabled", False),
             pid_controllers=[self.pid_x, self.pid_y],
             cam_tuning_enabled=cam_cfg.get("live_cam_tuning", False),
-            capture=self.capture
-            config_path=config_path
+            capture=self.capture,
+            config_path=config_path,
+            pip_video_path="/home/grasshopper/subway_surfers.mp4"
         )
         self.preview.start()
 
@@ -515,17 +528,33 @@ class ZDCMissionController:
             return False
 
         logger.info("[TOUCHDOWN] Touchdown confirmed. Capturing mandatory touchdown evidence...")
+        
+        # Generate a timestamp string for the filenames
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        
         if isinstance(self.capture, StereoCapture):
-            serv, _, _ = self.capture.read()
-            ret, td_frame = serv
+            serv, clnt, _ = self.capture.read()
+            ret1, td_frame1 = serv
+            ret2, td_frame2 = clnt
+            
+            if ret1 and td_frame1 is not None:
+                td_path1 = os.path.join(self.images_dir, f"touchdown_cam1_{timestamp}.jpg")
+                cv2.imwrite(td_path1, td_frame1)
+                save_img_dir(td_frame1, self.images_dir)
+                logger.info(f"[TOUCHDOWN] Evidence (Cam 1) saved to {td_path1}")
+                
+            if ret2 and td_frame2 is not None:
+                td_path2 = os.path.join(self.images_dir, f"touchdown_cam2_{timestamp}.jpg")
+                cv2.imwrite(td_path2, td_frame2)
+                save_img_dir(td_frame2, self.images_dir)
+                logger.info(f"[TOUCHDOWN] Evidence (Cam 2) saved to {td_path2}")
         else:
             ret, td_frame = self.capture.read()
-
-        if ret and td_frame is not None:
-            td_path = os.path.join(self.images_dir, "touchdown.jpg")
-            cv2.imwrite(td_path, td_frame)
-            save_img_dir(td_frame, self.images_dir)
-            logger.info(f"[TOUCHDOWN] Evidence saved to {td_path}")
+            if ret and td_frame is not None:
+                td_path = os.path.join(self.images_dir, f"touchdown_{timestamp}.jpg")
+                cv2.imwrite(td_path, td_frame)
+                save_img_dir(td_frame, self.images_dir)
+                logger.info(f"[TOUCHDOWN] Evidence saved to {td_path}")
 
         logger.info("[TOUCHDOWN] Holding stable on ground for >= 1 second...")
         time.sleep(1.2)

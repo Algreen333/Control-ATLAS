@@ -7,6 +7,7 @@ import time
 import numpy as np
 from enum import Enum
 from typing import List, Optional, Tuple
+from serial import SerialException
 
 import logging
 logger = logging.getLogger(__name__)
@@ -222,8 +223,8 @@ class MavlinkConnection:
     def waitGuided(self) -> None:
         logger.info("[MAV] Waiting for GUIDED mode ...")
 
-        while (not self.isGuided()):
-            time.sleep(0.05)
+        while not self.mav.isGuided(timeout=0.5):
+            pass
         
         logger.info("[MAV] GUIDED mode set")
 
@@ -233,20 +234,31 @@ class MavlinkConnection:
         If timeout >= 0, blocks for up to `timeout` seconds waiting for the mode to change.
         """
         if timeout < 0:
-            # Drain any pending messages first so flightmode is up-to-date
-            while self.mav.recv_match(type='HEARTBEAT', blocking=False):
-                pass
+            try:
+                # Drain pending messages safely so flightmode is up-to-date
+                while self.mav.recv_match(type='HEARTBEAT', blocking=False):
+                    pass
+            except SerialException as e:
+                # Ignore transient 0-byte readiness glitches; re-raise if port is actually dead
+                if "returned no data" not in str(e):
+                    raise
             return self.mav.flightmode == "GUIDED"
 
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             remaining = deadline - time.monotonic()
-            # Wait specifically for a HEARTBEAT (which carries the custom_mode / flightmode)
-            msg = self.mav.recv_match(type='HEARTBEAT', blocking=True, timeout=max(0.01, remaining))
-            
-            # When pymavlink receives a HEARTBEAT, it refreshes self.mav.flightmode
-            if msg and self.mav.flightmode == "GUIDED":
-                return True
+            try:
+                msg = self.mav.recv_match(
+                    type='HEARTBEAT',
+                    blocking=True,
+                    timeout=max(0.05, remaining)
+                )
+                if msg and self.mav.flightmode == "GUIDED":
+                    return True
+            except SerialException as e:
+                if "returned no data" not in str(e):
+                    raise
+                time.sleep(0.05)  # Give the serial buffer a moment to recover
 
         return self.mav.flightmode == "GUIDED"
     
@@ -644,19 +656,30 @@ class MavlinkConnection:
 # Fake MavlinkConnection
 class FakeMav:
     """Mock nested MAV object for set_mode calls"""
+    def __init__(self):
+        self.flightmode = "GUIDED"
+
     def set_mode(self, mode):
         logger.info(f"[FAKE MAV] mav.set_mode called with: {mode}")
+        self.flightmode = mode
 
 class FakeMavlinkConnection:
     def __init__(self, connection_string, baud, debug):
         logger.info(f"[FAKE MAV] Initialized (Target: {connection_string}, Baud: {baud})")
-        self.mode = "GUIDED"
-        self.pos = [0.0, 0.0, -10.0]  # Start at 10m altitude (NED format, so Z is negative)
         self.mav = FakeMav()
-        
+        self.pos = [0.0, 0.0, -10.0]  # Start at 10m altitude (NED format, so Z is negative)
+
+    @property
+    def mode(self) -> str:
+        return self.mav.flightmode
+
+    @mode.setter
+    def mode(self, value: str):
+        self.mav.flightmode = value
+
     def isGuided(self) -> bool:
         # We don't print this on every call because it runs in a 20Hz loop and would flood the console.
-        return self.mode == "GUIDED"
+        return self.mav.flightmode == "GUIDED"
         
     def get_local_position(self) -> Optional[Tuple[float, float, float]]:
         return tuple(self.pos)
