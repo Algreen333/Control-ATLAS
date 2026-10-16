@@ -269,8 +269,10 @@ class ZDCMissionController:
 
         self.images_dir = self.cfg["vision"].get("images_dir", "captured_images")
         os.makedirs(self.images_dir, exist_ok=True)
-        
-        self.gnss_midpoint = np.array(self.cfg["flight"].get("gnss_midpoint_ned", [0.0, 0.0, 0.0]))
+
+        flight_cfg = self.cfg.get("flight", {})
+        self.midpoint_lat = flight_cfg.get("gnss_midpoint_lat", 0.0)
+        self.midpoint_lon = flight_cfg.get("gnss_midpoint_lon", 0.0)
 
         auto_cfg = self.cfg.get("autonomy", {})
         self.max_horizontal_speed = auto_cfg.get("max_horizontal_speed_ms", 1.0)
@@ -333,19 +335,44 @@ class ZDCMissionController:
 
         self.run_mission_loop()
 
+    @staticmethod
+    def _gnss_distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+        """
+        Calculates horizontal distance in meters between two GNSS coordinates
+        using the Haversine formula.
+        """
+        R = 6371000.0  # Earth radius in meters
+        phi1 = math.radians(lat1)
+        phi2 = math.radians(lat2)
+        dphi = math.radians(lat2 - lat1)
+        dlambda = math.radians(lon2 - lon1)
+
+        a = math.sin(dphi / 2.0) ** 2 + math.cos(phi1) * math.cos(phi2) * (math.sin(dlambda / 2.0) ** 2)
+        return 2.0 * R * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
+
     def _check_geofence_and_override(self, allow_land=False) -> bool:
         if not (self.mav.isGuided() or (allow_land and (self.mav.mav.flightmode in ["LANDING", "LAND"]))):
             logger.warning("[SAFETY] Manual pilot override detected. Aborting autonomous control.")
             time.sleep(self.loop_delay)
             return False
 
-        pos = self.mav.get_local_position()
-        if pos:
-            horizontal_dist = np.linalg.norm(np.array(pos[:2]) - self.gnss_midpoint[:2])
-            alt = -pos[2]
+        global_pos = self.mav.get_global_position()
+        if global_pos:
+            curr_lat, curr_lon, alt = global_pos
+
+            # Guard against (0, 0) if GPS doesn't have a 3D fix yet
+            if curr_lat == 0.0 and curr_lon == 0.0:
+                logger.error("[SAFETY] No valid GNSS fix (0.0, 0.0)! Triggering LAND.")
+                self.mav.switch_to_land()
+                return False
+
+            horizontal_dist = self._gnss_distance_m(
+                curr_lat, curr_lon, 
+                self.midpoint_lat, self.midpoint_lon
+            )
 
             if horizontal_dist > self.geofence_radius:
-                logger.error(f"[SAFETY] Geofence radius breached ({horizontal_dist:.2f} m > {self.geofence_radius} m). Triggering RTH.")
+                logger.error(f"[SAFETY] Geofence breached ({horizontal_dist:.2f} m > {self.geofence_radius} m). Triggering RTH.")
                 self.mav.mav.set_mode("RTL")
                 return False
 
@@ -353,41 +380,59 @@ class ZDCMissionController:
                 logger.error(f"[SAFETY] Altitude ceiling breached ({alt:.2f} m > {self.altitude_ceiling} m). Triggering RTH.")
                 self.mav.mav.set_mode("RTL")
                 return False
+        else:
+            logger.warning("[SAFETY] Waiting for GLOBAL_POSITION_INT telemetry...")
 
         return True
 
     def run_mission_loop(self):
-        while self.state.current_phase != FlightPhase.MISSION_COMPLETED:
+        while True:
             phase = self.state.current_phase
 
-            if phase == FlightPhase.INIT or phase == FlightPhase.WAITING_GUIDED:
+            if phase in (FlightPhase.INIT, FlightPhase.WAITING_GUIDED, FlightPhase.MISSION_COMPLETED):
                 self._wait_for_autonomous_activation()
 
             elif phase == FlightPhase.SEARCHING:
                 success = self._execute_search_phase()
                 if success:
                     self.state.current_phase = FlightPhase.ALIGNING
-                    self.state_manager.save_state(self.state)
+                else:
+                    logger.info("[ZDC] Search aborted/overridden. Returning to WAITING_GUIDED.")
+                    self.state.current_phase = FlightPhase.WAITING_GUIDED
+                self.state_manager.save_state(self.state)
 
             elif phase == FlightPhase.ALIGNING:
                 success = self._execute_visual_servoing_landing()
                 if success:
                     self.state.current_phase = FlightPhase.LANDING
-                    self.state_manager.save_state(self.state)
+                else:
+                    logger.info("[ZDC] Alignment aborted/overridden. Returning to WAITING_GUIDED.")
+                    self.state.current_phase = FlightPhase.WAITING_GUIDED
+                self.state_manager.save_state(self.state)
 
             elif phase == FlightPhase.LANDING:
                 success = self._execute_touchdown_and_ascent()
                 if success:
+                    logger.info("[ZDC] Mission cycle finished. Ready for next GUIDED activation.")
                     self.state.current_phase = FlightPhase.MISSION_COMPLETED
-                    self.state_manager.save_state(self.state)
+                    self.state_manager.clear()
                 else:
-                    break
-
-        self.mav.move_velocity_body(0.0, 0.0, 0.0)
-        self.state_manager.clear()
-        logger.info("[ZDC] Autonomous sequence finished.")
+                    logger.info("[ZDC] Landing aborted/overridden. Returning to WAITING_GUIDED.")
+                    self.state.current_phase = FlightPhase.WAITING_GUIDED
+                    self.state_manager.save_state(self.state)
 
     def _wait_for_autonomous_activation(self):
+        # If we entered this state while still in GUIDED (e.g. after a target-lost abort or mission completion),
+        # wait for the pilot to take manual control (leave GUIDED) before re-arming the trigger.
+        if self.mav.isGuided() and self.state.current_phase != FlightPhase.INIT:
+            logger.info("[HANDOVER] Currently in GUIDED after abort/completion. Waiting for pilot to switch out of GUIDED first...")
+            while self.mav.isGuided():
+                self.mav.move_velocity_body(0.0, 0.0, 0.0)
+                time.sleep(self.loop_delay)
+                frame, targets, drift = self.cvproc.detect(do_draw=True)
+                if frame is not None:
+                    self.preview.update_frame(frame, drift_ms=drift)
+
         logger.info("[HANDOVER] Waiting for manual fly-in and GUIDED activation in autonomous handover zone...")
         while True:
             if self.mav.isGuided():
@@ -399,7 +444,7 @@ class ZDCMissionController:
                     self.state_manager.save_state(self.state)
                     break
                 else:
-                    logger.warning(f"[HANDOVER] Switched to GUIDED outside altitude window (5-20m): {curr_alt:.2f} m")
+                    logger.warning(f"[HANDOVER] Switched to GUIDED outside altitude window ({self.min_activation_alt}-{self.max_activation_alt}m): {curr_alt:.2f} m")
             time.sleep(self.loop_delay)
             frame, targets, drift = self.cvproc.detect(do_draw=True)
             if frame is not None:
@@ -410,6 +455,8 @@ class ZDCMissionController:
         self.pid_x.reset()
         self.pid_y.reset()
         last_detection_time = time.time()
+
+        self.mav.move_velocity_body(0.0, 0.0, 0.9)
 
         while True:
             if not self._check_geofence_and_override():

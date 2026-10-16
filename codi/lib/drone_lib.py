@@ -134,8 +134,10 @@ class MavlinkConnection:
             )
 
         # Per-message overrides (take precedence on 4.x+)
+        # Per-message overrides (take precedence on 4.x+)
         for msg_id, hz in {
             mavutil.mavlink.MAVLINK_MSG_ID_GLOBAL_POSITION_INT: rate_hz,
+            mavutil.mavlink.MAVLINK_MSG_ID_LOCAL_POSITION_NED:  rate_hz, # <-- ADD THIS
             mavutil.mavlink.MAVLINK_MSG_ID_HEARTBEAT:           1.0,
         }.items():
             self.request_message_interval(msg_id, hz)
@@ -167,6 +169,19 @@ class MavlinkConnection:
         if msg:
             return (msg.x, msg.y, msg.z)
         return None
+    
+    def get_global_position(self) -> Optional[Tuple[float, float, float]]:
+            """
+            Returns (lat_deg, lon_deg, relative_alt_m) instantly from cache.
+            ArduPilot sends lat/lon as degE7 (1e7) and relative_alt in millimeters (1e3).
+            """
+            msg = self.mav.messages.get("GLOBAL_POSITION_INT")
+            if msg:
+                lat = msg.lat / 1e7
+                lon = msg.lon / 1e7
+                alt = msg.relative_alt / 1000.0
+                return (lat, lon, alt)
+            return None
 
     def is_airborne(self, alt_threshold_m: float = 0.5) -> bool:
         """Determines flight state using cached data to prevent blocking."""
@@ -683,6 +698,10 @@ class FakeMavlinkConnection:
         
     def get_local_position(self) -> Optional[Tuple[float, float, float]]:
         return tuple(self.pos)
+
+    def get_global_position(self) -> Optional[Tuple[float, float, float]]:
+        # Returns dummy coordinates (update these to match your config for fake testing)
+        return (48.2551553, 11.7215174, -self.pos[2])
         
     def move_velocity_body(self, v_fwd: float, v_right: float, v_down: float):
         logger.info(f"[FAKE MAV] move_velocity_body called | fwd={v_fwd:.2f}, right={v_right:.2f}, down={v_down:.2f}")

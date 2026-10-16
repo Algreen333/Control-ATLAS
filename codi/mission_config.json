@@ -4,14 +4,11 @@
     "baud": 57600,
     "debug": false,
     "do_gazebo": false,
-    "fake_connection": true
+    "fake_connection": false
   },
   "flight": {
-    "gnss_midpoint_ned": [
-      0.0, 
-      0.0, 
-      0.0
-    ]
+    "gnss_midpoint_lat": 48.2551553,
+    "gnss_midpoint_lon": 11.7215174
   },
   "vision": {
     "capture_source": 0,
@@ -45,25 +42,25 @@
     }
   },
   "autonomy": {
-    "max_horizontal_speed_ms": 0.5,
-    "marker_search_timeout": 60.0,
-    "blind_land_alt_m": 0.7,
-    "geofence_radius_m": 1000.0,
+    "max_horizontal_speed_ms": 0.8,
+    "marker_search_timeout": 30.0,
+    "blind_land_alt_m": 1.8,
+    "geofence_radius_m": 50.0,
     "altitude_ceiling_m": 30.0,
     "min_activation_alt_m": 1.0,
     "max_activation_alt_m": 20.0,
     "climb_target_alt_m": 5.0,
-    "max_lost_frames": 15,
+    "max_lost_frames": 10,
     "loop_delay_s": 0.05,
-    "descend_radius_inner_m": 0.1,
-    "descend_speed_fast_ms": 0.2,
-    "descend_radius_outer_m": 0.5,
-    "descend_speed_slow_ms": 0.05,
-    "posz_minimum": 0.2
+    "descend_radius_inner_m": 0.5,
+    "descend_speed_fast_ms": 0.5,
+    "descend_radius_outer_m": 2.5,
+    "descend_speed_slow_ms": 0.2,
+    "posz_minimum": 1.8
   },
   "pid": {
-    "kp": 0.15,
-    "ki": 0.05,
+    "kp": 0.18,
+    "ki": 0.06,
     "kd": 0.06,
     "live_tuning_enabled": true
   },
